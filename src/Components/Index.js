@@ -20,4 +20,5 @@ export * from './auth/ProfileEdit'
 export * from './auth/MyMatches'
 
 export * from './Menu/Menu'
+export * from './Chatlist/Chatlist'
 

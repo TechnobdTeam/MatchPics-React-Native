@@ -15,7 +15,7 @@ import MasonryList from "react-native-masonry-list";
 // import MasonryList from "./src";
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import testData from "../../../data";
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
         zIndex: 10, 
         height:"50%", 
         width:"100%",
-        top:"49%",
+        top:"48%",
+     
          
     },
 
  
-
-
+   
    
  
 });
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
 function isIPhoneX() {
     const X_WIDTH = 375;
     const X_HEIGHT = 812;
+    
     return (
         Platform.OS === "ios" &&
         ((deviceHeight === X_HEIGHT && deviceWidth === X_WIDTH) ||
@@ -51,7 +52,8 @@ function isIPhoneX() {
 
 export class MyMatches extends React.Component {
     state = {
-        columns: 2,
+        columns: 2, 
+         
         statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
     }
 
@@ -63,11 +65,11 @@ export class MyMatches extends React.Component {
           <Fragment>   
             <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
  
-             <NB.Container   style={HomeStyle.PageContainer}  >
+             <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
                       <NB.Header  transparent>
                       <NB.Left>
                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                          <NB.Icon name="ios-menu" />
+                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
                         </NB.Button>
                       </NB.Left>
 
@@ -78,7 +80,7 @@ export class MyMatches extends React.Component {
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                          <NB.Icon name="md-notifications" />
+                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
@@ -87,9 +89,12 @@ export class MyMatches extends React.Component {
                     
                 
                     <MasonryList
+                     spacing="2"
+                    
                      backgroundColor="transparent"
                      imageContainerStyle={{
                       borderRadius: 5, 
+                     
                     }}
 
                     images={testData}
@@ -103,23 +108,27 @@ export class MyMatches extends React.Component {
                                 // onPress={() => Linking.openURL("#")} 
                                 >
                                
-                               
+
+                          
                                 <View style={[styles.masonryHeader, {
                                     width: data.masonryDimensions.width,
                                     margin: data.masonryDimensions.gutter / 2,
-                                    
+                                   
+
                                   }]}>
-                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',   }}  imageStyle={{ borderRadius: 5 }}   >
-                                     <View style={{flex: 1, flexDirection: 'row',paddingBottom:5,padding:8,}}>
+
+                                   
+                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
+                                     <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
                                             
-                                            <View style={{width:155,flexDirection:"column-reverse"}}>
+                                            <View style={{width:125,flexDirection:"column-reverse",}}>
                                                 
-                                                <Text style={{color:"#fff"}} >Female, 33</Text> 
-                                                <Text style={{color:"#fff"}}>{data.title}</Text>  
+                                                <Text style={{color:"#fff",fontSize:11,}} >Female, 33</Text> 
+                                                <Text style={{color:"#fff",fontSize:13,}}>{data.title}</Text>  
                                             </View>
 
-                                            <View style={{width:23, flexDirection:"column-reverse"}}>
-                                                 <NB.Icon style={{color:"#fff"}} name="md-contact" /> 
+                                            <View style={{width:30, flexDirection:"column-reverse",}}>
+                                            <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
                                             </View> 
 
                                          </View>
@@ -130,8 +139,8 @@ export class MyMatches extends React.Component {
                                         source={{ uri: "https://luehangs.site/images/lue-hang2018-square.jpg" }}
                                         style={styles.userPic} /> */}  
                                     
-                               </View>
-
+                                </View>
+                            
 
 
                             </TouchableWithoutFeedback>

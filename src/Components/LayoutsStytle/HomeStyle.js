@@ -15,10 +15,28 @@ const HomeStyle = RC.StyleSheet.create({
 
     PageContainer:{
       backgroundColor:'transparent',
-      paddingLeft:10,
-      paddingRight:10,
-      paddingTop:10,
+      paddingLeft:20,
+      paddingRight:20,
+      paddingTop:13,
       paddingBottom:15,
+    },
+ 
+
+    PageContainerMyMatches:{
+      backgroundColor:'transparent',
+      paddingLeft:5,
+      paddingRight:5,
+      paddingTop:13,
+      marginLeft:-5,
+      marginRight:-5
+    },
+
+    PageContainerAbout:{
+      backgroundColor:'transparent',
+      paddingLeft:5,
+      paddingRight:5,
+      paddingTop:0,
+      paddingBottom:15, 
     },
 
     PageContainerLogin:{

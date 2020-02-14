@@ -5,10 +5,10 @@ import * as NB from 'native-base';
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
-
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 {/*Register */}
 export class UserProfile extends React.Component {
+ 
   render() {
     return (
     <Fragment>    
@@ -17,7 +17,9 @@ export class UserProfile extends React.Component {
              <NB.Header  transparent>
                   <NB.Left>
                     <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent>
-                      <NB.Icon name="ios-arrow-round-back" />
+                      
+                      <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
+                     
                     </NB.Button>
                   </NB.Left>
 
@@ -35,7 +37,7 @@ export class UserProfile extends React.Component {
 
 
             <NB.Content style={{backgroundColor:'transparent',marginTop:-58,zIndex:-1,}}>
-                <NB.View style={{height:400,}}>  
+                <NB.View style={{height:400,marginLeft:-5,}}>  
                      <NB.View style={{borderColor:'#fff',width:'100%',height:'100%',}}> 
                            <Image style={{width:'100%',height:'100%'}}   source={require('../Image/profile_single_images.jpg')} />
                            <Image style={{width:'100%',height:'50%',position:'absolute',zIndex:2,bottom:0,}}   source={require('../Image/slingle_profile_images_shap.png')} />
@@ -45,12 +47,13 @@ export class UserProfile extends React.Component {
                         <NB.ListItem style={{borderBottomWidth:0,marginTop:-85,}}>
                             <NB.Left>
                               <NB.Body>
-                                <NB.Text style={{color:'#fff',fontSize:23,}}>Nusrat Faria, F 32</NB.Text> 
-                                <NB.Text style={{color:'#fff',fontSize:16,}}><NB.Icon name="ios-paper-plane" style={{color:'#fff',fontSize:16,}} /> Dhaka, Bangladesh </NB.Text>  
+                                <NB.Text style={{color:'#fff',fontSize:22,fontWeight:'bold'}}>Nusrat Faria, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >F 32  </NB.Text>  </NB.Text> 
+                                <NB.Text style={{color:'#fff',fontSize:18,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize:16 }}  /> Dhaka, Bangladesh </NB.Text>  
                                 </NB.Body>
                             </NB.Left>
                             <NB.Right>
-                            <NB.Icon style={{color:'#fff',fontSize:25,}} name="ios-information-circle" /> 
+                             
+                            <Icon name="info-circle" solid style={{color:'#fff',fontSize:40 }}  /> 
                             </NB.Right>
                         </NB.ListItem>
                 </NB.View>
@@ -59,69 +62,39 @@ export class UserProfile extends React.Component {
                   </NB.View>
 
 
-              <NB.Container   style={HomeStyle.PageContainer}  >
+              <NB.View   style={HomeStyle.PageContainerAbout}  >
 
                 <NB.View style={{padding:20,}}>
 
-                <NB.Text style={{fontSize:23,marginBottom:10,}}>About</NB.Text>  
-                <NB.Text style={{marginBottom:10,}} >Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons
-                </NB.Text> 
-
-                <NB.Text  style={{marginBottom:10,}} >Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons
+                <NB.Text style={{fontSize:21,marginBottom:10,color:"#6c6c6c"}}>About</NB.Text>  
+                <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,}} >Coffee Meets Bagel goes anti-Tinder with a
+redesign focused on profiles, conversations. ...But more notably, it has ditched the big “Pass”
+or “Connect” buttons
                 </NB.Text>  
 
-                <NB.Text  style={{marginBottom:10,}} >Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons
-                </NB.Text>  
-
-                <NB.Text  style={{marginBottom:10,}} >Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons Coffee Meets Bagel goes anti-Tinder with a
-                redesign focused on profiles, conversations. ...
-                But more notably, it has ditched the big “Pass”
-                or “Connect” buttons
-                </NB.Text>  
-                        
+            
                     
                 </NB.View> 
-            </NB.Container>
+            </NB.View>
         </NB.Content> 
-                <NB.Footer  >
-                    <NB.FooterTab style={{backgroundColor:'#fff'}}>
-                        <NB.Button badge vertical>
-                        <NB.Badge><NB.Text>2</NB.Text></NB.Badge>
-                        <NB.Icon style={{color:'#e41b5b'}} name="md-chatboxes" />
-                        <NB.Text style={{color:'#333333'}}>Message</NB.Text>
+                <NB.Footer style={{height:72}} >
+                    <NB.FooterTab style={{backgroundColor:'#fff',}}>
+                        <NB.Button badge vertical onPress={() => this.props.navigation.navigate('Chatlist')} >
+                        {/* <NB.Badge><NB.Text>2</NB.Text></NB.Badge>  */}
+                        <Icon name="comment" light  style={{color:'#e41b5b',fontSize:24, marginBottom:8,}}  /> 
+                        <NB.Text style={{color:'#333333',fontSize:14,}}>Message</NB.Text>
                         </NB.Button>
                         <NB.Button vertical>
-                        <NB.Icon style={{color:'#e41b5b'}}  name="md-heart-empty" />
-                        <NB.Text style={{color:'#333333'}} >Favorite</NB.Text>
+                        <Icon name="heart" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  /> 
+                        <NB.Text style={{color:'#333333',fontSize:14,}} >Favorite</NB.Text>
                         </NB.Button>
                         <NB.Button    vertical> 
-                        <Image style={{width:20,height:20}}   source={require('../Image/block_icon.png')} />
-                        <NB.Text style={{color:'#333333'}}>Block</NB.Text>
+                        <Icon name="ban" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />  
+                        <NB.Text style={{color:'#333333',fontSize:14,}}>Block</NB.Text>
                         </NB.Button>
                         <NB.Button vertical>
-                        <Image style={{width:20,height:20}}   source={require('../Image/report_icon.png')} />
-                        <NB.Text style={{color:'#333333'}}>Report</NB.Text>
+                        <Icon name="flag" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />   
+                        <NB.Text style={{color:'#333333',fontSize:14,}}>Report</NB.Text>
                         </NB.Button>
                     </NB.FooterTab>
                 </NB.Footer>

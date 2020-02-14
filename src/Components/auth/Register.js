@@ -1,16 +1,209 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground, Platform, PermissionsAndroid} from 'react-native';
 import * as NB from 'native-base';
+import DeviceInfo from "react-native-device-info";
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
+import ImagePicker from 'react-native-image-picker';
 // NativeBase
-import {Text} from 'native-base';
+import {Text, Toast} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
- 
+import { Value } from 'react-native-reanimated'; 
+import ConstValues from '../../constants/ConstValues';
 {/*Register */}
+
+const options = {
+    title: 'Select Avatar',
+    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+  };
+
 export class Register extends React.Component {
+
+    componentDidMount(){
+        console.log("device_info: " + DeviceInfo.getSystemVersion());
+    }
+
+    constructor(props){
+        super(props);
+        this.state = {
+            showToast: false,
+            user_name: "",
+            email: "",
+            password: "",
+            re_password: "",
+            progressVisible: false,
+            permissionsGranted: false,
+            imagePickOptionDialog: false,
+            addAvatarTextVisible: true,
+            image_uri: '',
+            image_type: ''
+          };
+    }
+
+    proceed() {
+        alert('You can use the Camera');
+      }
+
+      onPressFromGallery = () => {
+          this.setState({imagePickOptionDialog: false})
+          console.log("gallery will open to select image");
+          ImagePicker.launchImageLibrary(options, (response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              } else {
+
+                console.log("image_type: " + response.type);
+
+                this.setState({image_uri: response.uri});
+                this.setState({image_type: response.type});
+                this.setState({addAvatarTextVisible: false});
+                console.log('Image selected: ' + response.uri);
+              }
+           
+          });
+      };
+      onPressOpenCamera = () =>{
+        this.setState({imagePickOptionDialog: false})
+          console.log("camera will open to pick image");
+          ImagePicker.launchCamera(options, (response) => {
+            // Same code as in above section!
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              } else {
+                this.setState({image_uri: response.uri});
+                this.setState({image_type: response.type});
+                this.setState({addAvatarTextVisible: false});
+                console.log('Image clicked: ' + response.uri);
+              }
+          });
+      }
+
+    onPress = () => {
+        var that = this;
+        //Checking for the permission just after component loaded
+        PermissionsAndroid.requestMultiple(
+            [PermissionsAndroid.PERMISSIONS.CAMERA, 
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+            ).then((result) => {
+              if (result['android.permission.CAMERA']
+              && result['android.permission.READ_EXTERNAL_STORAGE']
+              && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
+                  console.log("all permission accepted");
+                this.setState({
+                  permissionsGranted: true,
+                  imagePickOptionDialog: true
+                });
+              } else if (result['android.permission.CAMERA']
+              || result['android.permission.READ_EXTERNAL_STORAGE']
+              || result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'never_ask_again') {
+                this.refs.toast.show('Please Go into Settings -> Applications -> MatchPics -> Permissions and Allow permissions to continue');
+              }
+            });
+      };
+
+    //verify user registration process
+    verifyUserRegistration(){
+
+        console.log("user_email: " + this.state.email);
+        console.log("user_name: " + this.state.user_name);
+        console.log("user_password: " + this.state.password);
+
+        if((this.state.user_name == "" ) || (this.state.email == "") || (this.state.password == "") || (this.state.re_password == "")){
+
+            Toast.show({
+                text: "Please put all info and try again!",
+                textStyle: { color: "red" },
+                buttonText: "Okay"
+              })
+        }
+        else if(this.state.password != this.state.re_password){
+            Toast.show({
+                text: "Please put same password in both fields.",
+                textStyle: { color: "red" },
+                buttonText: "Okay"
+              })
+        }
+        else{
+            //calling api to complete user registration process
+
+            this.setState({progressVisible: true});
+
+            var formData = new FormData();
+            formData.append('api_key', ConstValues.api_key);
+            formData.append('name', this.state.user_name);
+            formData.append('email', this.state.email);
+            formData.append('password', this.state.password);
+            formData.append('confirm_password', this.state.re_password);
+            data.append('photo', {
+                uri: photo.uri,
+                type: image_type, // or photo.type
+                name: 'user_photo'
+              });
+
+            fetch(ConstValues.base_url + 'user/userRegistration',{
+                method: 'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: formData
+            }).then((response) => response.json())
+            .then((responseJson) =>{
+
+                console.log(responseJson.response.data);
+
+                this.setState({progressVisible: false});
+
+                if(responseJson.response.code == 1000){
+                    Toast.show({
+                        text: responseJson.response.message,
+                        textStyle: { color: "yellow" }              
+                    })
+
+                    this.timeoutHandle = setTimeout(()=>{
+
+                         this.props.navigation.navigate('Login')
+                }, 700);
+                }
+                else{
+                    this.storeData(ConstValues.user_logged_in, false);
+                    Toast.show({
+                    text: responseJson.response.message,
+                    textStyle: { color: "yellow" },
+                    buttonText: "Okay"
+          })
+                }
+            })
+        }
+    }
+
+    storeData(key,value) {
+        try {
+          AsyncStorage.setItem(key, JSON.stringify(value))
+        } catch (e) {
+          // saving error
+          console.log("saving_error: " + e.message);
+        }
+      }
+
   render() {
     return (
-      <Fragment>    
+        <NB.Root>
+        <Fragment>    
       <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
         <NB.Container   style={HomeStyle.PageContainer}  >
           <NB.View style={HomeStyle.SingupPageView} >
@@ -34,10 +227,14 @@ export class Register extends React.Component {
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item > 
-                                    <NB.Input  style={{paddingLeft:14,}} placeholder='USER NAME'/> 
+                                    <NB.Input  style={{paddingLeft:14,}} placeholder='USER NAME'
+                                        onChangeText ={(Value) => this.setState({user_name: Value})}
+                                    /> 
                                 </NB.Item>
                                 <NB.Item error>
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='EMAIL'/>
+                                    <NB.Input style={{paddingLeft:14,}} placeholder='EMAIL'
+                                        onChangeText={(value) => this.setState({email: value})}
+                                    />
                                     <NB.Icon name='close-circle' />
                                 </NB.Item> 
 
@@ -47,27 +244,44 @@ export class Register extends React.Component {
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item error > 
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='TYPE PASSWORD'/> 
+                                    <NB.Input style={{paddingLeft:14,}} placeholder='TYPE PASSWORD'
+                                        onChangeText={(value) => this.setState({password: value})}
+                                        secureTextEntry={true}
+                                    /> 
                                     <NB.Icon name='close-circle' />
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='CONFIRM PASSWORD'/>
+                                    <NB.Input style={{paddingLeft:14,}} placeholder='CONFIRM PASSWORD'
+                                        onChangeText={(value) => this.setState({re_password: value})}
+                                        secureTextEntry={true}
+                                    />
                                    
                                 </NB.Item> 
 
                             </NB.View> 
+
                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:40,}}>
-                               <NB.Button style={{backgroundColor:'#a5a5a5',width:110,height:110,borderRadius:100,}} >
-                                   
-                                    <NB.Text style={{textAlign:'center',fontSize:16,textTransform:'capitalize'}}>Add Avatar</NB.Text>
+                               <NB.Button style={{backgroundColor:'#a5a5a5',width:110,height:110,borderRadius:100,}} onPress={this.onPress}>
+                               
+                               {!this.state.addAvatarTextVisible ? 
+                                <Image style={{width:110,height:110,borderRadius:100,}} source={{uri: this.state.image_uri}} />
                                 
+                                : null }
+
+                               {this.state.addAvatarTextVisible ? 
+                                <NB.Text
+                                    style={{textAlign:'center',fontSize:16,textTransform:'capitalize'}}>Add Avatar</NB.Text>
+                                
+                                : null }
+                                 
                                 </NB.Button>
                             </NB.Item>
 
                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
-                              <NB.Button  iconRight  style={{backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}>
-                                    <NB.Text style={{fontSize:18,color:'#ffffff',}}>next </NB.Text>
-                                    <NB.Icon style={{color:'#fff',fontSize:30,}} name='ios-arrow-round-forward' /> 
+                              <NB.Button  iconRight  style={{backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                              onPress ={() => this.verifyUserRegistration()}>
+                                    <NB.Text style={{fontSize:18,color:'#ffffff',}}>SUBMIT </NB.Text>
+                                    {/* <NB.Icon style={{color:'#fff',fontSize:30,}} name='ios-arrow-round-forward' />  */}
                               </NB.Button> 
                            </NB.Item>
 
@@ -76,12 +290,30 @@ export class Register extends React.Component {
 
 
                   </NB.Content>
+
+                  <ProgressDialog
+                        visible={this.state.progressVisible}
+                        title="Verifying"
+                        message="Please, wait..."
+                    />
+
+                    <Dialog
+                      visible={this.state.imagePickOptionDialog}
+                      title="Select an option..."
+                      onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
+                      <NB.View>
+                          <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
+                          <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
+                          <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
+                      </NB.View>
+                  </Dialog>
           
             </NB.View>
           </NB.Container>
         </ImageBackground> 
 
-</Fragment>
+        </Fragment>
+        </NB.Root>
        
     );
   }
