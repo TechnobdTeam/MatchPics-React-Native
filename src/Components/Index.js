@@ -24,3 +24,5 @@ export * from './Menu/Menu'
 export * from './Chatlist/Chatlist'
 export * from './Chatlist/Chatwindow'
 
+export * from './notification/Notification'
+
