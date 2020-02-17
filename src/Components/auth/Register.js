@@ -148,9 +148,9 @@ export class Register extends React.Component {
             formData.append('email', this.state.email);
             formData.append('password', this.state.password);
             formData.append('confirm_password', this.state.re_password);
-            data.append('photo', {
-                uri: photo.uri,
-                type: image_type, // or photo.type
+            formData.append('photo', {
+                uri: this.state.image_uri,
+                type: this.state.image_type, // or photo.type
                 name: 'user_photo'
               });
 

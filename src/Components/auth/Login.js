@@ -106,6 +106,8 @@ export class Login extends React.Component {
               console.log("stored_user_email2: " + AsyncStorage.getItem(ConstValues.customer_id));
               console.log("stored_user_email_new: " + this.getData(ConstValues.user_email));
 
+              console.log("logged_in_user_token: " + responseJson.response.data.token);
+
               AsyncStorage.getItem(ConstValues.user_email , (error, result) => {
                 console.log( " ****country_name: "+ result )
                 })

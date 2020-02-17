@@ -2,12 +2,14 @@ import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, PermissionsAndroid} from 'react-native';
 import * as NB from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
+import AsyncStorage from '@react-native-community/async-storage';
 //import RangeSlider from 'rn-range-slider';
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import ImagePicker from 'react-native-image-picker';
+import ConstValues from '../../constants/ConstValues';
 
 const options = {
   title: 'Select Avatar',
@@ -33,8 +35,27 @@ export class UploadImage extends React.Component {
         permissionsGranted: false,
         imagePickOptionDialog: false,
         image_uri: '',
-        image_type: ''
+        image_type: '',
+        image_name: '',
+        response_image_url: '',
+        user_token: '',
+        change_photo_id: '',
+        change_photo_url: ''
       };
+
+      AsyncStorage.getItem(ConstValues.user_token , (error, result) => {
+
+        console.log("logged_in_status:true>>> " + result);
+
+        if(result != null){
+
+          this.setState({user_token: result})
+
+        }
+        else{
+          console.log("logged_in_status: not logged in" );
+        }
+      })
 }
 
   onPress = () => {
@@ -76,10 +97,10 @@ export class UploadImage extends React.Component {
 
           console.log("image_type: " + response.type);
 
-          this.setState({image_uri: response.uri});
-          this.setState({image_type: response.type});
-          this.setState({addAvatarTextVisible: false});
+          this.setState({image_uri: response.uri, image_type: response.type, image_name: response.fileName});
           console.log('Image selected: ' + response.uri);
+
+          this.requestImage();
         }
      
     });
@@ -98,11 +119,63 @@ export class UploadImage extends React.Component {
         } else {
           this.setState({image_uri: response.uri});
           this.setState({image_type: response.type});
-          this.setState({addAvatarTextVisible: false});
           console.log('Image clicked: ' + response.uri);
+
+          this.requestImage();
         }
     });
-}
+  }
+
+  requestImage= () =>{
+
+    console.log("token222: " + JSON.parse(this.state.user_token));
+    console.log("image222: " + this.state.image_uri);
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+    formData.append('photo', {
+      uri: this.state.image_uri,
+      type: this.state.image_uri, // or photo.type
+      name: this.state.image_name
+    });
+
+    fetch(ConstValues.base_url + 'user/uploadPhoto',{
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.user_token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+      console.log(responseJson.response.code);
+      console.log(responseJson.response.message);
+
+      this.setState({progressVisible: false});
+
+      if(responseJson.response.code == 1000){
+
+        console.log("able to save photo: " + responseJson.response.data.photo);
+        console.log("able to save change_photo_id: " + responseJson.response.data.change_photo_id);
+
+        this.setState({change_photo_id: responseJson.response.data.change_photo_id,
+          change_photo_url: responseJson.response.data.photo});
+
+
+      }
+      else if(responseJson.response.code == 4001){
+        //session expired, need to navigate login screen
+      }
+      else{
+         console.log("unable to save photo");
+         
+      }
+  })
+
+    this.setState({response_image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTeZlrw-x4F6OT7fVQPbE2k5zZ6n4YHNBKq4TNZtyQM0a6ZW5w0'})
+  }
 
   render() {
     return (
@@ -139,7 +212,12 @@ export class UploadImage extends React.Component {
                 </NB.View>
 
                 <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
-                      <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
+
+                  {this.state.change_photo_url == '' ? 
+                  <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
+                  :
+                  <Image style={{width:'100%',height:'100%'}}   source={{uri:this.state.change_photo_url} }/>
+                  }
                       {/* <Image style={{width:'100%',height:'100%',position:'absolute',zIndex:999,}}   source={require('../Image/user_shap.png')} /> */}
                   </NB.View>
 
