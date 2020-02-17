@@ -189,7 +189,7 @@ onSwipeValueChange = swipeData => {
                                 underlayColor={'#AAA'}
                             >
 
-                                  <View  style={styles.rowFront}>
+                                  <View    style={styles.rowFront}>
                                     <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
                                        <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,}}>
                                           <Image source={data.item.images} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
@@ -197,10 +197,10 @@ onSwipeValueChange = swipeData => {
                                         
                                         <View style={{paddingTop:3}}>
                                             <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",}}>
-                                              <Text  onPress={() => this.props.navigation.navigate('Chatwindow')} style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.userNmae} </Text> 
+                                              <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.userNmae} </Text> 
                                               <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.time}  </Text> 
                                             </View> 
-                                            <Text style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4}}>{data.item.text}  </Text>  
+                                            <Text  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4}}>{data.item.text}  </Text>  
                                             
                                         </View>
                                       </View> 

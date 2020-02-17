@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground,KeyboardAvoidingView } from 'react-native';
 import * as NB from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -9,7 +9,7 @@ import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import {Text, Toast, Root} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues'
 
 {/*Login  */}
@@ -230,9 +230,12 @@ export class Login extends React.Component {
     render() {
       return ( 
         <Root>
-        <Fragment>    
+        <Fragment>   
+      
          <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
           <NB.Container  style={HomeStyle.PageContainerLogin}  >
+            
+          
             <NB.View style={HomeStyle.PageView} >
                   <NB.CardItem style={{backgroundColor:'transparent'}} > 
                         
@@ -246,27 +249,28 @@ export class Login extends React.Component {
                       
                     </NB.CardItem>
 
-                 
+                    
                       <NB.Content style={HomeStyle.FormContent} >
+                       
                          <NB.Form >
-                            <NB.Item  >
-                              <NB.Input placeholder='EMAIL'
+                            <NB.Item  style={{marginTop:20}} >
+                              <NB.Input   placeholder='EMAIL'
                                 onChangeText={(value) => this.setState({email: value})}
                               /> 
                             </NB.Item>
-                            <NB.Item error>
-                              <NB.Input placeholder='PASSWORD'
+                            <NB.Item style={{marginTop:50}}>
+                              <NB.Input   placeholder='PASSWORD'
                                 onChangeText={(value) => this.setState({password: value})} secureTextEntry={true}
                               />
-                              <NB.Icon name='close-circle' />
+                              {/* <NB.Icon name='close-circle' /> */}
                             </NB.Item> 
                           
-                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:20,marginBottom:30,}} >
-                              <NB.Text style={{fontSize:19,color:'#333333',}}> Forgot Password? </NB.Text>
+                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:40,marginBottom:30,}} >
+                              <NB.Text style={{fontSize:21,color:'#333333',}}> Forgot Password? </NB.Text>
                              </NB.Item> 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center'}} >
-                                <NB.Button style={{backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:58,}} onPress={() => this.verifyLogin()}>
+                                <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,width:'75%',justifyContent: 'center',alignItems:'center',height:59,}} onPress={() => this.verifyLogin()}>
                                       <NB.Text style={{fontSize:18,color:'#ffffff',}}>Sign in</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
@@ -274,34 +278,38 @@ export class Login extends React.Component {
                              </NB.Form >
 
                              <NB.Form >
+
+                           
+
+
+
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,}} >
-                                <NB.Button iconLeft light  style={{backgroundColor:'#3b5998',borderRadius:50,width:'100%',height:58,  justifyContent: 'center',}} onPress={() =>
-              Toast.show({
-                text: "Wrong password!",
-                textStyle: { color: "yellow" },
-                buttonText: "Okay"
-              })
-            }>
-                                   <NB.Text style={{fontSize:18,color:'#ffffff',marginTop:-13,}}> <Image    source={require('../Image/facebook.png')}    />   Sign in with facebook</NB.Text>
+                                <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,width:'99%',height:59,  justifyContent: 'center',alignItems:"center"}} onPress={() =>
+                                    Toast.show({
+                                      text: "Wrong password!",
+                                      textStyle: { color: "yellow" },
+                                      buttonText: "Okay"
+                                    })
+                                  }>
+                                   <NB.Text style={{fontSize:18,color:'#ffffff',}}>  <Icon name={'facebook-f'}  style={{fontSize:24,color:'#fff', }} light />   Sign in with facebook</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:90,marginBottom:15,}} >
-                              <NB.Text style={{fontSize:19,color:'#333333',}}>Don’t have a account yet? </NB.Text>
+                              <NB.Text style={{fontSize:21,color:'#333333',}}>Don’t have a account yet? </NB.Text>
                              </NB.Item>  
                                 <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:5,marginBottom:10,}} >
-                                    <NB.Button onPress={() => this.props.navigation.navigate('Register')}  iconLeft light  style={{backgroundColor:'#ff9900',width:'80%',height:58,  justifyContent: 'center',}}>
+                                    <NB.Button onPress={() => this.props.navigation.navigate('Register')}  iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff9900',width:'80%',height:58,  justifyContent: 'center',alignItems:"center"}}>
                                       <NB.Text style={{fontSize:18,color:'#ffffff',}}>  sign up for free</NB.Text>
                                     </NB.Button> 
                               </NB.Item>
 
-                             </NB.Form>
-                             
-
-                         
+                             </NB.Form> 
+                            
                       </NB.Content>
-                  
+           
+                         
                       <ProgressDialog
                         visible={this.state.progressVisible}
                         title="Verifying"
@@ -309,9 +317,11 @@ export class Login extends React.Component {
                     />
             
               </NB.View>
+         
+
             </NB.Container>
           </ImageBackground> 
-
+      
       </Fragment>
         </Root>
       );

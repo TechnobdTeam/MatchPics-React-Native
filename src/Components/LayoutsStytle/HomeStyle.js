@@ -18,8 +18,17 @@ const HomeStyle = RC.StyleSheet.create({
       paddingLeft:20,
       paddingRight:20,
       paddingTop:13,
-      paddingBottom:15,
+       
     },
+    MenuPageContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:20,
+      paddingRight:20,
+      paddingTop:13,
+      marginTop:20,
+       
+    },
+ 
  
 
     PageContainerMyMatches:{
@@ -41,17 +50,17 @@ const HomeStyle = RC.StyleSheet.create({
 
     PageContainerLogin:{
       backgroundColor:'transparent',
-      paddingLeft:10,
-      paddingRight:10,
+      paddingLeft:20,
+      paddingRight:20,
       paddingTop:10,
-      paddingBottom:40,
+      paddingBottom:30,
     },
 
     PageView:{
       backgroundColor:'#fff',
       height:'100%',
       borderRadius:10,
-      marginTop:30,
+      marginTop:5,
        
     
     },
@@ -67,7 +76,7 @@ const HomeStyle = RC.StyleSheet.create({
       backgroundColor:'#f3f3f3',
       height:'95%',
       borderRadius:10,
-      marginTop:30,
+      marginTop:5,
     
     
     },
@@ -98,15 +107,13 @@ backgroundColor:'transparent',
 UserProfileCard:{
   borderRadius:7, 
   overflow:'hidden',
-  marginBottom:7,
+  marginBottom:10,
  
   shadowColor: '#ebeef1',
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.8,
   shadowRadius: 7,
-  elevation: 1,
- 
-  
+  elevation: 1, 
    
 }
     
