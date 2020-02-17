@@ -18,7 +18,9 @@ export * from './auth/UserProfile'
 export * from './auth/MyProfile'
 export * from './auth/ProfileEdit'
 export * from './auth/MyMatches'
+export * from './auth/MyFavorite'
 
 export * from './Menu/Menu'
 export * from './Chatlist/Chatlist'
+export * from './Chatlist/Chatwindow'
 

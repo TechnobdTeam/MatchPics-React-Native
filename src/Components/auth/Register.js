@@ -9,6 +9,7 @@ import {Text, Toast} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import { Value } from 'react-native-reanimated'; 
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 {/*Register */}
 
@@ -223,35 +224,35 @@ export class Register extends React.Component {
                       <NB.Form>
                         
                          <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,}}>User</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:18,paddingLeft:20}}>User</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item > 
-                                    <NB.Input  style={{paddingLeft:14,}} placeholder='USER NAME'
+                                    <NB.Input  style={{paddingLeft:33,height:59}} placeholder='USER NAME'
                                         onChangeText ={(Value) => this.setState({user_name: Value})}
                                     /> 
                                 </NB.Item>
-                                <NB.Item error>
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='EMAIL'
+                                <NB.Item >
+                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='EMAIL'
                                         onChangeText={(value) => this.setState({email: value})}
                                     />
-                                    <NB.Icon name='close-circle' />
+                                    {/* <NB.Icon name='close-circle' /> */}
                                 </NB.Item> 
 
                             </NB.View> 
                             <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,}}>Password</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:18,paddingLeft:20}}>Password</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
-                            <NB.Item error > 
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='TYPE PASSWORD'
+                            <NB.Item  > 
+                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='TYPE PASSWORD'
                                         onChangeText={(value) => this.setState({password: value})}
                                         secureTextEntry={true}
                                     /> 
-                                    <NB.Icon name='close-circle' />
+                                    {/* <NB.Icon name='close-circle' /> */}
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:14,}} placeholder='CONFIRM PASSWORD'
+                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='CONFIRM PASSWORD'
                                         onChangeText={(value) => this.setState({re_password: value})}
                                         secureTextEntry={true}
                                     />
@@ -260,11 +261,11 @@ export class Register extends React.Component {
 
                             </NB.View> 
 
-                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:40,}}>
-                               <NB.Button style={{backgroundColor:'#a5a5a5',width:110,height:110,borderRadius:100,}} onPress={this.onPress}>
+                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:74,}}>
+                               <NB.Button style={{backgroundColor:'#a5a5a5',width:115,height:115,borderRadius:100,}} onPress={this.onPress}>
                                
                                {!this.state.addAvatarTextVisible ? 
-                                <Image style={{width:110,height:110,borderRadius:100,}} source={{uri: this.state.image_uri}} />
+                                <Image style={{width:115,height:115,borderRadius:100,}} source={{uri: this.state.image_uri}} />
                                 
                                 : null }
 
@@ -277,8 +278,8 @@ export class Register extends React.Component {
                                 </NB.Button>
                             </NB.Item>
 
-                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
-                              <NB.Button  iconRight  style={{backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:37,}} >
+                              <NB.Button  iconRight  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:60,paddingTop:0,}}
                               onPress ={() => this.verifyUserRegistration()}>
                                     <NB.Text style={{fontSize:18,color:'#ffffff',}}>SUBMIT </NB.Text>
                                     {/* <NB.Icon style={{color:'#fff',fontSize:30,}} name='ios-arrow-round-forward' />  */}

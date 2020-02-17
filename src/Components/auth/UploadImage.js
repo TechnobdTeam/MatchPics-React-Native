@@ -8,7 +8,7 @@ import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import ImagePicker from 'react-native-image-picker';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 const options = {
   title: 'Select Avatar',
   customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
@@ -115,7 +115,7 @@ export class UploadImage extends React.Component {
           <NB.Header  transparent>
             <NB.Left>
               <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                <NB.Icon name="ios-menu" />
+              <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
               </NB.Button>
             </NB.Left>
 
@@ -126,7 +126,7 @@ export class UploadImage extends React.Component {
             </NB.Body>
             <NB.Right>
               <NB.Button transparent>
-                <NB.Icon name="md-notifications" />
+              <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
               </NB.Button>
             </NB.Right>
           </NB.Header> 

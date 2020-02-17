@@ -22,18 +22,16 @@ const platform = Platform.OS;
 
 const styles = StyleSheet.create({
    
- 
-     masonryHeader: {
+    masonryHeader: {
         position: "absolute",
         zIndex: 10, 
-        height:"50%", 
+        height:"98%", 
         width:"100%",
-        top:"48%",
+         
      
          
     },
 
- 
    
    
  
@@ -51,6 +49,7 @@ function isIPhoneX() {
 }
 
 export class MyMatches extends React.Component {
+ 
     state = {
         columns: 2, 
          
@@ -118,23 +117,37 @@ export class MyMatches extends React.Component {
                                   }]}>
 
                                    
-                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
-                                     <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
-                                            
-                                            <View style={{width:125,flexDirection:"column-reverse",}}>
-                                                
-                                                <Text style={{color:"#fff",fontSize:11,}} >Female, 33</Text> 
-                                                <Text style={{color:"#fff",fontSize:13,}}>{data.title}</Text>  
-                                            </View>
 
-                                            <View style={{width:30, flexDirection:"column-reverse",}}>
-                                            <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
-                                            </View> 
-
+                                    <View style={{flex: 1, }}>
+                                         
+                                         <View style={{ flex: 1,paddingTop:7,paddingRight:7, }} >
+                                        
+                                        </View>
+                                         
+                                         
+                                        
+                                         <View style={{ flex: 1, }} >
+                                         <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
+                                         <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
+                                              
+ 
+                                              <View style={{width:"80%",flexDirection:"column-reverse",}}>
+                                                  
+                                                  <Text style={{color:"#fff",fontSize:11,}} >Female, 33 </Text> 
+                                                  <Text style={{color:"#fff",fontSize:13,}}>{data.title}</Text>  
+                                              </View>
+  
+                                              <View style={{width:"20%", flexDirection:"column-reverse",}}>
+                                              <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
+                                              </View> 
+  
+                                           </View>
+                                           </ImageBackground>
                                          </View>
-                                 
+ 
+                                     </View>
 
-                                     </ImageBackground>
+
                                     {/* <Image
                                         source={{ uri: "https://luehangs.site/images/lue-hang2018-square.jpg" }}
                                         style={styles.userPic} /> */}  

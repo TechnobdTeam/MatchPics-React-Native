@@ -77,7 +77,7 @@ export class Menu extends React.Component {
       <Fragment > 
   
        <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
-       <NB.Container   style={HomeStyle.PageContainer}  >
+       <NB.Container   style={HomeStyle.MenuPageContainer}  >
             <NB.View style={HomeStyle.SingupPageView} >
                   <NB.CardItem style={{backgroundColor:'transparent',height:110}} > 
                         
@@ -140,7 +140,7 @@ export class Menu extends React.Component {
                                     <Icon name="heart"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my favorite</NB.Text>
+                                          <NB.Text onPress={() => this.props.navigation.navigate('MyFavorite')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my favorite</NB.Text>
                                         </NB.Body>
                                     </NB.ListItem>
                             </NB.Content>
