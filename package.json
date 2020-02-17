@@ -24,6 +24,7 @@
     "react-native-image-picker": "^2.3.0",
     "react-native-masonry-list": "^2.16.1",
     "react-native-material-dialog": "^0.7.7",
+    "react-native-panel": "^1.0.4",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.6.4",
     "react-native-screens": "^2.0.0-alpha.34",

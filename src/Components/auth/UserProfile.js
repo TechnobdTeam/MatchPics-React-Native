@@ -6,6 +6,7 @@ import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Panel from 'react-native-panel';
 {/*Register */}
 export class UserProfile extends React.Component {
  
@@ -76,6 +77,7 @@ or “Connect” buttons
                     
                 </NB.View> 
             </NB.View>
+
         </NB.Content> 
                 <NB.Footer style={{height:72}} >
                     <NB.FooterTab style={{backgroundColor:'#fff',}}>
