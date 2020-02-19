@@ -16,6 +16,8 @@ import MasonryList from "react-native-masonry-list";
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import testData from "../../../data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-community/async-storage';
+import ConstValues from '../../constants/ConstValues';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
@@ -51,12 +53,75 @@ function isIPhoneX() {
 }
 
 export class MyFavorite extends React.Component {
- 
-    state = {
-        columns: 2, 
-         
-        statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
-    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          showToast: false,
+          email: '',
+          password: '',
+          token: '',
+          progressVisible: false ,
+          favData: '',
+          columns: 2, 
+          statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
+        };
+
+        AsyncStorage.getItem(ConstValues.user_email, (error, result) =>{
+
+            if(result != null){
+                this.setState({email: result})
+            }
+        }).then(
+            AsyncStorage.getItem(ConstValues.user_password, (error, result) =>{
+
+                if(result != null){
+                    this.setState({password: result})
+                }
+            }).then(
+                AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+                    console.log('user_token: ' + result)
+
+                    if(result != null){
+                        this.setState({token: result})
+                    }
+                }).then(
+                    this.timeoutHandle = setTimeout(()=>{
+                        this.getMyFavoriteList()
+                     }, 1000)
+                )
+            )
+        )
+      }
+
+      getMyFavoriteList(){
+
+        console.log("getting my favorite list");
+
+        var formData = new FormData();
+        formData.append('api_key', ConstValues.api_key);
+        formData.append('user_name', this.state.email);
+        formData.append('password', this.state.password);
+
+        console.log("getting my favorite list token: " + this.state.token);
+
+        fetch(ConstValues.base_url + 'myFavourites', {
+            method: 'POST',
+            headers:{
+                'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+            body: formData
+        }).then((response) => response.json())
+        .then((responseJson) =>{
+
+            console.log("myFavourites: " + responseJson.response.message);
+
+            this.setState({favData: responseJson.response.data})
+        })
+      }
 
     render() {
         const { statusBarPaddingTop } = this.state;
@@ -98,14 +163,18 @@ export class MyFavorite extends React.Component {
                      
                     }}
 
-                    images={testData}
+                    // images={testData}
+                    images = {this.state.favData}
                     columns={this.state.columns}
                     // sorted={true}
                     renderIndividualHeader={(data) => {
                         return (
                             <TouchableWithoutFeedback  
                                   
-                                  onPress={() => this.props.navigation.navigate('UserProfile')}
+                                  onPress={() => this.props.navigation.navigate('UserProfile',{
+                                      id: data.user_id
+                                  })}
+                                  onPressIn={() => console.log("profile_id: " + data.user_id)}
                                 // onPress={() => Linking.openURL("#")} 
                                 >
                                
@@ -138,8 +207,8 @@ export class MyFavorite extends React.Component {
 
                                              <View style={{width:"80%",flexDirection:"column-reverse",}}>
                                                  
-                                                 <Text style={{color:"#fff",fontSize:11,}} >Female, 33 </Text> 
-                                                 <Text style={{color:"#fff",fontSize:13,}}>{data.title}</Text>  
+                                                 <Text style={{color:"#fff",fontSize:11,}} >{data.gender}, {data.age} </Text> 
+                                                 <Text style={{color:"#fff",fontSize:13,}}>{data.name}</Text>  
                                              </View>
  
                                              <View style={{width:"20%", flexDirection:"column-reverse",}}>

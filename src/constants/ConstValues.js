@@ -1,6 +1,6 @@
 const ConstValues = {
 
-    base_url: 'http://192.168.50.64/bizapp/matchpics/',
+    base_url: 'http://192.168.50.64/bizapp/matchpics/user/',
     api_key: 'cp/W?^,([{,O_+T',
 
     user_logged_in: '@logged_in',
@@ -8,6 +8,7 @@ const ConstValues = {
     user_id: '@user_id',
     user_token: '@user_token',
     customer_id: '@customer_id',
-    user_name: '@user_name'
+    user_name: '@user_name',
+    user_password: '@user_password',
 }
 export default ConstValues;

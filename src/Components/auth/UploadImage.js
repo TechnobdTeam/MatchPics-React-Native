@@ -38,10 +38,10 @@ export class UploadImage extends React.Component {
         image_uri: '',
         image_type: '',
         image_name: '',
-        response_image_url: '',
         user_token: '',
         change_photo_id: '',
-        change_photo_url: ''
+        change_photo_url: '',
+        progressVisible: false
       };
 
       AsyncStorage.getItem(ConstValues.user_token , (error, result) => {
@@ -129,6 +129,8 @@ export class UploadImage extends React.Component {
 
   requestImage= () =>{
 
+    this.setState({progressVisible: true});
+
     console.log("token222: " + JSON.parse(this.state.user_token));
     console.log("image222: " + this.state.image_uri);
 
@@ -136,11 +138,11 @@ export class UploadImage extends React.Component {
     formData.append('api_key', ConstValues.api_key);
     formData.append('photo', {
       uri: this.state.image_uri,
-      type: this.state.image_uri, // or photo.type
+      type: this.state.image_type, // or photo.type
       name: this.state.image_name
     });
 
-    fetch(ConstValues.base_url + 'user/uploadPhoto',{
+    fetch(ConstValues.base_url + 'uploadPhoto',{
       method: 'POST',
       headers:{
           'Authorization': 'Bearer ' + JSON.parse(this.state.user_token), 
@@ -164,7 +166,7 @@ export class UploadImage extends React.Component {
         this.setState({change_photo_id: responseJson.response.data.change_photo_id,
           change_photo_url: responseJson.response.data.photo});
 
-
+          this.setState({progressVisible: false});
       }
       else if(responseJson.response.code == 4001){
         //session expired, need to navigate login screen
@@ -174,8 +176,6 @@ export class UploadImage extends React.Component {
          
       }
   })
-
-    this.setState({response_image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTeZlrw-x4F6OT7fVQPbE2k5zZ6n4YHNBKq4TNZtyQM0a6ZW5w0'})
   }
 
   render() {
@@ -262,6 +262,12 @@ export class UploadImage extends React.Component {
                           <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
                       </NB.View>
                   </Dialog>
+
+                  <ProgressDialog
+                        visible={this.state.progressVisible}
+                        title="Uploading"
+                        message="Please, wait..."
+                    />
                       
               </NB.View>
  

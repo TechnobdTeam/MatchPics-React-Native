@@ -155,7 +155,7 @@ export class Register extends React.Component {
                 name: 'user_photo'
               });
 
-            fetch(ConstValues.base_url + 'user/userRegistration',{
+            fetch(ConstValues.base_url + 'userRegistration',{
                 method: 'POST',
                 headers:{
                     'Accept': 'application/json',

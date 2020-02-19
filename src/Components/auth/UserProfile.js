@@ -6,8 +6,58 @@ import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-community/async-storage';
+import ConstValues from '../../constants/ConstValues';
 {/*Register */}
 export class UserProfile extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user_id: '',
+      showToast: false,
+      email: '',
+      password: '',
+      token: '',
+      progressVisible: false ,
+      favData: '',
+      columns: 2, 
+      statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
+    };
+
+    this.setState({user_id: this.props.navigation.state.params.something})
+
+    AsyncStorage.getItem(ConstValues.user_email, (error, result) =>{
+
+        if(result != null){
+            this.setState({email: result})
+        }
+    }).then(
+        AsyncStorage.getItem(ConstValues.user_password, (error, result) =>{
+
+            if(result != null){
+                this.setState({password: result})
+            }
+        }).then(
+            AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+                console.log('user_token: ' + result)
+
+                if(result != null){
+                    this.setState({token: result})
+                }
+            }).then(
+                this.timeoutHandle = setTimeout(()=>{
+                    this.getProfileDetails()
+                 }, 1000)
+            )
+        )
+    )
+  }
+
+  getProfileDetails(){
+
+  }
  
   render() {
     return (

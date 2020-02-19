@@ -67,12 +67,12 @@ export class Login extends React.Component {
 
       this.timeoutHandle = setTimeout(()=>{
 
-        var formData = new FormData();
+      var formData = new FormData();
       formData.append('api_key', ConstValues.api_key);
       formData.append('user_name', this.state.email);
       formData.append('password', this.state.password);
 
-      fetch(ConstValues.base_url + 'user/login',{
+      fetch(ConstValues.base_url + 'login',{
         method: 'POST',
         headers:{
           'Accept': 'application/json',
@@ -95,6 +95,7 @@ export class Login extends React.Component {
             this.storeData(ConstValues.user_token, responseJson.response.data.token);
             this.storeData(ConstValues.customer_id, responseJson.response.data.customer_id);
             this.storeData(ConstValues.user_name, responseJson.response.data.name);
+            this.storeData(ConstValues.user_password, this.state.password);
 
             // alert(responseJson.response.message)
             Toast.show({
@@ -103,15 +104,6 @@ export class Login extends React.Component {
             })
 
             // this.timeoutHandle = setTimeout(()=>{
-              console.log("stored_user_email2: " + AsyncStorage.getItem(ConstValues.customer_id));
-              console.log("stored_user_email_new: " + this.getData(ConstValues.user_email));
-
-              console.log("logged_in_user_token: " + responseJson.response.data.token);
-
-              AsyncStorage.getItem(ConstValues.user_email , (error, result) => {
-                console.log( " ****country_name: "+ result )
-                })
-              // }, 100);
 
               this.props.navigation.navigate('UploadImage')
 
