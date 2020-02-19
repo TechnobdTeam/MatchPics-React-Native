@@ -162,7 +162,7 @@ export class Menu extends React.Component {
                                     <Icon name="search"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >search</NB.Text>
+                                        <NB.Text  onPress={() => this.props.navigation.navigate('AppSearch')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >search</NB.Text>
                                         </NB.Body>
                                     </NB.ListItem>
                             </NB.Content>

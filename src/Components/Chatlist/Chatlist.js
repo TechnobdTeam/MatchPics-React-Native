@@ -129,7 +129,7 @@ onSwipeValueChange = swipeData => {
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')} style={{fontSize:24,color:'#fff', }} solid />   
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
@@ -167,7 +167,6 @@ onSwipeValueChange = swipeData => {
                      
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
-      
      
 
                     {/* 
@@ -251,6 +250,11 @@ onSwipeValueChange = swipeData => {
                         )}
                         renderHiddenItem={(data, rowMap) => (
                             <View style={styles.rowBack}>
+
+
+
+
+
 
                         <TouchableOpacity
                                     style={[

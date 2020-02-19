@@ -7,7 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import {IMAGE} from './src/constants/Images'
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
-import {Notification,Chatwindow,MyFavorite,Chatlist, SideMenu, Feed, FeedDetils, Search, SearchDetils, Profile, Setting, Login, Register, Splash,UploadImage, Menu,UserProfile, MyProfile,ProfileEdit,MyMatches} from './src/Components/Index';
+import {AppSearch,Notification,Chatwindow,MyFavorite,Chatlist, SideMenu, Feed, FeedDetils, Search, SearchDetils, Profile, Setting, Login, Register, Splash,UploadImage, Menu,UserProfile, MyProfile,ProfileEdit,MyMatches} from './src/Components/Index';
 
 const navOptionHandler = (navigation) => ({
   header: null
@@ -177,8 +177,13 @@ const appDrawer = createDrawerNavigator(
     screen: Notification,
     navigationOptions:navOptionHandler
 
-   }
+   },
+   AppSearch: {
+    screen: AppSearch,
+    navigationOptions:navOptionHandler
 
+   },
+   
 
  })
 

@@ -10,6 +10,24 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 {/*Login  */}
 export class Notification extends React.Component {
+
+  /// Search //********************** */
+  state = {
+    search: '',
+  };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+
+  example = () => {
+
+    this.setState({ visible: !this.state.visible })
+   }
+
+
+
     render() {
       return ( 
         <Fragment>    
@@ -31,17 +49,36 @@ export class Notification extends React.Component {
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
 
                      
-                      <View  style={styles.rowFrontTop}>
-                        <View style={{flex:1, }}>
+                    <View  style={styles.rowFrontTop}>
+                        <View style={{ width:'80%', }}>
+
+                        {this.state.visible == false ?
+
+                          <NB.Item style={{borderBottomWidth:0,}} >
+                                
+                               <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />
+                               <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'/>   
+                          </NB.Item> 
+         
+                            :
+
                             <View style={{justifyContent:'center',alignItems:'center',}}>
-                              <NB.Text style={{color:'#e74e92',fontSize:13}}>   <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for Notifications</NB.Text>
+                            <TouchableOpacity  onPress= {() => this.example()}>
+                            <NB.Text style={{color:'#e74e92',fontSize:13}} >
+                            <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
+                            </TouchableOpacity> 
                             </View>
+
+                            }
+
+
+                            
                             
                               
                           </View> 
@@ -251,13 +288,13 @@ backLeftBtn:{
 
 rowFrontTop: {
   alignItems: 'center',
-  backgroundColor: '#fafbfd',
+  backgroundColor: '#f6f8fb',
   justifyContent: 'center',
   borderBottomWidth:1,
   borderColor:'#CDCD', 
   paddingTop:5,
   paddingBottom:5,
-  height:36,
+  height:40,
 
   
 },
