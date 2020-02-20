@@ -44,6 +44,7 @@ export class Chatwindow extends React.Component {
         return (
           <Bubble
             {...props}
+           
             textStyle={{
               right: {
                 color: "#fff",
@@ -66,6 +67,30 @@ export class Chatwindow extends React.Component {
           />
         )
       }
+
+      
+
+      // renderSend = (sendProps) => {
+      //   if (sendProps.text.trim().length > 0) {
+      //     return (
+      //       <TouchableOpacity>
+      //          <Icon name={'bell'}  style={{fontSize:24,color:'red', }} solid /> 
+      //       </TouchableOpacity>
+      //     );
+      //   }
+      //   return null;
+      // } 
+
+      
+      renderSend(props) {
+        return (
+          <TouchableOpacity onPress={() => props.onSend({text: props.text})}>
+            <Text><Icon name={'bell'}  style={{fontSize:24,color:'red', }} solid /> </Text>
+          </TouchableOpacity>
+        );
+      }
+      
+ 
 
     render() {   
       return ( 
@@ -95,13 +120,14 @@ export class Chatwindow extends React.Component {
                    <GiftedChat
                       messages={this.state.messages}
                       onSend={messages => this.onSend(messages)}
-                      renderBubble={this.renderBubble}
+                      renderSend={this.renderSend}
+                      
                       user={{
                         _id: 1, 
                       }} 
                        
                     />
-                
+           
                 </View>
                  
 
