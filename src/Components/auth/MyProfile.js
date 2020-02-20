@@ -1,6 +1,8 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, FlatList , TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
+import ConstValues from '../../constants/ConstValues'
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
@@ -9,6 +11,45 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 {/*Register */}
 export class MyProfile extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          name: '',
+          image_url: '',
+          token: '',
+        };
+      }
+
+      componentDidMount(){
+        AsyncStorage.getItem(ConstValues.user_name, (error, result) =>{
+
+            if(result != null){
+                this.setState({name: JSON.parse(result)})
+            }
+        }).then(
+            AsyncStorage.getItem(ConstValues.user_password, (error, result) =>{
+
+                if(result != null){
+                    this.setState({image_url: result})
+                }
+            }).then(
+                AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+                    console.log('user_token: ' + result)
+
+                    if(result != null){
+                        this.setState({token: result})
+                    }
+                }).then(
+                    this.timeoutHandle = setTimeout(()=>{
+                        // this.getMyFavoriteList()
+                     }, 1000)
+                )
+            )
+        )
+      }
+
   render() {
     return (
         <Fragment>    
@@ -52,7 +93,7 @@ export class MyProfile extends React.Component {
                                 
                                 </NB.View>
     
-                                    <NB.View><NB.Text style={{color:'#94217e',fontSize:21,}}>User Name Goes Here</NB.Text></NB.View>
+                                    <NB.View><NB.Text style={{color:'#94217e',fontSize:21,}}>{this.state.name}</NB.Text></NB.View>
                             </NB.View>
                         </TouchableOpacity>
 

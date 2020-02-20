@@ -1,6 +1,7 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, PermissionsAndroid} from 'react-native';
 import * as NB from 'native-base';
+import {Toast} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import AsyncStorage from '@react-native-community/async-storage';
 //import RangeSlider from 'rn-range-slider';
@@ -178,103 +179,125 @@ export class UploadImage extends React.Component {
   })
   }
 
+  gotoMyMatches(){
+
+    if(this.state.change_photo_id == ''){
+
+      Toast.show({
+        text: "Please select an image and try again!",
+        textStyle: { color: "yellow" },
+      });
+    }
+    else{
+
+        this.props.navigation.navigate('MyMatches',{
+          photo_id: this.state.change_photo_id,
+          match_id: "1"
+      })
+    }
+  }
+
   render() {
     return (
-      <Fragment> 
 
-       <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
+      <NB.Root>
+        <Fragment> 
 
-       <NB.Container   style={HomeStyle.PageContainer}  >
+          <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
 
-          <NB.Header  transparent>
-            <NB.Left>
-              <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-              <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
-              </NB.Button>
-            </NB.Left>
+          <NB.Container   style={HomeStyle.PageContainer}  >
 
-            <NB.Body  >
-            <NB.Segment style={{backgroundColor:'transparent'}}>
-                <NB.Text style={{color:'#fff',fontSize:23,}}>Upload Photo </NB.Text>
-                </NB.Segment>
-            </NB.Body>
-            <NB.Right>
-              <NB.Button transparent>
-              <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
-              </NB.Button>
-            </NB.Right>
-          </NB.Header> 
+            <NB.Header  transparent>
+              <NB.Left>
+                <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
+                <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                </NB.Button>
+              </NB.Left>
+
+              <NB.Body  >
+              <NB.Segment style={{backgroundColor:'transparent'}}>
+                  <NB.Text style={{color:'#fff',fontSize:23,}}>Upload Photo </NB.Text>
+                  </NB.Segment>
+              </NB.Body>
+              <NB.Right>
+                <NB.Button transparent>
+                <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
+                </NB.Button>
+              </NB.Right>
+            </NB.Header> 
 
 
-            <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,}}> 
+              <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,}}> 
 
-                <NB.View style={{width:230,}} >
-                  <NB.Icon name="md-checkmark-circle" style={{color:'#e8e4e7',marginTop:8,position:'absolute',zIndex:999,fontSize:40,}} />
+                  <NB.View style={{width:230,}} >
+                    <NB.Icon name="md-checkmark-circle" style={{color:'#e8e4e7',marginTop:8,position:'absolute',zIndex:999,fontSize:40,}} />
+                  </NB.View>
+
+                  <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
+
+                    {this.state.change_photo_url == '' ? 
+                    <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
+                    :
+                    <Image style={{width:'100%',height:'100%'}}   source={{uri:this.state.change_photo_url} }/>
+                    }
+                        {/* <Image style={{width:'100%',height:'100%',position:'absolute',zIndex:999,}}   source={require('../Image/user_shap.png')} /> */}
+                    </NB.View>
+
+                    <NB.View>
+                      <NB.Button style={{backgroundColor:'#fff',borderRadius:50,width:200,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,}} >
+                            <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>change</NB.Text>
+                      </NB.Button>
+                    </NB.View>
+
+              </NB.View>
+
+              <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,}}>
+                    
+                    <NB.Text style={{ fontSize:20,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:20,  }}>semi close </NB.Text></NB.Text>
+
+                    <NB.View style={{  }}>
+                      {/* <RangeSlider 
+                              style={{ height: 10,marginTop:-30,paddingTop:0,}}
+                              gravity={'center'}
+                              minValue={0}
+                              maxValue={100}
+                              step={2}
+                              selectionColor="#e64d92"
+                              blankColor="#93207e" 
+                              /> */}
+                        
+                      </NB.View> 
+                        <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:50}}>
+                              <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}
+                              onPress={() => this.gotoMyMatches()}>
+                                <NB.Text>continue</NB.Text>
+                              </NB.Button>
+                        </NB.View>
+
+                        <Dialog
+                        visible={this.state.imagePickOptionDialog}
+                        title="Select an option..."
+                        onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
+                        <NB.View>
+                            <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
+                            <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
+                            <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
+                        </NB.View>
+                    </Dialog>
+
+                    <ProgressDialog
+                          visible={this.state.progressVisible}
+                          title="Uploading"
+                          message="Please, wait..."
+                      />
+                        
                 </NB.View>
 
-                <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
 
-                  {this.state.change_photo_url == '' ? 
-                  <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
-                  :
-                  <Image style={{width:'100%',height:'100%'}}   source={{uri:this.state.change_photo_url} }/>
-                  }
-                      {/* <Image style={{width:'100%',height:'100%',position:'absolute',zIndex:999,}}   source={require('../Image/user_shap.png')} /> */}
-                  </NB.View>
-
-                  <NB.View>
-                    <NB.Button style={{backgroundColor:'#fff',borderRadius:50,width:200,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,}} >
-                          <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>change</NB.Text>
-                    </NB.Button>
-                  </NB.View>
-
-            </NB.View>
-
-            <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,}}>
-                  
-                  <NB.Text style={{ fontSize:20,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:20,  }}>semi close </NB.Text></NB.Text>
-
-                  <NB.View style={{  }}>
-                    {/* <RangeSlider 
-                            style={{ height: 10,marginTop:-30,paddingTop:0,}}
-                            gravity={'center'}
-                            minValue={0}
-                            maxValue={100}
-                            step={2}
-                            selectionColor="#e64d92"
-                            blankColor="#93207e" 
-                            /> */}
-                     
-                    </NB.View> 
-                     <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:50}}>
-                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}>
-                             <NB.Text>continue</NB.Text>
-                           </NB.Button>
-                     </NB.View>
-
-                     <Dialog
-                      visible={this.state.imagePickOptionDialog}
-                      title="Select an option..."
-                      onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                      <NB.View>
-                          <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
-                          <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
-                          <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
-                      </NB.View>
-                  </Dialog>
-
-                  <ProgressDialog
-                        visible={this.state.progressVisible}
-                        title="Uploading"
-                        message="Please, wait..."
-                    />
-                      
-              </NB.View>
- 
-
-            </NB.Container>
-        </ImageBackground>
-      </Fragment>
+              </NB.Container>
+          </ImageBackground>
+          </Fragment>
+      </NB.Root>
     );
   }
 }
