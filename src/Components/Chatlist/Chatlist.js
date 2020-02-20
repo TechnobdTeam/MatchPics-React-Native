@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 export class Chatlist extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = { 
         listType: 'FlatList',
         listViewData: Array(Data.length)
             .fill('')
@@ -31,6 +31,9 @@ export class Chatlist extends React.Component {
                 ],
             })),
     };
+
+
+   
 
     this.rowSwipeAnimatedValues = {};
     Array(Data.length)
@@ -77,10 +80,28 @@ onSwipeValueChange = swipeData => {
 };
 
 
+/// Search //********************** */
+    state = {
+      search: '',
+    };
 
-  
+    updateSearch = search => {
+      this.setState({ search });
+    };
+
+
+    example = () => {
+
+      this.setState({ visible: !this.state.visible })
+     }
+
+
+
+
  
     render() {
+
+      const { search } = this.state;
       // const header =() => {
       //    return <View style={styles.header}>
       //              <Text style={styles.headerText} > List Headers</Text>
@@ -108,17 +129,36 @@ onSwipeValueChange = swipeData => {
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')} style={{fontSize:24,color:'#fff', }} solid />   
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
 
                      
                       <View  style={styles.rowFrontTop}>
-                        <View style={{flex:1, }}>
+                        <View style={{ width:'80%', }}>
+
+                        {this.state.visible == false ?
+
+                          <NB.Item style={{borderBottomWidth:0,}} >
+                                
+                               <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />
+                               <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'/>   
+                          </NB.Item> 
+         
+                            :
+
                             <View style={{justifyContent:'center',alignItems:'center',}}>
-                              <NB.Text style={{color:'#e74e92',fontSize:13}}>   <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
+                            <TouchableOpacity  onPress= {() => this.example()}>
+                            <NB.Text style={{color:'#e74e92',fontSize:13}} >
+                            <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
+                            </TouchableOpacity> 
                             </View>
+
+                            }
+
+
+                            
                             
                               
                           </View> 
@@ -127,7 +167,7 @@ onSwipeValueChange = swipeData => {
                      
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
-                    
+     
 
                     {/* 
                     <FlatList
@@ -210,6 +250,11 @@ onSwipeValueChange = swipeData => {
                         )}
                         renderHiddenItem={(data, rowMap) => (
                             <View style={styles.rowBack}>
+
+
+
+
+
 
                         <TouchableOpacity
                                     style={[
@@ -420,13 +465,13 @@ backLeftBtn:{
 
 rowFrontTop: {
   alignItems: 'center',
-  backgroundColor: '#fafbfd',
+  backgroundColor: '#f6f8fb',
   justifyContent: 'center',
   borderBottomWidth:1,
   borderColor:'#CDCD', 
   paddingTop:5,
   paddingBottom:5,
-  height:36,
+  height:40,
 
   
 },

@@ -79,7 +79,7 @@ export class MyMatches extends React.Component {
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 

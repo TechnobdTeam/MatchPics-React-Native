@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import * as NB from 'native-base';
 import MasonryList from "react-native-masonry-list";
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // import MasonryList from "./src";
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import testData from "../../../data";
@@ -61,7 +62,7 @@ export class MyFavorite extends React.Component {
           email: '',
           password: '',
           token: '',
-          progressVisible: false ,
+          progressVisible: true ,
           favData: '',
           columns: 2, 
           statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
@@ -117,9 +118,14 @@ export class MyFavorite extends React.Component {
         }).then((response) => response.json())
         .then((responseJson) =>{
 
-            console.log("myFavourites: " + responseJson.response.message);
+            console.log("myFavourites: " + responseJson.response.data);
 
-            this.setState({favData: responseJson.response.data})
+            this.setState({favData: responseJson.response.data, progressVisible: false})
+
+            if(responseJson.response.data == undefined){
+                console.log("myFavourites: undefined data");
+            }
+
         })
       }
 
@@ -151,88 +157,96 @@ export class MyFavorite extends React.Component {
                       </NB.Right>
                     </NB.Header> 
 
- 
-                    
                 
-                    <MasonryList
-                     spacing="2"
-                    
-                     backgroundColor="transparent"
-                     imageContainerStyle={{
-                      borderRadius: 5, 
-                     
-                    }}
+                    {this.state.favData != undefined ?
+                
+                        <MasonryList
+                        spacing="2"
+                        
+                        backgroundColor="transparent"
+                        imageContainerStyle={{
+                        borderRadius: 5, 
+                        
+                        }}
 
-                    // images={testData}
-                    images = {this.state.favData}
-                    columns={this.state.columns}
-                    // sorted={true}
-                    renderIndividualHeader={(data) => {
-                        return (
-                            <TouchableWithoutFeedback  
-                                  
-                                  onPress={() => this.props.navigation.navigate('UserProfile',{
-                                      id: data.user_id
-                                  })}
-                                  onPressIn={() => console.log("profile_id: " + data.user_id)}
-                                // onPress={() => Linking.openURL("#")} 
-                                >
-                               
+                        // images={testData}
+                        images = {this.state.favData}
+                        columns={this.state.columns}
+                        // sorted={true}
+                        renderIndividualHeader={(data) => {
+                            return (
+                                <TouchableWithoutFeedback  
+                                    
+                                    onPress={() => this.props.navigation.navigate('UserProfile',{
+                                        id: data.user_id
+                                    })}
+                                    onPressIn={() => console.log("profile_id: " + data.user_id)}
+                                    // onPress={() => Linking.openURL("#")} 
+                                    >
+                                
 
-                          
-                                <View style={[styles.masonryHeader, {
-                                    width: data.masonryDimensions.width,
-                                    margin: data.masonryDimensions.gutter / 2,
-                                   
+                            
+                                    <View style={[styles.masonryHeader, {
+                                        width: data.masonryDimensions.width,
+                                        margin: data.masonryDimensions.gutter / 2,
+                                    
 
-                                  }]}>
+                                    }]}>
 
-                                   
-                                   
-                                  
-                                     <View style={{flex: 1, }}>
-                                         
-                                        <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                           {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
-                                          
-                                           <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
-                                       </View>
+                                    
+                                    
+                                    
+                                        <View style={{flex: 1, }}>
+                                            
+                                            <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
+                                            {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                            
+                                            <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
+                                        </View>
+                                            
+                                            
                                         
-                                        
-                                       
-                                        <View style={{ flex: 1, }} >
-                                        <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
-                                        <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
-                                             
+                                            <View style={{ flex: 1, }} >
+                                            <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
+                                            <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
+                                                
 
-                                             <View style={{width:"80%",flexDirection:"column-reverse",}}>
-                                                 
-                                                 <Text style={{color:"#fff",fontSize:11,}} >{data.gender}, {data.age} </Text> 
-                                                 <Text style={{color:"#fff",fontSize:13,}}>{data.name}</Text>  
-                                             </View>
- 
-                                             <View style={{width:"20%", flexDirection:"column-reverse",}}>
-                                             <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
-                                             </View> 
- 
-                                          </View>
-                                          </ImageBackground>
+                                                <View style={{width:"80%",flexDirection:"column-reverse",}}>
+                                                    
+                                                    <Text style={{color:"#fff",fontSize:11,}} >{data.gender}, {data.age} </Text> 
+                                                    <Text style={{color:"#fff",fontSize:13,}}>{data.name}</Text>  
+                                                </View>
+
+                                                <View style={{width:"20%", flexDirection:"column-reverse",}}>
+                                                <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
+                                                </View> 
+
+                                            </View>
+                                            </ImageBackground>
+                                            </View>
+
                                         </View>
 
+                                        
                                     </View>
-  
-                                    
-                                </View>
-                            
+                                
 
 
-                            </TouchableWithoutFeedback>
-                        );
-                    }}
-                />
-
-       
-                 
+                                </TouchableWithoutFeedback>
+                            );
+                        }}
+                    />
+                    :
+                    <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
+                    }
+                   
+                    <ProgressDialog
+                        visible={this.state.progressVisible}
+                        title="Loading data"
+                        message="Please, wait..."
+                    />
+                    
+                    
 
                 </NB.Container> 
             </ImageBackground>
