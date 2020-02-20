@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground,ScrollView } from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -101,18 +101,25 @@ export class UserProfile extends React.Component {
     <Fragment>   
     {!this.state.profileData == '' ?
     <View>
-    <ImageBackground   style={{width: '100%', height: '100%', backgroundColor:'#fff'}}   > 
-           
+     
+    <ImageBackground   style={{width: '100%', height: '100%', backgroundColor:'#fff', overflow:'scroll',}}   > 
+       
               <View style={{
                 flex: 1,
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'stretch',
+               
+               
+                
               }}>
+
+
                 <View style={{flex: 3,}} > 
                   <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
                         
                   <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
+                   
                     <View style={{flex: 1,}} >
                        <NB.Header  transparent>
                           <NB.Left>
@@ -135,6 +142,7 @@ export class UserProfile extends React.Component {
                           </NB.Right>
                        </NB.Header>  
                     </View>
+
 
                     <View style={{flex: 3,}} > 
                         <ImageBackground source={require('../Image/slingle_profile_images_shap.png') } style={{width: '100%', height: '100%',  }}     >
@@ -188,10 +196,11 @@ export class UserProfile extends React.Component {
                 
                 
                 </View>
-              
-              </View>
-  
-
+         
+          </View>
+            
+        
+             
                 <NB.Footer style={{height:72}} >
                     <NB.FooterTab style={{backgroundColor:'#fff',}}>
                         <NB.Button badge vertical onPress={() => this.props.navigation.navigate('Chatlist')} >
@@ -220,6 +229,7 @@ export class UserProfile extends React.Component {
 
          
         </ImageBackground> 
+       
     </View>
     :
     <ProgressDialog
