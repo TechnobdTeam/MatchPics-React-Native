@@ -85,7 +85,7 @@ export class Chatwindow extends React.Component {
       renderSend(props) {
         return (
           <TouchableOpacity onPress={() => props.onSend({text: props.text})}>
-            <Text><Icon name={'bell'}  style={{fontSize:24,color:'red', }} solid /> </Text>
+            <Text style={{ marginBottom:12}}><Icon name={'paper-plane'}  style={{fontSize:24,color:'#e74e92'}} solid />  </Text>
           </TouchableOpacity>
         );
       }

@@ -15,7 +15,7 @@ export class MyProfile extends React.Component {
            
         <ImageBackground source={require('../Image/profile_bg.png') } style={{width: '100%', height: '100%', paddingRight:0,marginRight:0,backgroundColor:'#f4f4f4'}}   > 
               
-                <NB.Container   style={HomeStyle.PageContainer}  >
+                <NB.Container   style={HomeStyle.MyprofileContainer}  >
                     <NB.Header  transparent>
                         <NB.Left>
                             <NB.Button onPress={() => this.props.navigation.navigate('Menu')} transparent>
@@ -43,10 +43,10 @@ export class MyProfile extends React.Component {
 
                                 <Image style={{width:'100%',height:'100%'}}   source={require('../Image/user.jpg')} />
                             
-                                    <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:-39,}} >
-                                        <NB.View  style={{alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderRadius:100,height:40,width:40, }}>
-                                            <NB.Icon style={{color:'#b53386'}} name="ios-create"  />
-                                            {/* <Icon name={'edit'}  style={{fontSize:24,color:'#fff', }} solid />    */}
+                                    <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:-33,}} >
+                                        <NB.View  style={{alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderRadius:100,height:35,width:35, }}>
+                                            {/* <NB.Icon style={{color:'#b53386'}} name="ios-create"  /> */}
+                                         <Icon name={'edit'}  style={{fontSize:16,color:'#b53386', }} solid />   
                                         </NB.View>
                                     </NB.View> 
                                 
@@ -61,7 +61,8 @@ export class MyProfile extends React.Component {
 
                                         <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                             <NB.Left style={{}}>
-                                                <NB.Icon style={{color:'#fff',fontSize:21,}} name='md-person' />
+                                                
+                                                <Icon name={'user-circle'}  style={{color:'#fff',fontSize:21,}}   />   
                                                 <NB.Text  style={{color:'#fff',fontSize:21,}} >Profile</NB.Text>
                                             </NB.Left>
 
@@ -80,12 +81,13 @@ export class MyProfile extends React.Component {
 
                                         <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                             <NB.Left style={{}}>
-                                                <NB.Icon style={{color:'#fff',fontSize:21}} name='ios-keypad' />
+                                            
+                                                <Icon name={'dice'}  style={{color:'#fff',fontSize:21,}}   />   
                                                 <NB.Text  style={{color:'#fff',fontSize:21,}} >Social</NB.Text>
                                             </NB.Left>
 
                                             <NB.Right>
-                                                <NB.Button  light style={{backgroundColor:'#00a8ff',borderRadius:7,height:35,marginTop:5,}}> 
+                                                <NB.Button onPress={() => this.props.navigation.navigate('Social')}  light style={{backgroundColor:'#00a8ff',borderRadius:7,height:35,marginTop:5,}}> 
                                                     <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
                                                 </NB.Button>
 
@@ -99,7 +101,7 @@ export class MyProfile extends React.Component {
 
                                         <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                             <NB.Left style={{}}>
-                                                <NB.Icon style={{color:'#fff',fontSize:21}} name='ios-pin' />
+                                            <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize:21,}}   />  
                                                 <NB.Text  style={{color:'#fff',fontSize:21,}} >Location</NB.Text>
                                             </NB.Left>
 
@@ -118,7 +120,7 @@ export class MyProfile extends React.Component {
 
                                         <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                             <NB.Left style={{}}>
-                                                <NB.Icon style={{color:'#fff',fontSize:21}} name='ios-man' />
+                                            <Icon name={'male'}  style={{color:'#fff',fontSize:21,}}   />  
                                                 <NB.Text  style={{color:'#fff',fontSize:21,}} >Appearance</NB.Text>
                                             </NB.Left>
 

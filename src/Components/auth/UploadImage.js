@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
 import * as NB from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -10,6 +10,8 @@ import {Text} from 'native-base';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import ImagePicker from 'react-native-image-picker';
 import ConstValues from '../../constants/ConstValues';
+import Slider from "react-native-slider";
+import sliderData from "../Slider/Data.js";
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const options = {
@@ -178,13 +180,20 @@ export class UploadImage extends React.Component {
   })
   }
 
+  getMatchedUserName(value){
+
+    // var Userindex
+    console.log(value | 0)
+    return sliderData[value | 0].userNmae;
+  }
+
   render() {
     return (
       <Fragment> 
 
        <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
 
-       <NB.Container   style={HomeStyle.PageContainer}  >
+       <NB.Container   style={HomeStyle.UplodeprofileContainer}  >
 
           <NB.Header  transparent>
             <NB.Left>
@@ -224,31 +233,35 @@ export class UploadImage extends React.Component {
 
                   <NB.View>
                     <NB.Button style={{backgroundColor:'#fff',borderRadius:50,width:200,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,}} >
-                          <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>change</NB.Text>
+                          <NB.Text style={{color:'#92207e',fontSize:17,}} onPress={this.onPress}>change</NB.Text>
                     </NB.Button>
                   </NB.View>
 
             </NB.View>
 
-            <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,}}>
+            <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12,}}>
                   
-                  <NB.Text style={{ fontSize:20,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:20,  }}>semi close </NB.Text></NB.Text>
+                  <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
 
-                  <NB.View style={{  }}>
-                    {/* <RangeSlider 
-                            style={{ height: 10,marginTop:-30,paddingTop:0,}}
-                            gravity={'center'}
-                            minValue={0}
-                            maxValue={100}
-                            step={2}
-                            selectionColor="#e64d92"
-                            blankColor="#93207e" 
-                            /> */}
-                     
+                  <NB.View style={{ }}>
+
+
+                  <View style={styles.container}>
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                      trackStyle={styles.track}
+                       thumbStyle={styles.thumb}
+                       minimumValue={0}
+                       maximumValue={sliderData.length-1} 
+                      minimumTrackTintColor='#92207e'
+                      maximumTrackTintColor='#92207e'
+                    /> 
+                  </View> 
                     </NB.View> 
-                     <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:50}}>
+                     <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
                            <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}>
-                             <NB.Text>continue</NB.Text>
+                             <NB.Text style={{fontSize:17,}}>continue</NB.Text>
                            </NB.Button>
                      </NB.View>
 
@@ -279,3 +292,36 @@ export class UploadImage extends React.Component {
   }
 }
 {/* End Register */}
+
+
+const styles = StyleSheet.create({
+ 
+
+    container: {
+        margin: 15,
+         
+        marginBottom:0,
+     
+       },
+
+    track: {
+      height: 10,
+      borderRadius: 3, 
+      backgroundColor: '#e44c91',
+    },
+
+    thumb: {
+      width: 30,
+      height: 30,
+      shadowColor: '#000',
+      backgroundColor: '#fff',
+      borderColor: '#cdcd',
+      borderWidth: 1,
+      borderRadius: 40 / 2,
+      shadowOffset: {width: 2, height: 1},
+      shadowRadius: 2,
+      shadowOpacity: 0.35,
+    }
+
+
+});

@@ -20,6 +20,30 @@ const HomeStyle = RC.StyleSheet.create({
       paddingTop:13,
        
     },
+
+   UplodeprofileContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:10,
+      paddingRight:10,
+      paddingTop:13,
+       
+    },
+    EditprofileContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:20,
+      paddingRight:20,
+      paddingTop:30,
+
+    },
+
+     MyprofileContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:10,
+      paddingRight:10,
+      paddingTop:13,
+    },
+
+
     MenuPageContainer:{
       backgroundColor:'transparent',
       paddingLeft:20,
@@ -80,6 +104,19 @@ const HomeStyle = RC.StyleSheet.create({
     
     
     },
+
+
+    EditprofilePageView:{
+      backgroundColor:'#f3f3f3',
+      flex:1,
+      borderRadius:10, 
+       marginTop:10,
+       marginBottom:30,
+        
+    },
+
+
+
 
 MatchesCard:{
   
