@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
@@ -11,6 +11,8 @@ import {Text} from 'native-base';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import ImagePicker from 'react-native-image-picker';
 import ConstValues from '../../constants/ConstValues';
+import Slider from "react-native-slider";
+import sliderData from "../Slider/Data.js";
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const options = {
@@ -196,12 +198,19 @@ export class UploadImage extends React.Component {
       })
     }
   }
+  getMatchedUserName(value){
+
+    // var Userindex
+    console.log(value | 0)
+    return sliderData[value | 0].userNmae;
+  }
 
   render() {
     return (
 
       <NB.Root>
         <Fragment> 
+       {/* <NB.Container   style={HomeStyle.UplodeprofileContainer}  > */}
 
           <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
 
@@ -249,6 +258,51 @@ export class UploadImage extends React.Component {
                       </NB.Button>
                     </NB.View>
 
+            </NB.View>
+
+            <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12,}}>
+                  
+                  <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
+
+                  <NB.View style={{ }}>
+
+
+                  <View style={styles.container}>
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                      trackStyle={styles.track}
+                       thumbStyle={styles.thumb}
+                       minimumValue={0}
+                       maximumValue={sliderData.length-1} 
+                      minimumTrackTintColor='#92207e'
+                      maximumTrackTintColor='#92207e'
+                    /> 
+                  </View> 
+                    </NB.View> 
+                     <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
+                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}>
+                             <NB.Text style={{fontSize:17,}}>continue</NB.Text>
+                           </NB.Button>
+                     </NB.View>
+
+                     <Dialog
+                      visible={this.state.imagePickOptionDialog}
+                      title="Select an option..."
+                      onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
+                      <NB.View>
+                          <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
+                          <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
+                          <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
+                      </NB.View>
+                  </Dialog>
+
+                  <ProgressDialog
+                        visible={this.state.progressVisible}
+                        title="Uploading"
+                        message="Please, wait..."
+                    />
+                      
               </NB.View>
 
               <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,}}>
@@ -296,9 +350,44 @@ export class UploadImage extends React.Component {
 
               </NB.Container>
           </ImageBackground>
+          {/* </NB.Container> */}
           </Fragment>
       </NB.Root>
     );
   }
 }
+
 {/* End Register */}
+
+
+const styles = StyleSheet.create({
+ 
+
+    container: {
+        margin: 15,
+         
+        marginBottom:0,
+     
+       },
+
+    track: {
+      height: 10,
+      borderRadius: 3, 
+      backgroundColor: '#e44c91',
+    },
+
+    thumb: {
+      width: 30,
+      height: 30,
+      shadowColor: '#000',
+      backgroundColor: '#fff',
+      borderColor: '#cdcd',
+      borderWidth: 1,
+      borderRadius: 40 / 2,
+      shadowOffset: {width: 2, height: 1},
+      shadowRadius: 2,
+      shadowOpacity: 0.35,
+    }
+
+
+});
