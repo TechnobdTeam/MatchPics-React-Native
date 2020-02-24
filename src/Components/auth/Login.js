@@ -258,7 +258,7 @@ export class Login extends React.Component {
                             </NB.Item> 
                           
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:40,marginBottom:30,}} >
-                              <NB.Text style={{fontSize:21,color:'#333333',}}> Forgot Password? </NB.Text>
+                              <NB.Text  onPress={() => this.props.navigation.navigate('ForgotPassword')}  style={{fontSize:21,color:'#333333',}}> Forgot Password? </NB.Text>
                              </NB.Item> 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center'}} >

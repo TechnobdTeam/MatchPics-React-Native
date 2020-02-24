@@ -237,7 +237,7 @@ export class UploadImage extends React.Component {
               </NB.Body>
               <NB.Right>
                 <NB.Button transparent>
-                <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
+                <Icon  onPress={() => this.props.navigation.navigate('Notification')}  name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
                 </NB.Button>
               </NB.Right>
             </NB.Header> 
@@ -310,51 +310,7 @@ export class UploadImage extends React.Component {
                         message="Please, wait..."
                     />
                       
-              </NB.View>
-
-              <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,}}>
-                    
-                    <NB.Text style={{ fontSize:20,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:20,  }}>semi close </NB.Text></NB.Text>
-
-                    <NB.View style={{  }}>
-                      {/* <RangeSlider 
-                              style={{ height: 10,marginTop:-30,paddingTop:0,}}
-                              gravity={'center'}
-                              minValue={0}
-                              maxValue={100}
-                              step={2}
-                              selectionColor="#e64d92"
-                              blankColor="#93207e" 
-                              /> */}
-                        
-                      </NB.View> 
-                        <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:50}}>
-                              <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}
-                              onPress={() => this.gotoMyMatches()}>
-                                <NB.Text>continue</NB.Text>
-                              </NB.Button>
-                        </NB.View>
-
-                        <Dialog
-                        visible={this.state.imagePickOptionDialog}
-                        title="Select an option..."
-                        onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                        <NB.View>
-                            <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
-                            <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
-                            <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
-                        </NB.View>
-                    </Dialog>
-
-                    <ProgressDialog
-                          visible={this.state.progressVisible}
-                          title="Uploading"
-                          message="Please, wait..."
-                      />
-                        
-                </NB.View>
-
-
+              </NB.View>  
               </NB.Container>
           </ImageBackground>
           {/* </NB.Container> */}

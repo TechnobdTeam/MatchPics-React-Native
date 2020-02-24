@@ -20,6 +20,7 @@ export * from './auth/ProfileEdit'
 export * from './auth/MyMatches'
 export * from './auth/MyFavorite'
 export * from './auth/Social'
+export * from './auth/ForgotPassword'
 
 export * from './Menu/Menu'
 export * from './Chatlist/Chatlist'

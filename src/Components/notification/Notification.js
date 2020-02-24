@@ -54,7 +54,7 @@ export class Notification extends React.Component {
                       </NB.Right>
                     </NB.Header> 
 
-                     
+{/*                      
                     <View  style={styles.rowFrontTop}>
                         <View style={{ width:'80%', }}>
 
@@ -83,7 +83,7 @@ export class Notification extends React.Component {
                               
                           </View> 
                               
-                        </View> 
+                        </View>  */}
                      
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
