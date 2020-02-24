@@ -230,7 +230,7 @@ export class UploadImage extends React.Component {
               </NB.Body>
               <NB.Right>
                 <NB.Button transparent>
-                <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
+                <Icon  onPress={() => this.props.navigation.navigate('Notification')}  name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
                 </NB.Button>
               </NB.Right>
             </NB.Header> 

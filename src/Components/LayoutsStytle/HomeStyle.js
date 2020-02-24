@@ -36,6 +36,15 @@ const HomeStyle = RC.StyleSheet.create({
 
     },
 
+    ForgotPasswordContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:20,
+      paddingRight:20,
+      paddingTop:10,
+
+    },
+
+
      MyprofileContainer:{
       backgroundColor:'transparent',
       paddingLeft:10,

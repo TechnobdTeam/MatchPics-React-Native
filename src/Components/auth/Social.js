@@ -41,8 +41,8 @@ export class Social extends React.Component {
                                     <NB.Left>
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>looking for</NB.Text>
                                     </NB.Left>
-                                    <NB.Right>
-                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>Women<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                    <NB.Right style={{flex:1,}}>
+                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>Women  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                     </NB.Right>
                                     </NB.ListItem>
                                  </NB.List>
@@ -66,12 +66,14 @@ export class Social extends React.Component {
                             <NB.Item style={{borderBottomWidth:0,}}>
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>About Me</NB.H3>
                            </NB.Item>
-                          <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
-                                <NB.Item  > 
+                           <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
+                                {/* <NB.Item  > 
                                       <NB.Input style={{paddingLeft:14,paddingLeft:30,}} placeholder='FUN'/> 
                                       <Icon name="check-circle"  style={{color:'#c6c6c6',paddingRight:30,fontSize:20}}  /> 
                                 </NB.Item>
-                               
+                                */}
+
+                               <NB.Textarea style={{paddingLeft:31,borderColor:"#fff"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  />
                                 
 
                               </NB.View> 
