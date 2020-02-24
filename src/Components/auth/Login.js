@@ -85,6 +85,8 @@ export class Login extends React.Component {
 
         this.setState({ progressVisible: false });
 
+        console.log('login responnse: ' + responseJson.response.message);
+
         if(responseJson.response.code == 1000){
 
           this.storeData(ConstValues.user_logged_in, true);
@@ -141,7 +143,7 @@ export class Login extends React.Component {
       })
       .catch((error) =>{
         this.storeData(ConstValues.user_logged_in, false);
-        alert("exeption: " + error)
+        alert("exeptionlogin: " + error)
         
       })
       }, 300);

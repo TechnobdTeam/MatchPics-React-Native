@@ -7,12 +7,18 @@ import {Text, SwipeRow} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ConstValues from '../../constants/ConstValues';
+import AsyncStorage from '@react-native-community/async-storage';
 
 {/*Login  */}
 export class Chatlist extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
+
+        messageData: '',
+        token: '',
+
         listType: 'FlatList',
         listViewData: Array(Data.length)
             .fill('')
@@ -32,15 +38,57 @@ export class Chatlist extends React.Component {
             })),
     };
 
+    AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
 
-   
+        console.log('user_token: ' + result)
+
+        if(result != null){
+            this.setState({token: result})
+        }
+    }).then(
+        this.timeoutHandle = setTimeout(()=>{
+            this.getMessageList()
+          }, 1000)
+    )
 
     this.rowSwipeAnimatedValues = {};
-    Array(Data.length)
-        .fill('')
-        .forEach((_, i) => {
-            this.rowSwipeAnimatedValues[`${i}`] = new Animated.Value(0);
-        });
+    // Array(Data.length)
+    //     .fill('')
+    //     .forEach((_, i) => {
+    //         this.rowSwipeAnimatedValues[`${i}`] = new Animated.Value(0);
+    //     });
+}
+
+getMessageList(){
+
+    console.log("getting message list");
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+
+    fetch(ConstValues.base_url + 'getMessageList', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        console.log("getMessageList: " + responseJson.response.data);
+
+        this.setState({messageData: responseJson.response.data})
+
+        if(responseJson.response.data == undefined){
+            console.log("getMessageList: undefined data");
+        }
+        else{
+
+        }
+
+    })
 }
 
 closeRow(rowMap, rowKey) {
@@ -75,8 +123,11 @@ onRowDidOpen = rowKey => {
 };
 
 onSwipeValueChange = swipeData => {
+
+    console.log("swipeData: " + swipeData);
+
     const { key, value } = swipeData;
-    this.rowSwipeAnimatedValues[key].setValue(Math.abs(value));
+    // this.rowSwipeAnimatedValues[key].setValue(Math.abs(value));
 };
 
 
@@ -221,7 +272,7 @@ onSwipeValueChange = swipeData => {
 
                 {this.state.listType === 'FlatList' && (
                     <SwipeListView
-                        data={this.state.listViewData}
+                        data={this.state.messageData}
                         renderItem={data => (
                             <TouchableHighlight
                                 onPress={() => console.log('You touched me')}
@@ -232,15 +283,15 @@ onSwipeValueChange = swipeData => {
                                   <View    style={styles.rowFront}>
                                     <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
                                        <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,}}>
-                                          <Image source={data.item.images} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
+                                          <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
                                        </View>
                                         
                                         <View style={{paddingTop:3}}>
                                             <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",}}>
-                                              <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.userNmae} </Text> 
-                                              <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.time}  </Text> 
+                                              <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
+                                              <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
                                             </View> 
-                                            <Text  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4}}>{data.item.text}  </Text>  
+                                            <Text numberOfLines={3}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4}}>{data.item.message}  </Text>  
                                             
                                         </View>
                                       </View> 
@@ -262,17 +313,18 @@ onSwipeValueChange = swipeData => {
                                         styles.backLeftBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.item.key)
+                                        this.deleteRow(rowMap, data.key)
                                     }
                                 >
-                               <Animated.View
+                                {/* {(this.state.messageData != undefined && this.state.messageData != '') ?
+                                <Animated.View
                                         style={[
                                             styles.trash,
                                             {
                                                 transform: [
                                                     {
                                                         scale: this.rowSwipeAnimatedValues[
-                                                            data.item.key
+                                                            data.key
                                                         ].interpolate({
                                                             inputRange: [
                                                                 45,
@@ -289,6 +341,9 @@ onSwipeValueChange = swipeData => {
                                     >
                                 <Image source={require('../Image/delete.png')} style={{width:28 }} />  
                                 </Animated.View>
+                                :
+                                null
+                                } */}
                                 </TouchableOpacity>   
                                  
                                 <TouchableOpacity
@@ -297,9 +352,10 @@ onSwipeValueChange = swipeData => {
                                         styles.backRightBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.item.key)
+                                        this.deleteRow(rowMap, data.key)
                                     }
                                 >
+                                {/* {(this.state.messageData != undefined && this.state.messageData != '') ?
                                     <Animated.View
                                         style={[
                                             styles.trash,
@@ -307,7 +363,7 @@ onSwipeValueChange = swipeData => {
                                                 transform: [
                                                     {
                                                         scale: this.rowSwipeAnimatedValues[
-                                                            data.item.key
+                                                            data.key
                                                         ].interpolate({
                                                             inputRange: [
                                                                 45,
@@ -324,6 +380,9 @@ onSwipeValueChange = swipeData => {
                                     >
                                     <Image source={require('../Image/delete.png')} style={{width:28 }} />  
                                     </Animated.View>
+                                    :
+                                    null
+                                } */}
                                 </TouchableOpacity>
                             </View>
                         )}
