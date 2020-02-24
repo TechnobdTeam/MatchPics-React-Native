@@ -60,7 +60,14 @@ export class UploadImage extends React.Component {
           console.log("logged_in_status: not logged in" );
         }
       })
-}
+      this.getMatchTypes();
+
+  }
+
+  getMatchTypes(){
+
+    
+  }
 
   onPress = () => {
     var that = this;
