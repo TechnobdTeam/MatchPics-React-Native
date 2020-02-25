@@ -5,16 +5,69 @@ import * as NB from 'native-base';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import {Text, SwipeRow} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ConstValues from '../../constants/ConstValues';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 
 {/*Login  */}
 export class Notification extends React.Component {
 
   /// Search //********************** */
-  state = {
-    search: '',
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      search: '',
+      notificationData: '',
+      progressVisible: true,
+      token: '',
+    };
+
+    AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+        console.log('user_token: ' + result)
+
+        if(result != null){
+            this.setState({token: result})
+        }
+    }).then(
+        this.timeoutHandle = setTimeout(()=>{
+            this.getNotificationList()
+          }, 1000)
+    )
+  }
+
+  getNotificationList(){
+
+    console.log("getting notification list");
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+
+    fetch(ConstValues.base_url + 'getNotificationList', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        console.log("getNotificationList: " + responseJson.response.data);
+
+        this.setState({notificationData: responseJson.response.data})
+
+        if(responseJson.response.data == undefined){
+            console.log("getNotificationList: undefined data");
+        }
+        else{
+
+        }
+
+    })
+  }
 
   updateSearch = search => {
     this.setState({ search });
@@ -88,25 +141,25 @@ export class Notification extends React.Component {
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
                     
-
+                    {this.state.notificationData != undefined && this.state.notificationData != '' ?
                     
                     <FlatList
-                              data={Data}
+                              data={this.state.notificationData}
                               renderItem={({item}) => 
 
 
                               <View    style={styles.rowFront}>
                                   <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
                                       <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,marginLeft:-10}}>
-                                          <Image source={item.images} style={{ width:60, height: 60, borderRadius: 37.5 }} />
+                                          <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} />
                                       </View>
 
-                                      <View >
+                                      <View  style={{width:"100%"}}>
                                       <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
-                                        <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{item.userNmae} </Text> 
-                                        <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{item.time}  </Text> 
+                                        <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{item.name} </Text> 
+                                        <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{item.create_date}  </Text> 
                                       </View> 
-                                      <Text   style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10}}>{item.text}  </Text> 
+                                      <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10}}>{item.notification}  </Text> 
 
                                         
                                       </View>
@@ -118,6 +171,13 @@ export class Notification extends React.Component {
 
                               }
                             />
+                            :
+                            <ProgressDialog
+                                visible={this.state.progressVisible}
+                                title="Loading data"
+                                message="Please wait..."
+                            />
+                    }               
 
 
                

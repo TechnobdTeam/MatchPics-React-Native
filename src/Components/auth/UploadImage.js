@@ -12,7 +12,7 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import ImagePicker from 'react-native-image-picker';
 import ConstValues from '../../constants/ConstValues';
 import Slider from "react-native-slider";
-import sliderData from "../Slider/Data.js";
+// import sliderData from "../Slider/Data.js";
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const options = {
@@ -27,6 +27,7 @@ const options = {
 {/*Register */}
 export class UploadImage extends React.Component {
 
+  match_type = ''
 
   constructor(props){
     super(props);
@@ -44,8 +45,11 @@ export class UploadImage extends React.Component {
         user_token: '',
         change_photo_id: '',
         change_photo_url: '',
-        progressVisible: false
+        progressVisible: false,
+        matchTypeData: '',
       };
+
+      this.match_type = ''
 
       AsyncStorage.getItem(ConstValues.user_token , (error, result) => {
 
@@ -59,8 +63,45 @@ export class UploadImage extends React.Component {
         else{
           console.log("logged_in_status: not logged in" );
         }
-      })
-}
+      }).then(
+        this.timeoutHandle = setTimeout(()=>{
+          this.getMatchTypes()
+             }, 1000)
+      )
+
+  }
+
+  getMatchTypes(){
+
+    console.log("getting match types");
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+
+    fetch(ConstValues.base_url + 'getMatchTypes', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.user_token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        console.log("myFavourites: " + responseJson.response.data);
+
+        this.setState({matchTypeData: responseJson.response.data})
+
+        if(responseJson.response.data == undefined){
+            console.log("myFavourites: undefined data");
+        }
+        else{
+
+        }
+
+    })
+  }
 
   onPress = () => {
     var that = this;
@@ -183,7 +224,10 @@ export class UploadImage extends React.Component {
 
   gotoMyMatches(){
 
-    if(this.state.change_photo_id == ''){
+    console.log("change_photo_id: ---------" , this.state.change_photo_id);
+    console.log("match_type: " + this.match_type);
+
+    if((this.state.change_photo_id == undefined) || (this.state.change_photo_id == '')){
 
       Toast.show({
         text: "Please select an image and try again!",
@@ -194,15 +238,19 @@ export class UploadImage extends React.Component {
 
         this.props.navigation.navigate('MyMatches',{
           photo_id: this.state.change_photo_id,
-          match_id: "1"
+          match_id: this.match_type
       })
+
     }
   }
   getMatchedUserName(value){
 
     // var Userindex
     console.log(value | 0)
-    return sliderData[value | 0].userNmae;
+    console.log("id: " + this.state.matchTypeData[value | 0].id)
+    this.match_type = this.state.matchTypeData[value | 0].id;
+    console.log("id22: " + this.match_type)
+    return this.state.matchTypeData[value | 0].name;
   }
 
   render() {
@@ -262,28 +310,37 @@ export class UploadImage extends React.Component {
 
             <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12,}}>
                   
+            {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
                   <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
 
+              :
+              null
+            }
                   <NB.View style={{ }}>
-
-
-                  <View style={styles.container}>
+                  {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
+                    <View style={styles.container}>
                     <Slider
                       value={this.state.value}
                       onValueChange={value => this.setState({ value })}
                       trackStyle={styles.track}
                        thumbStyle={styles.thumb}
                        minimumValue={0}
-                       maximumValue={sliderData.length-1} 
+                       maximumValue={this.state.matchTypeData.length-1} 
                       minimumTrackTintColor='#92207e'
                       maximumTrackTintColor='#92207e'
                     /> 
                   </View> 
+                  :
+                  null
+                  }
                     </NB.View> 
                      <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
-                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}>
+                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}
+                           onPress = {() => this.gotoMyMatches()}>
                              <NB.Text style={{fontSize:17,}}>continue</NB.Text>
                            </NB.Button>
+
+
                      </NB.View>
 
                      <Dialog

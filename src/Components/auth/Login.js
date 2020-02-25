@@ -11,6 +11,7 @@ import {Text, Toast, Root} from 'native-base';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues'
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 {/*Login  */}
 export class Login extends React.Component {
@@ -85,6 +86,8 @@ export class Login extends React.Component {
 
         this.setState({ progressVisible: false });
 
+        console.log('login responnse: ' + responseJson.response.message);
+
         if(responseJson.response.code == 1000){
 
           this.storeData(ConstValues.user_logged_in, true);
@@ -141,7 +144,7 @@ export class Login extends React.Component {
       })
       .catch((error) =>{
         this.storeData(ConstValues.user_logged_in, false);
-        alert("exeption: " + error)
+        alert("exeptionlogin: " + error)
         
       })
       }, 300);
@@ -219,6 +222,64 @@ export class Login extends React.Component {
     //   // error reading value
     // }
   }
+
+
+  _fbAuth() {
+    console.log("method called");
+    // LoginManager.logInWithPermissions(['public_profile', 'email']).then(function(result) {
+    //   if (result.isCancelled) {
+    //     console.log("Login Cancelled");
+    //   } else {
+    //     console.log("Login Success permission granted:" + result.grantedPermissions);
+    //   }
+    // }, function(error) {
+    //    console.log("some error occurred!!");
+    // })
+
+
+    LoginManager
+  .logInWithPermissions(['public_profile', 'email'])
+  .then(function (result) {
+    if (result.isCancelled) {
+      alert('Login cancelled');
+    } else {
+      AccessToken
+        .getCurrentAccessToken()
+        .then((data) => {
+          let accessToken = data.accessToken
+          alert(accessToken.toString())
+
+          const responseInfoCallback = (error, result) => {
+            if (error) {
+              console.log(error)
+              alert('Error fetching data: ' + error.toString());
+            } else {
+              console.log(result)
+              alert('Success fetching data: ' + result.toString());
+            }
+          }
+
+          const infoRequest = new GraphRequest('/me', {
+            accessToken: accessToken,
+            parameters: {
+              fields: {
+                string: 'email,name,first_name,middle_name,last_name'
+              }
+            }
+          }, responseInfoCallback);
+
+          // Start the graph request.
+          new GraphRequestManager()
+            .addRequest(infoRequest)
+            .start()
+
+        })
+    }
+  }, function (error) {
+    alert('Login fail with error: ' + error);
+   });
+  }
+
     render() {
       return ( 
         <Root>
@@ -276,13 +337,8 @@ export class Login extends React.Component {
 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,}} >
-                                <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,width:'99%',height:59,  justifyContent: 'center',alignItems:"center"}} onPress={() =>
-                                    Toast.show({
-                                      text: "Wrong password!",
-                                      textStyle: { color: "yellow" },
-                                      buttonText: "Okay"
-                                    })
-                                  }>
+                                <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,width:'99%',height:59,  justifyContent: 'center',alignItems:"center"}} 
+                                onPress={() => this._fbAuth()}>
                                    <NB.Text style={{fontSize:18,color:'#ffffff',}}>  <Icon name={'facebook-f'}  style={{fontSize:24,color:'#fff', }} light />   Sign in with facebook</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
