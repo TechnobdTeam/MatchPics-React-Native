@@ -41,7 +41,8 @@ export class Register extends React.Component {
             imagePickOptionDialog: false,
             addAvatarTextVisible: true,
             image_uri: '',
-            image_type: ''
+            image_type: '',
+            image_name: ''
           };
     }
 
@@ -66,6 +67,7 @@ export class Register extends React.Component {
 
                 this.setState({image_uri: response.uri});
                 this.setState({image_type: response.type});
+                this.setState({image_name: response.name});
                 this.setState({addAvatarTextVisible: false});
                 console.log('Image selected: ' + response.uri);
               }
@@ -86,6 +88,7 @@ export class Register extends React.Component {
               } else {
                 this.setState({image_uri: response.uri});
                 this.setState({image_type: response.type});
+                this.setState({image_name: response.name});
                 this.setState({addAvatarTextVisible: false});
                 console.log('Image clicked: ' + response.uri);
               }
@@ -152,7 +155,7 @@ export class Register extends React.Component {
             formData.append('photo', {
                 uri: this.state.image_uri,
                 type: this.state.image_type, // or photo.type
-                name: 'user_photo'
+                name: this.state.image_name
               });
 
             fetch(ConstValues.base_url + 'userRegistration',{

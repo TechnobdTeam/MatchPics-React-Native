@@ -49,6 +49,8 @@ target 'reactnavigation' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
   target 'reactnavigationTests' do
     inherit! :search_paths
     # Pods for testing
