@@ -1,13 +1,33 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Slider from "react-native-slider";
+import sliderData from "../Slider/Data.js";
 {/*Register */}
 export class Social extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+
+    };
+
+  }
+
+
+  getMatchedUserName(value){
+
+    // var Userindex
+    console.log(value | 0)
+    return sliderData[value | 0].id;
+  }
+
+
   render() {
     return (
         <Fragment>    
@@ -49,15 +69,27 @@ export class Social extends React.Component {
 
 
                                  <NB.List  >
-                                    <NB.ListItem selected>
+                                    <NB.ListItem selected style={{borderBottomWidth:0,}}>
                                     <NB.Left>
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Age range</NB.Text>
                                     </NB.Left>
                                     <NB.Right>
-                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>18-60 +</NB.Text> 
-                                    </NB.Right>
+                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>{this.getMatchedUserName(this.state.value)}+</NB.Text> 
+                                    </NB.Right> 
                                     </NB.ListItem>
-                                 </NB.List>
+                                      <View style={{paddingLeft:40,paddingRight:30,marginTop:-7,marginBottom:5}}> 
+                                         <Slider
+                                                value={this.state.value}
+                                                onValueChange={value => this.setState({ value })}
+                                                trackStyle={styles.track}
+                                                thumbStyle={styles.thumb}
+                                                minimumValue={0}
+                                                maximumValue={sliderData.length-1} 
+                                                minimumTrackTintColor='#92207e'
+                                                maximumTrackTintColor='#92207e'
+                                              /> 
+                                        </View>
+                                   </NB.List>
                                 
 
                               </NB.View> 
@@ -79,21 +111,21 @@ export class Social extends React.Component {
                               </NB.View> 
 
 
-                           
-                         
-                            
-
-                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
+                              <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
                                 <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}>
                                       <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
                                       <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
                                 </NB.Button> 
-                             </NB.Item>
+                                </NB.View> 
+
+              
 
                             </NB.Form >
 
+           
+                            
 
-
+                         
                     </NB.Content>
             
               </NB.View>
@@ -106,3 +138,36 @@ export class Social extends React.Component {
   }
 }
 {/* End Register */}
+
+
+const styles = StyleSheet.create({
+ 
+
+  container: {
+      margin: 15,
+       
+      marginBottom:0,
+   
+     },
+
+  track: {
+    height: 3,
+    borderRadius: 3, 
+    backgroundColor: '#e44c91',
+  },
+
+  thumb: {
+    width: 30,
+    height: 30,
+    shadowColor: '#000',
+    backgroundColor: '#fff',
+    borderColor: '#cdcd',
+    borderWidth: 1,
+    borderRadius: 40 / 2,
+    shadowOffset: {width: 2, height: 1},
+    shadowRadius: 2,
+    shadowOpacity: 0.35,
+  }
+
+
+});

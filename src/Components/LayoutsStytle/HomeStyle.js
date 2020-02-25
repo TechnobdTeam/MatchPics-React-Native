@@ -153,15 +153,31 @@ backgroundColor:'transparent',
 UserProfileCard:{
   borderRadius:7, 
   overflow:'hidden',
-  marginBottom:10,
- 
+  marginBottom:10, 
   shadowColor: '#ebeef1',
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.8,
   shadowRadius: 7,
   elevation: 1, 
    
+},
+Peporttag:{
+backgroundColor:"#e5e6eb",
+borderRadius:50,
+padding:5,
+paddingLeft:15,
+paddingRight:15,
+textAlign:"center", 
+marginLeft:5,
+marginTop:5,
+marginBottom:5,
+ borderWidth:2,
+ borderColor:"#e4e3e7",
+ fontSize:13, 
 }
+
+
+
     
     
 });

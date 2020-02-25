@@ -1,7 +1,7 @@
 const Data = [
     {
         id:1,
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -11,7 +11,7 @@ const Data = [
         },
     {
         id:2,
-         text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+         text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
          userNmae:'Alisa Mike',
          time:11.53,
          images: require("../../Components/Image/user_1.jpg"),
@@ -20,7 +20,7 @@ const Data = [
         },
     {
         id:3, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -29,7 +29,7 @@ const Data = [
     },
     {
         id:4,
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -38,7 +38,7 @@ const Data = [
     },
     {
         id:5, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -47,7 +47,7 @@ const Data = [
     },
     {
         id:6, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -56,7 +56,7 @@ const Data = [
     },
     {
         id:7, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -65,7 +65,7 @@ const Data = [
     },
     {
         id:8, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -74,7 +74,7 @@ const Data = [
     },
     {
         id:9,
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic  director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),
@@ -83,7 +83,7 @@ const Data = [
         },
     {
         id:10, 
-        text: 'When he’s not off making one of his beautifully idiosyncratic films, the director ...',
+        text: 'When he’s not off making one of his beautifully idiosyncratic director ...',
         userNmae:'Alisa Mike',
         time:11.53,
         images: require("../../Components/Image/user_1.jpg"),

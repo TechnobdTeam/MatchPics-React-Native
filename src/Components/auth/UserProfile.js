@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground,ScrollView } from 'react-native';
+import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 // NativeBase
@@ -10,7 +10,9 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
-import RangeSlider from 'react-native-range-slider'
+import RangeSlider from 'react-native-range-slider';
+//import Dialog, { DialogContent } from 'react-native-popup-dialog';
+
 {/*Register */}
 export class UserProfile extends React.Component {
 
@@ -183,19 +185,24 @@ export class UserProfile extends React.Component {
      
     return (
 
-    <NB.Root>
-        <Fragment>   
+        <NB.Root>
+      
         {!this.state.profileData == '' ?
         <View>
         <ImageBackground   style={{width: '100%', height: '100%', backgroundColor:'#fff'}}   > 
-            
+
+ 
+        <ScrollView 
+                    
+                    contentContainerStyle={{flexGrow: 1}}
+                    >
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <View style={{flex: 3,}} > 
+                    <View style={{height:550,}} > 
                     <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
                             
                     <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
@@ -276,10 +283,12 @@ export class UserProfile extends React.Component {
                     </View>
                 
                 </View>
+    
+                </ScrollView>
 
                     <NB.Footer style={{height:72}} >
                         <NB.FooterTab style={{backgroundColor:'#fff',}}>
-                            <NB.Button badge vertical onPress={() => this.props.navigation.navigate('Chatlist')} >
+                            <NB.Button badge vertical onPress={() => this.props.navigation.navigate('Chatwindow')} >
                             {/* <NB.Badge><NB.Text>2</NB.Text></NB.Badge>  */}
                             <Icon name="comment" light  style={{color:'#e41b5b',fontSize:24, marginBottom:8,}}  /> 
                             <NB.Text style={{color:'#333333',fontSize:14,}}>Message</NB.Text>
@@ -302,14 +311,18 @@ export class UserProfile extends React.Component {
                             :
                             this.blockUser()}> 
                             <Icon name="ban" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />  
-                            <NB.Text style={{color:'#333333',fontSize:14,}}>Block</NB.Text>
+                            <NB.Text   style={{color:'#333333',fontSize:14,}}>Block</NB.Text>
                             </NB.Button>
-                            <NB.Button vertical>
+
+                            <NB.Button vertical vertical onPress={() => this.setState({Report: true})}>
                             <Icon name="flag" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />   
                             <NB.Text style={{color:'#333333',fontSize:14,}}>Report</NB.Text>
                             </NB.Button>
+
                         </NB.FooterTab>
                     </NB.Footer>
+
+ 
 
             
             </ImageBackground> 
@@ -335,10 +348,58 @@ export class UserProfile extends React.Component {
             onPress: () => this.setState({confirmVisible: false})
         }}
     />
-        </Fragment>
+
+    <ConfirmDialog
+        // title="Confirmation!ss"
+       
+        message={this.confirmMessage}
+        visible={this.state.Report}
+        onTouchOutside={() => this.setState({Report: false})}
+        dialogStyle={{ 
+            borderRadius:15,
+            
+        }
+
+        }
+        >
+
+        <View style={{marginLeft:-24,marginRight:-24,marginTop:-24,marginBottom:-90,padding:24,}}>
+
+            <View style={{borderBottomWidth:1,borderBottomColor:"#ededed",marginBottom:20,alignItems:"flex-end",paddingBottom:7}}>
+                {/* <Icon onPress={() => this.setState({Report: false})}   name="times" solid style={{color:'#5b5b5b',fontSize:30, }}  />   */}
+                <NB.Icon onPress={() => this.setState({Report: false})}    name="close" style={{color:'#5b5b5b',fontSize:30, }}  /> 
+            </View>
+
+                <View>
+                    <Icon  name="exclamation-triangle" solid style={{color:'#e57a1c',fontSize:30 }}  />  
+                    <NB.Text style={{color:"#000",fontWeight:"700",fontSize:16,}}>Please select a problem to continue</NB.Text>  
+                    <NB.Text style={{color:"#696969",fontSize:15,}}>You Can report the profile after selecting a problem.</NB.Text> 
+                </View>
+
+                <View style={{flexWrap:"wrap", display:'flex',alignContent:"space-around",flexDirection: 'row',marginTop:5,}} > 
+                        <NB.Text style={HomeStyle.Peporttag}  > Pretending to be someone </NB.Text>  
+                        <NB.Text  style={HomeStyle.Peporttag} > Fake account</NB.Text> 
+                        <NB.Text  style={HomeStyle.Peporttag} > Fake Name</NB.Text> 
+                        <NB.Text  style={HomeStyle.Peporttag} > Posting inappropriate thing</NB.Text>
+                        <NB.Text  style={HomeStyle.Peporttag} >I can't access my account </NB.Text>
+                        <NB.Text  style={HomeStyle.Peporttag} > I want to help</NB.Text>
+                        <NB.Text  style={HomeStyle.Peporttag} > Something else </NB.Text>  
+                </View>
+
+                <View style={{marginTop:10,}}> 
+                    <TouchableOpacity>
+                    <NB.Text style={{backgroundColor:"#e5e6eb",textAlign:"center",padding:7,borderRadius:7,fontSize:17,color:"#979797"}}> SUBMIT </NB.Text>  
+                    </TouchableOpacity> 
+                </View>
+                
+         </View> 
+    </ConfirmDialog>
+
     </NB.Root>
     );
   }
  
 }
 {/* End Register */}
+
+ 
