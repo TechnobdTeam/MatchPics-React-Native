@@ -129,7 +129,7 @@ export class Menu extends React.Component {
                                     <Icon name="user-friends"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text onPress={() => this.props.navigation.navigate('MyMatches')} style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my matches</NB.Text>
+                                        <NB.Text onPress={() => this.props.navigation.navigate('MyMatchesFavorite')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my matches</NB.Text>
                                         </NB.Body>
                                     </NB.ListItem>
                             </NB.Content>

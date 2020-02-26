@@ -281,17 +281,17 @@ onSwipeValueChange = swipeData => {
                             >
 
                                   <View    style={styles.rowFront}>
-                                    <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
-                                       <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,}}>
+                                    <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:90,}}>
+                                       <View style={{justifyContent:"flex-start",alignItems:'center',paddingRight:20,paddingTop:10,marginLeft:-10}}>
                                           <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
                                        </View>
                                         
-                                        <View style={{paddingTop:3}}>
-                                            <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",}}>
+                                        <View style={{width:"100%"}}>
+                                            <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
                                               <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
                                               <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
                                             </View> 
-                                            <Text numberOfLines={3}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4}}>{data.item.message}  </Text>  
+                                            <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
                                             
                                         </View>
                                       </View> 
@@ -436,7 +436,7 @@ onSwipeValueChange = swipeData => {
     borderBottomWidth:1,
     borderColor:'#CDCD', 
     paddingTop:5,
-    paddingBottom:5,
+    paddingBottom:5
   
     
 },

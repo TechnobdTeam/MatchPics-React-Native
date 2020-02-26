@@ -143,11 +143,11 @@ export class MyProfile extends React.Component {
                                         <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                             <NB.Left style={{}}>
                                             <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize:21,}}   />  
-                                                <NB.Text  style={{color:'#fff',fontSize:21,}} >Location</NB.Text>
+                                                <NB.Text   style={{color:'#fff',fontSize:21,}} >Location</NB.Text>
                                             </NB.Left>
 
                                             <NB.Right>
-                                                <NB.Button  light style={{backgroundColor:'#f68e1e',borderRadius:7,height:35,marginTop:5,}}> 
+                                                <NB.Button onPress={() => this.props.navigation.navigate('location')}  light style={{backgroundColor:'#f68e1e',borderRadius:7,height:35,marginTop:5,}}> 
                                                     <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
                                                 </NB.Button>
 
@@ -166,7 +166,7 @@ export class MyProfile extends React.Component {
                                             </NB.Left>
 
                                             <NB.Right>
-                                                <NB.Button  light style={{backgroundColor:'#2ed573',borderRadius:7,height:35,marginTop:5,}}> 
+                                                <NB.Button onPress={() => this.props.navigation.navigate('Appearance')}  light style={{backgroundColor:'#2ed573',borderRadius:7,height:35,marginTop:5,}}> 
                                                     <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
                                                 </NB.Button>
 
