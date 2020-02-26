@@ -10,5 +10,6 @@ const ConstValues = {
     customer_id: '@customer_id',
     user_name: '@user_name',
     user_password: '@user_password',
+    fb_login: '@fb_login'
 }
 export default ConstValues;

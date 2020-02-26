@@ -14,6 +14,10 @@ import ConstValues from '../../constants/ConstValues'
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 {/*Login  */}
+
+  var name = ''
+  var email = ''
+  var fb_id = '' 
 export class Login extends React.Component {
 
   constructor(props) {
@@ -255,6 +259,13 @@ export class Login extends React.Component {
               alert('Error fetching data: ' + error.toString());
             } else {
               console.log(result)
+              console.log(result.name)
+              console.log(result.email)
+              console.log(result.id)
+              name = result.name;
+              email = result.email;
+              fb_id = result.id;
+
               alert('Success fetching data: ' + result.toString());
             }
           }
@@ -273,11 +284,18 @@ export class Login extends React.Component {
             .addRequest(infoRequest)
             .start()
 
-        })
+        }).then(
+          this.loginWithFB()
+        )
     }
   }, function (error) {
     alert('Login fail with error: ' + error);
    });
+  }
+
+  loginWithFB(){
+    console.log("api will be called for social login")
+    this.setState({progressVisible: true});
   }
 
     render() {
