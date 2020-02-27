@@ -15,10 +15,204 @@ import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 're
 
 {/*Login  */}
 
-  var name = ''
-  var email = ''
-  var fb_id = '' 
 export class Login extends React.Component {
+
+  access_token = '' 
+
+  loginWithFB(){
+    console.log("api will be called for social login")
+    this.setState({progressVisible: true});
+
+    var formData = new FormData();
+      formData.append('api_key', ConstValues.api_key);
+      formData.append('facebook_access_token', this.access_token);
+
+      fetch(ConstValues.base_url + 'socialLogin',{
+        method: 'POST',
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+
+      }).then((response) => response.json())
+      .then((responseJson) =>{
+
+        this.setState({ progressVisible: false });
+
+        console.log('login responnse: ' + responseJson.response.message);
+
+        if(responseJson.response.code == 1000){
+
+          this.storeData(ConstValues.user_logged_in, true);
+          this.storeData(ConstValues.fb_login, true);
+
+          try {
+            this.storeData(ConstValues.user_email, responseJson.response.data.email);
+            this.storeData(ConstValues.user_id, responseJson.response.data.id);
+            this.storeData(ConstValues.user_token, responseJson.response.data.token);
+            this.storeData(ConstValues.customer_id, responseJson.response.data.customer_id);
+            this.storeData(ConstValues.user_name, responseJson.response.data.name);
+
+            // alert(responseJson.response.message)
+            Toast.show({
+              text: responseJson.response.message,
+              textStyle: { color: "green" },
+            })
+
+            // this.timeoutHandle = setTimeout(()=>{
+
+              this.props.navigation.navigate('UploadImage')
+
+              var resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+              });
+        
+              this.props.navigation.dispatch(resetAction);
+
+            
+
+          } catch (error) {
+             Toast.show({
+                text: error,
+                textStyle: { color: "yellow" },
+                buttonText: "Okay"
+              })
+             
+            // alert(error)
+            // Error saving data
+          }
+        }
+        else{
+          this.storeData(ConstValues.access_token, '');
+          this.storeData(ConstValues.user_logged_in, false);
+          this.storeData(ConstValues.fb_login, false);
+          Toast.show({
+            text: responseJson.response.message,
+            textStyle: { color: "yellow" },
+            buttonText: "Okay"
+          })
+            // alert(responseJson.response.message)
+        }
+        
+        //alert(responseJson.response.code)
+      })
+      .catch((error) =>{
+        this.storeData(ConstValues.user_logged_in, false);
+        this.storeData(ConstValues.fb_login, false);
+        alert("exeptionlogin: " + error)
+        
+      })
+    
+  }
+
+
+  _fbAuth() {
+    console.log("method called");
+    // LoginManager.logInWithPermissions(['public_profile', 'email']).then(function(result) {
+    //   if (result.isCancelled) {
+    //     console.log("Login Cancelled");
+    //   } else {
+    //     console.log("Login Success permission granted:" + result.grantedPermissions);
+    //   }
+    // }, function(error) {
+    //    console.log("some error occurred!!");
+    // })
+
+
+
+
+  LoginManager.logInWithPermissions(['public_profile', 'email'])
+  .then(function (result) {
+    if (result.isCancelled) {
+      alert('Login cancelled');
+    } else {
+      AccessToken
+        .getCurrentAccessToken()
+        .then((data) => {
+          // let accessToken = data.accessToken
+          // console.log("access_token: " + accessToken)
+          // access_token = "" + accessToken;
+          // this.loginWithFB();
+          // this.loginWithFB()
+          // alert(accessToken.toString())
+
+          // const responseInfoCallback = (error, result) => {
+          //   if (error) {
+          //     console.log(error)
+          //     alert('Error fetching data: ' + error.toString());
+          //   } else {
+          //     console.log(result)
+          //     console.log(result.name)
+          //     console.log(result.email)
+          //     console.log(result.id)
+
+          //     // alert('Success fetching data: ' + result.toString());
+          //   }
+          // }
+
+          // const infoRequest = new GraphRequest('/me', {
+          //   accessToken: accessToken,
+          //   parameters: {
+          //     fields: {
+          //       string: 'email,name,first_name,middle_name,last_name'
+          //     }
+          //   }
+          // }, responseInfoCallback);
+
+          // // Start the graph request.
+          // new GraphRequestManager()
+          //   .addRequest(infoRequest)
+          //   .start()
+
+        })
+    }
+  }, function (error) {
+    alert('Login fail with error: ' + error);
+   });
+  }
+
+  loginWithFaceBook = async (tokenFace) => {
+    console.log("login successful " + tokenFace)
+    this.access_token = tokenFace;
+    this.storeData(ConstValues.access_token, this.access_token);
+    this.loginWithFB()
+    // this.saveTokenLogin(tokenFace); 
+}
+
+  async handleFacebookLogin() {
+    const _this = this;
+    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+        function (result) {
+            if (result.isCancelled) {
+                console.log('Login cancelled')
+            } else {
+                console.log('Login success with permissions: ' + result.grantedPermissions.toString())
+                let tokenFace = '';
+                AccessToken.getCurrentAccessToken().then(
+                    async (data) => {
+                        // data.accessToken)
+                        console.log("access_token: " + data.accessToken)
+
+                        _this.loginWithFaceBook(data.accessToken);
+
+                        // let resultChild = await loginWithFaceBook(data.accessToken.toString(), "POST");
+                        
+                        // if (resultChild.username.length > 0) {
+                        //   console.log("access_token resultChild.username: " + resultChild.username)
+                        //     _this.loginWithFaceBook(resultChild.token);
+                        // }
+                    });
+            }
+        },
+        function (error) {
+            console.log('Login fail with error: ' + error)
+        }
+    )
+}
+
+
 
   constructor(props) {
     super(props);
@@ -29,6 +223,10 @@ export class Login extends React.Component {
       customer_id: '',
       progressVisible: false 
     };
+
+    // this.onSuccess = this.onSuccess.bind(this);
+    // this.onError = this.onError.bind(this);
+    // this.onSignInWithFacebook = this.onSignInWithFacebook.bind(this);
   }
 
   componentDidMount(){
@@ -58,6 +256,7 @@ export class Login extends React.Component {
       
     }
   }
+
 
   //method to verify user login credential
   verifyLogin=()=>{
@@ -205,98 +404,9 @@ export class Login extends React.Component {
 
       
     });
-
-
-
-    
-
-    // try {
-    //   var value = "";
-    //   AsyncStorage.getItem(key, (err, item) => {
-    //     this.customer_id = item
-    //   });
-    //   // console.log("item_value: " + item);
-    //   console.log("value_value: " + this.customer_id);
-    //   if(value !== null) {
-    //     return value;
-    //     // value previously stored
-    //   }
-    // } catch(e) {
-    //   console.log("value_error " + e.message);
-    //   // error reading value
-    // }
   }
 
 
-  _fbAuth() {
-    console.log("method called");
-    // LoginManager.logInWithPermissions(['public_profile', 'email']).then(function(result) {
-    //   if (result.isCancelled) {
-    //     console.log("Login Cancelled");
-    //   } else {
-    //     console.log("Login Success permission granted:" + result.grantedPermissions);
-    //   }
-    // }, function(error) {
-    //    console.log("some error occurred!!");
-    // })
-
-
-    LoginManager
-  .logInWithPermissions(['public_profile', 'email'])
-  .then(function (result) {
-    if (result.isCancelled) {
-      alert('Login cancelled');
-    } else {
-      AccessToken
-        .getCurrentAccessToken()
-        .then((data) => {
-          let accessToken = data.accessToken
-          alert(accessToken.toString())
-
-          const responseInfoCallback = (error, result) => {
-            if (error) {
-              console.log(error)
-              alert('Error fetching data: ' + error.toString());
-            } else {
-              console.log(result)
-              console.log(result.name)
-              console.log(result.email)
-              console.log(result.id)
-              name = result.name;
-              email = result.email;
-              fb_id = result.id;
-
-              alert('Success fetching data: ' + result.toString());
-            }
-          }
-
-          const infoRequest = new GraphRequest('/me', {
-            accessToken: accessToken,
-            parameters: {
-              fields: {
-                string: 'email,name,first_name,middle_name,last_name'
-              }
-            }
-          }, responseInfoCallback);
-
-          // Start the graph request.
-          new GraphRequestManager()
-            .addRequest(infoRequest)
-            .start()
-
-        }).then(
-          this.loginWithFB()
-        )
-    }
-  }, function (error) {
-    alert('Login fail with error: ' + error);
-   });
-  }
-
-  loginWithFB(){
-    console.log("api will be called for social login")
-    this.setState({progressVisible: true});
-  }
 
     render() {
       return ( 
@@ -356,7 +466,7 @@ export class Login extends React.Component {
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,}} >
                                 <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,width:'99%',height:59,  justifyContent: 'center',alignItems:"center"}} 
-                                onPress={() => this._fbAuth()}>
+                                onPress={() => this.handleFacebookLogin()}>
                                    <NB.Text style={{fontSize:18,color:'#ffffff',}}>  <Icon name={'facebook-f'}  style={{fontSize:24,color:'#fff', }} light />   Sign in with facebook</NB.Text>
                                 </NB.Button> 
                              </NB.Item>

@@ -1,9 +1,10 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
 import * as NB from 'native-base';
-import {Toast} from 'native-base';
+import {Toast, Root} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import AsyncStorage from '@react-native-community/async-storage';
+import {NavigationEvents} from 'react-navigation';
 //import RangeSlider from 'rn-range-slider';
 // NativeBase
 import {Text} from 'native-base';
@@ -69,6 +70,16 @@ export class UploadImage extends React.Component {
              }, 1000)
       )
 
+      console.log("called---------fdfjdkfjkdjf----------------------------")
+  }
+//   componentDidMount(){
+//     console.log("called-------------------------------------")
+// }
+
+  resetValue(){
+    console.log("reset value-------------------------------------")
+    this.setState({image_uri: '', image_name: '', image_type: '', change_photo_id: '', change_photo_url: '', value: 0})
+    this.getMatchTypes();
   }
 
   getMatchTypes(){
@@ -255,10 +266,12 @@ export class UploadImage extends React.Component {
 
   render() {
     return (
-
-      <NB.Root>
+      <Root>
         <Fragment> 
        {/* <NB.Container   style={HomeStyle.UplodeprofileContainer}  > */}
+
+       <NavigationEvents onDidFocus={() => 
+         (this.state.change_photo_url != '' || this.state.match_type != '1') ? this.resetValue() : console.log('I am triggered')} />
 
           <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
 
@@ -286,9 +299,13 @@ export class UploadImage extends React.Component {
 
               <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,}}> 
 
+                  {this.state.change_photo_url != '' ? 
                   <NB.View style={{width:230,}} >
                     <NB.Icon name="md-checkmark-circle" style={{color:'#e8e4e7',marginTop:8,position:'absolute',zIndex:999,fontSize:40,}} />
                   </NB.View>
+                  :
+                  null
+                  }
 
                   <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
 
@@ -302,7 +319,11 @@ export class UploadImage extends React.Component {
 
                     <NB.View>
                       <NB.Button style={{backgroundColor:'#fff',borderRadius:50,width:200,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,}} >
+                      {this.state.change_photo_url == '' ? 
+                            <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>upload</NB.Text>
+                            :
                             <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>change</NB.Text>
+                      }
                       </NB.Button>
                     </NB.View>
 
@@ -365,7 +386,7 @@ export class UploadImage extends React.Component {
           </ImageBackground>
           {/* </NB.Container> */}
           </Fragment>
-      </NB.Root>
+      </Root>
     );
   }
 }

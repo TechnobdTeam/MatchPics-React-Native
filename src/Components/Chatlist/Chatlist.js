@@ -185,8 +185,8 @@ onSwipeValueChange = swipeData => {
                       </NB.Right>
                     </NB.Header> 
 
-                     
-                      <View  style={styles.rowFrontTop}>
+                     {(this.state.messageData != undefined && this.state.messageData != '') ? 
+                     <View  style={styles.rowFrontTop}>
                         <View style={{ width:'80%', }}>
 
                         {this.state.visible == false ?
@@ -215,7 +215,11 @@ onSwipeValueChange = swipeData => {
                           </View> 
                               
                         </View> 
+                        :
+                        null
+                     }
                      
+                     {(this.state.messageData != undefined && this.state.messageData != '') ? 
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
      
@@ -269,8 +273,9 @@ onSwipeValueChange = swipeData => {
 
 
               
-
-                {this.state.listType === 'FlatList' && (
+                            
+                            
+                            {this.state.listType === 'FlatList' && (
                     <SwipeListView
                         data={this.state.messageData}
                         renderItem={data => (
@@ -395,10 +400,15 @@ onSwipeValueChange = swipeData => {
                         onSwipeValueChange={this.onSwipeValueChange}
                     />
                 )}
-
-
+                
                             
                   </NB.Content> 
+
+                  :
+                  <NB.View style={{flex: 1, backgroundColor:"#fff"}}>
+                  <NB.Text style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
+                  </NB.View>
+                }
 
                   </NB.Container>
      </ImageBackground> 

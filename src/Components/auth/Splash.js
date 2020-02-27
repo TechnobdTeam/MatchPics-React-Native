@@ -17,7 +17,8 @@ export class Splash extends React.Component {
         rouuting: 'Login',
         resetAction: '',
         user_email: '',
-        user_password: ''
+        user_password: '',
+        access_token: ''
       };
     }
 
@@ -42,17 +43,50 @@ export class Splash extends React.Component {
         if(result == 'true'){
           console.log("logged_in_status:true>>> " + result);
 
-          AsyncStorage.getItem(ConstValues.user_email , (error, result) => {
-            this.setState({user_email: result})
-          }).then(
-            AsyncStorage.getItem(ConstValues.user_password , (error, result) => {
-              this.setState({user_password: result})
-            }).then(
+          AsyncStorage.getItem(ConstValues.fb_login , (error, result) => {
+
+            if(result != null){
+            
               this.timeoutHandle = setTimeout(()=>{
-                this.userBackgroundLogin()
-              }, 1000)
-            )
-          )
+                if(result == 'true'){
+                  AsyncStorage.getItem(ConstValues.access_token , (error, result) => {
+                    this.setState({access_token: result})
+                  }).then(
+                    this.timeoutHandle = setTimeout(()=>{
+                      this.userBackgroundFBLogin()
+                    }, 1000)
+                  )
+                  console.log("facebook_logged_in_status:true>>> " + result);
+                }
+                else{
+                  AsyncStorage.getItem(ConstValues.user_email , (error, result) => {
+                    this.setState({user_email: result})
+                  }).then(
+                    AsyncStorage.getItem(ConstValues.user_password , (error, result) => {
+                      this.setState({user_password: result})
+                    }).then(
+                      this.timeoutHandle = setTimeout(()=>{
+                        this.userBackgroundLogin()
+                      }, 1000)
+                    )
+                  )
+                }
+              }, 500);
+            }else{
+              AsyncStorage.getItem(ConstValues.user_email , (error, result) => {
+                this.setState({user_email: result})
+              }).then(
+                AsyncStorage.getItem(ConstValues.user_password , (error, result) => {
+                  this.setState({user_password: result})
+                }).then(
+                  this.timeoutHandle = setTimeout(()=>{
+                    this.userBackgroundLogin()
+                  }, 1000)
+                )
+              )
+            }
+          })
+
         }
         else{
           console.log("logged_in_status:false>>> " + result);
@@ -72,6 +106,91 @@ export class Splash extends React.Component {
           this.props.navigation.dispatch(this.state.resetAction);
       }
     })
+  }
+
+
+  userBackgroundFBLogin(){
+    console.log("api will be called for social login")
+    this.setState({progressVisible: true});
+
+    var formData = new FormData();
+      formData.append('api_key', ConstValues.api_key);
+      formData.append('facebook_access_token', JSON.parse(this.state.access_token));
+
+      fetch(ConstValues.base_url + 'socialLogin',{
+        method: 'POST',
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+
+      }).then((response) => response.json())
+      .then((responseJson) =>{
+
+        this.setState({ progressVisible: false });
+
+        console.log('login responnse: ' + responseJson.response.message);
+
+        if(responseJson.response.code == 1000){
+
+          this.storeData(ConstValues.user_logged_in, true);
+          this.storeData(ConstValues.fb_login, true);
+
+          try {
+            this.storeData(ConstValues.user_email, responseJson.response.data.email);
+            this.storeData(ConstValues.user_id, responseJson.response.data.id);
+            this.storeData(ConstValues.user_token, responseJson.response.data.token);
+            this.storeData(ConstValues.customer_id, responseJson.response.data.customer_id);
+            this.storeData(ConstValues.user_name, responseJson.response.data.name);
+
+            // alert(responseJson.response.message)
+
+            // this.timeoutHandle = setTimeout(()=>{
+
+              this.props.navigation.navigate('UploadImage')
+
+              var resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+              });
+        
+              this.props.navigation.dispatch(resetAction);
+
+            
+
+          } catch (error) {
+             Toast.show({
+                text: error,
+                textStyle: { color: "yellow" },
+                buttonText: "Okay"
+              })
+             
+            // alert(error)
+            // Error saving data
+          }
+        }
+        else{
+          this.storeData(ConstValues.access_token, '');
+          this.storeData(ConstValues.user_logged_in, false);
+          this.storeData(ConstValues.fb_login, false);
+          Toast.show({
+            text: responseJson.response.message,
+            textStyle: { color: "yellow" },
+            buttonText: "Okay"
+          })
+            // alert(responseJson.response.message)
+        }
+        
+        //alert(responseJson.response.code)
+      })
+      .catch((error) =>{
+        this.storeData(ConstValues.user_logged_in, false);
+        this.storeData(ConstValues.fb_login, false);
+        alert("exeptionlogin: " + error)
+        
+      })
+    
   }
 
   userBackgroundLogin(){

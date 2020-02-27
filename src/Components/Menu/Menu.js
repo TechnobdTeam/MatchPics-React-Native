@@ -48,6 +48,7 @@ export class Menu extends React.Component {
 
   userLogOut(){
     this.storeData(ConstValues.user_logged_in, false);
+    this.storeData(ConstValues.fb_login, false);
 
     this.storeData(ConstValues.user_email, '');
     this.storeData(ConstValues.user_id, '');

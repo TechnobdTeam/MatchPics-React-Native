@@ -18,6 +18,7 @@ export class UserProfile extends React.Component {
 
  confirmMessage = 'Hello'
  performAction = ''
+ reportTextString = ''
 
   constructor(props) {
     super(props);
@@ -31,7 +32,8 @@ export class UserProfile extends React.Component {
       confirmVisible: false,
       is_fav: false,
       is_blocked: false,
-      profileData: '',
+      reportTypeData: '',
+      reportText: '',
       columns: 2, 
     };
 
@@ -57,6 +59,7 @@ export class UserProfile extends React.Component {
             }).then(
                 this.timeoutHandle = setTimeout(()=>{
                     this.getProfileDetails()
+                    this.getReportTypes();
                  }, 1000)
             )
         )
@@ -133,6 +136,29 @@ export class UserProfile extends React.Component {
     this.performAction = "addBlockUser";
   }
 
+  getReportTypes(){
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+
+        fetch(ConstValues.base_url + 'getReportTypes', {
+            method: 'POST',
+            headers:{
+                'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+            body: formData
+        }).then((response) => response.json())
+        .then((responseJson) =>{
+
+            this.setState({reportTypeData: responseJson.response.data})
+
+            console.log("getReportTypes: " + responseJson.response.message);
+
+        })
+  }
+
   performActionCall(){
 
     this.setState({confirmVisible: false, progressVisible: true})
@@ -178,6 +204,39 @@ export class UserProfile extends React.Component {
             }
             
         })
+  }
+
+  reportAgainstUser(){
+
+    this.setState({progressVisible: true})
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+    formData.append('report_user_id', this.state.user_id);
+    formData.append('report_issue', this.reportTextString);
+
+    fetch(ConstValues.base_url + 'addReportUser', {
+        method: 'POST',
+        headers:{
+            'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+        },
+        body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        console.log("addReportUser: " + responseJson.response.message)
+        console.log("addReportUser: " + responseJson.response.code)
+
+        Toast.show({
+            text: responseJson.response.message,
+            textStyle: { color: "yellow" },
+          });
+
+        this.setState({progressVisible: false})
+        
+    })
   }
 
 
@@ -367,7 +426,9 @@ export class UserProfile extends React.Component {
 
             <View style={{borderBottomWidth:1,borderBottomColor:"#ededed",marginBottom:20,alignItems:"flex-end",paddingBottom:7}}>
                 {/* <Icon onPress={() => this.setState({Report: false})}   name="times" solid style={{color:'#5b5b5b',fontSize:30, }}  />   */}
-                <NB.Icon onPress={() => this.setState({Report: false})}    name="close" style={{color:'#5b5b5b',fontSize:30, }}  /> 
+                <NB.Icon onPress={() => {
+                    this.reportTextString = ''
+                    this.setState({Report: false, reportText: ''})}}  name="close" style={{color:'#5b5b5b',fontSize:30, }}  /> 
             </View>
 
                 <View>
@@ -377,18 +438,42 @@ export class UserProfile extends React.Component {
                 </View>
 
                 <View style={{flexWrap:"wrap", display:'flex',alignContent:"space-around",flexDirection: 'row',marginTop:5,}} > 
-                        <NB.Text style={HomeStyle.Peporttag}  > Pretending to be someone </NB.Text>  
-                        <NB.Text  style={HomeStyle.Peporttag} > Fake account</NB.Text> 
-                        <NB.Text  style={HomeStyle.Peporttag} > Fake Name</NB.Text> 
-                        <NB.Text  style={HomeStyle.Peporttag} > Posting inappropriate thing</NB.Text>
-                        <NB.Text  style={HomeStyle.Peporttag} >I can't access my account </NB.Text>
-                        <NB.Text  style={HomeStyle.Peporttag} > I want to help</NB.Text>
-                        <NB.Text  style={HomeStyle.Peporttag} > Something else </NB.Text>  
+
+                {this.state.reportTypeData != '' ? 
+                this.state.reportTypeData.map((item,i) => {
+                    return <NB.View>
+                    {this.reportTextString == item.name ? 
+                        <NB.Text style={HomeStyle.PeporttagSelected}>{item.name}</NB.Text>
+                        : 
+                        <NB.Text onPress = {() => {
+                            this.reportTextString = item.name
+                            this.setState({reportText: item.name})
+                        }} style={HomeStyle.Peporttag}>{item.name}</NB.Text>
+                    } 
+                    </NB.View>
+                    
+                    })
+                    :
+                   null
+                   }  
+
+                   {/* {this.state.reportTypeData != '' ? 
+                   
+                    
+                    
+                   :
+                   null
+                   }                              */}
+                        {/* <NB.Text style={HomeStyle.Peporttag}  > Pretending to be someone </NB.Text>   */}
                 </View>
 
                 <View style={{marginTop:10,}}> 
                     <TouchableOpacity>
-                    <NB.Text style={{backgroundColor:"#e5e6eb",textAlign:"center",padding:7,borderRadius:7,fontSize:17,color:"#979797"}}> SUBMIT </NB.Text>  
+                    {this.state.reportText == '' ? 
+                    <NB.Text  style={{backgroundColor:"#e5e6eb",textAlign:"center",padding:7,borderRadius:7,fontSize:17,color:"#979797"}}> SUBMIT </NB.Text>  
+                    :
+                    <NB.Text onPress={() => {this.setState({Report: false}), this.reportAgainstUser() }} style={{backgroundColor:"#e41b5b",textAlign:"center",padding:7,borderRadius:7,fontSize:17,color:"#ffffff"}}> SUBMIT </NB.Text>
+                    }
                     </TouchableOpacity> 
                 </View>
                 

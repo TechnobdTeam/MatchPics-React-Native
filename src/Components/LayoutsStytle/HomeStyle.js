@@ -174,7 +174,22 @@ marginBottom:5,
  borderWidth:2,
  borderColor:"#e4e3e7",
  fontSize:13, 
-}
+},
+PeporttagSelected:{
+  backgroundColor:"#e5e6eb",
+  borderRadius:50,
+  padding:5,
+  paddingLeft:15,
+  paddingRight:15,
+  textAlign:"center", 
+  marginLeft:5,
+  marginTop:5,
+  marginBottom:5,
+   borderWidth:2,
+   borderColor:"#e4e3e7",
+   fontSize:13, 
+   color: '#e41b5b'
+  }
 
 
 

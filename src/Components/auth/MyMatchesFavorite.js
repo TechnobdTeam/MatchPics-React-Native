@@ -20,6 +20,7 @@ import testData from "../../../data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
+import ImageLoad from 'react-native-image-placeholder';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
@@ -130,7 +131,7 @@ export class MyMatchesFavorite extends React.Component {
 
         console.log("getting my favorite list token: " + this.state.token);
 
-        fetch(ConstValues.base_url + 'getMyMatches', {
+        fetch(ConstValues.base_url + 'getMyMatchesList', {
             method: 'POST',
             headers:{
                 'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
@@ -141,12 +142,12 @@ export class MyMatchesFavorite extends React.Component {
         }).then((response) => response.json())
         .then((responseJson) =>{
 
-            console.log("getMyMatches: " + responseJson.response.message);
+            console.log("getMyMatchesList: " + responseJson.response.message);
 
             this.setState({matchData: responseJson.response.data, progressVisible: false})
 
             if(responseJson.response.data == undefined){
-                console.log("myFavourites: undefined data");
+                console.log("getMyMatchesList: undefined data");
             }
 
         })
@@ -182,142 +183,70 @@ export class MyMatchesFavorite extends React.Component {
   
                  
                     <NB.Content padder>
+
+                    {this.state.matchData != '' ? 
+                        this.state.matchData.map((item,i) => {
+                            var total_match = item.total_match + 1;
+                            console.log("total_match: " + total_match);
+                        return <NB.View key={i}>
+                                <NB.Card   style={{marginTop:-2,}}>
+                                    <NB.CardItem   >
+                                    <View style={{flex: 1, flexDirection: 'row'}}>
+                                    <View style={{marginRight:15,marginLeft:-10,}}>
+                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:80, height: 80}} borderRadius={37.5}  source={{uri: item.match_photo}} style={{ width:80, height: 80, borderRadius: 37.5, }} />
+                                
+                                    </View>
+                                    <View  >
+                                            <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>{item.match_date}</NB.Text>
+                                            <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
+
+                                            {item.match_result.map((item2,j) => {
+                                                console.log("inside loop: " + j);
+                                                total_match = total_match - 1;
+                                                return <NB.View key = {i +j}>
+                                                {j != 5 ? 
+                                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile',{
+                                                        id: item2.profile_id
+                                                    })} > 
+                                                    <ImageLoad placeholderStyle={{width:45, height: 45}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
+                                                    </TouchableOpacity>
+                                                    :
+                                                    <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
+                                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches' ,{
+                                                        photo_id: item.photo_id,
+                                                        match_id: item.match_type_id
+                                                    })} > 
+                                                    <ImageLoad  placeholderStyle={{width:45, height: 45}} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
+                                                    {total_match > 1 ? 
+                                                       
+                                                            <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
+                                                       
+                                                        :
+                                                        null
+                                                    }
+                                                    </TouchableOpacity>
+                                                    </View>
+                                                }
+                                                </NB.View>
+                                        
+                                            })
+                                            }
+
+                                        </View>
+                                    </View>
+                                </View>
+                                    </NB.CardItem>
+                                </NB.Card>
+
+                             
+                        
+                        </NB.View>
+                        
+                        })
+                        :
+                    null
+                   } 
                     
-
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches')} > 
-                    <NB.Card   style={{marginTop:-2,}}>
-                        <NB.CardItem   >
-                         <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{marginRight:15,marginLeft:-10,}}>
-                          <Image   source={require('../Image/user.jpg')} style={{ width:80, height: 80, borderRadius: 37.5 }} />
-                       
-                        </View>
-                          <View  >
-                                  <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>28 February 2020 </NB.Text>
-                                  <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5, }} />
-
-
-                                  <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
-                                  <Image  style={{zIndex:-1}}  source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50, }} />
-                                    <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:50, height: 50, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>+100</NB.Text>
-                                  </View>
-
-                              </View>
-                          </View>
-                      </View>
-                        </NB.CardItem>
-                    </NB.Card>
-
-               </TouchableOpacity>
-
-               <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches')} > 
-                    <NB.Card   style={{marginTop:-2,}}>
-                        <NB.CardItem   >
-                         <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{marginRight:15,marginLeft:-10,}}>
-                          <Image   source={require('../Image/user.jpg')} style={{ width:80, height: 80, borderRadius: 37.5 }} />
-                       
-                        </View>
-                          <View  >
-                                  <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>28 February 2020 </NB.Text>
-                                  <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5, }} />
-
-
-                                  <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
-                                  <Image  style={{zIndex:-1}}  source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50, }} />
-                                    <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:50, height: 50, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>+100</NB.Text>
-                                  </View>
-
-                              </View>
-                          </View>
-                      </View>
-                        </NB.CardItem>
-                    </NB.Card>
-
-               </TouchableOpacity>
-
-
-               <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches')} > 
-                    <NB.Card   style={{marginTop:-2,}}>
-                        <NB.CardItem   >
-                         <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{marginRight:15,marginLeft:-10,}}>
-                          <Image   source={require('../Image/user.jpg')} style={{ width:80, height: 80, borderRadius: 37.5 }} />
-                       
-                        </View>
-                          <View  >
-                                  <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>28 February 2020 </NB.Text>
-                                  <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5, }} />
-
-
-                                  <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
-                                  <Image  style={{zIndex:-1}}  source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50, }} />
-                                    <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:50, height: 50, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>+100</NB.Text>
-                                  </View>
-
-                              </View>
-                          </View>
-                      </View>
-                        </NB.CardItem>
-                    </NB.Card>
-
-               </TouchableOpacity>
-
-               <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches')} > 
-                    <NB.Card   style={{marginTop:-2,}}>
-                        <NB.CardItem   >
-                         <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{marginRight:15,marginLeft:-10,}}>
-                          <Image   source={require('../Image/user.jpg')} style={{ width:80, height: 80, borderRadius: 37.5 }} />
-                       
-                        </View>
-                          <View  >
-                                  <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>28 February 2020 </NB.Text>
-                                  <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5,}} />
-                       
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50 ,marginLeft:2.5,marginRight:2.5,}} />
-                                  <Image    source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50,marginLeft:2.5,marginRight:2.5, }} />
-
-
-                                  <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
-                                  <Image  style={{zIndex:-1}}  source={require('../Image/user.jpg')} style={{ width:50, height: 50, borderRadius: 50, }} />
-                                    <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:50, height: 50, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>+100</NB.Text>
-                                  </View>
-
-                              </View>
-                          </View>
-                      </View>
-                        </NB.CardItem>
-                    </NB.Card>
-
-               </TouchableOpacity>
-
- 
-
-
-
-
                     </NB.Content> 
 
 
