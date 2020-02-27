@@ -82,7 +82,7 @@ export class MyProfile extends React.Component {
                             <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:10,marginBottom:60,}} >
                                 <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:110,width:219,height:219,overflow:'hidden',}}>
 
-                                <Image style={{width:'100%',height:'100%'}}   source={require('../Image/user.jpg')} />
+                                <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
                             
                                     <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:-33,}} >
                                         <NB.View  style={{alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderRadius:100,height:35,width:35, }}>
