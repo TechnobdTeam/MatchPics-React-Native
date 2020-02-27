@@ -1,5 +1,5 @@
 import React,  { Fragment, Component,StatusBar } from 'react';
-import { View, Image, ImageBackground,NativeModules, processColor} from 'react-native';
+import { View, Image, ImageBackground,NativeModules, processColor,TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
 import { StackActions, NavigationActions } from 'react-navigation';
 // NativeBase
@@ -17,7 +17,8 @@ export class Menu extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            user_logged_in: false
+            user_logged_in : false,
+            token : ''
           };
     }
 
@@ -73,6 +74,49 @@ export class Menu extends React.Component {
     }
   }
 
+  getMessageList(){
+
+    console.log("getting message list");
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+
+    fetch(ConstValues.base_url + 'getMessageList', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+        if(responseJson.response.data == undefined){
+            console.log("getMessageList: undefined data");
+        }else{
+          ConstValues.message_data_list = responseJson.response.data ;
+          console.log("getMessageList: --------------- " + responseJson.response.data.length +" ??? "+ ConstValues.message_data_list.length );
+          this.props.navigation.navigate('Chatlist')
+        }
+
+    })
+}
+
+
+messageListClicked(){
+  AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+    console.log('user_token: ' + result)
+    if(result != null){
+        this.setState({token: result})
+    }
+    }).then(
+    this.timeoutHandle = setTimeout(()=>{
+        this.getMessageList()
+      }, 500)
+
+    )
+}
+
   render() {
     return (
       <Fragment > 
@@ -99,120 +143,148 @@ export class Menu extends React.Component {
                           
                           <NB.View style={{
                              borderBottomLeftRadius:10,borderBottomRightRadius:10,overflow:"hidden"}}>
-
+                  
                             <NB.Content >
-                                    <NB.ListItem  style={{marginLeft:0,paddingLeft:25,height:80}}>
+                              
+                                    <NB.ListItem  style={{marginLeft:0,paddingLeft:25,height:80,}}>
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('MyProfile')} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                        <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                        <Icon name="user-circle"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                        </NB.View>
                                         
                                    
                                         <NB.Body>
-                                        <NB.Text onPress={() => this.props.navigation.navigate('MyProfile')}   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}}>my profile</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}}>my profile</NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
+                                   
                             </NB.Content>
+                          
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}} >
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('UploadImage')} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="cloud-upload-alt"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text onPress={() => this.props.navigation.navigate('UploadImage')} style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >photo upload </NB.Text>
+                                        <NB.Text  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >photo upload </NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}} >
+
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('MyMatchesFavorite')} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="user-friends"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text onPress={() => this.props.navigation.navigate('MyMatchesFavorite')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my matches</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my matches</NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}} >
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('MyFavorite')} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="heart"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                          <NB.Text onPress={() => this.props.navigation.navigate('MyFavorite')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my favorite</NB.Text>
+                                          <NB.Text  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >my favorite</NB.Text>
                                         </NB.Body>
+                                       </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}} >
+                                    <TouchableOpacity  onPress={() => this.messageListClicked()} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="comments"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                             <NB.Text onPress={() => this.props.navigation.navigate('Chatlist')} style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >messages</NB.Text> 
+                                             <NB.Text style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >messages</NB.Text> 
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}}>
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('AppSearch')} style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="search"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text  onPress={() => this.props.navigation.navigate('AppSearch')}  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >search</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >search</NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}}>
+                                    <TouchableOpacity  style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="shopping-cart"  style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >buy subscription</NB.Text>
+                                        <NB.Text  style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >buy subscription</NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80}}>
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('Termsconditions')}  style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="balance-scale" style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >terms & conditions</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >terms & conditions</NB.Text>
                                         </NB.Body>
+
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content>
 
                             {!this.state.user_logged_in ? 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:80,}}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}  style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="door-open" style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                          <NB.Text onPress={() => this.props.navigation.navigate('Login')}   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >login </NB.Text>
+                                          <NB.Text    style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >login </NB.Text>
                                         </NB.Body>
+                                        </TouchableOpacity>
                                     </NB.ListItem>
                             </NB.Content> 
                             : null }
 
                             {this.state.user_logged_in ? 
                             <NB.Content style={{}}>
+                              
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25, height:80}}>
-                                    <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
+                                      <TouchableOpacity onPress={() => this.userLogOut()} style={{width:"100%",flex:1,flexDirection:"row"}}>
+                                      <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="door-open" style={{fontSize:30,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text onPress={() => this.userLogOut()}   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >logout</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize:17,color:"#464646"}} >logout</NB.Text>
                                         </NB.Body>
+                                      </TouchableOpacity>
+                                    
                                     </NB.ListItem>
+                                
                             </NB.Content> 
                             : null }
 

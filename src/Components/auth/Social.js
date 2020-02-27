@@ -1,13 +1,15 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
+import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
+
 {/*Register */}
 export class Social extends React.Component {
 
@@ -62,12 +64,10 @@ export class Social extends React.Component {
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>looking for</NB.Text>
                                     </NB.Left>
                                     <NB.Right style={{flex:1,}}>
-                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>Women  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                       <NB.Text onPress={() => this.setState({looking: true})} style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>Women  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                     </NB.Right>
                                     </NB.ListItem>
-                                 </NB.List>
-
-
+                                 </NB.List> 
                                  <NB.List  >
                                     <NB.ListItem selected style={{borderBottomWidth:0,}}>
                                     <NB.Left>
@@ -87,12 +87,19 @@ export class Social extends React.Component {
                                                 maximumValue={sliderData.length-1} 
                                                 minimumTrackTintColor='#92207e'
                                                 maximumTrackTintColor='#92207e'
+                                               
                                               /> 
+
+
                                         </View>
+
+
                                    </NB.List>
                                 
 
                               </NB.View> 
+
+      
 
 
                             <NB.Item style={{borderBottomWidth:0,}}>
@@ -131,6 +138,35 @@ export class Social extends React.Component {
               </NB.View>
             </NB.Container>
           </ImageBackground> 
+
+
+
+          <ConfirmDialog
+        // title="Confirmation!ss"
+       
+        message={this.confirmMessage}
+        visible={this.state.looking}
+        onTouchOutside={() => this.setState({looking: false})}
+        dialogStyle={{ 
+            borderRadius:5,
+            
+        }
+
+        }
+        >
+          <View>  
+             
+            <NB.Button  style={{backgroundColor:"#e34c91"}}>
+              <NB.Text>Women</NB.Text>
+          </NB.Button>
+
+          <NB.Button  style={{marginTop:7,backgroundColor:"#e34c91"}} >
+             <NB.Text>men</NB.Text>
+          </NB.Button>
+            
+           </View>
+
+</ConfirmDialog>
 
   </Fragment>
        

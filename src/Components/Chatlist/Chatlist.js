@@ -5,91 +5,126 @@ import * as NB from 'native-base';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import {Text, SwipeRow} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Data from "./Data";
+// import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
+
+var Data = ConstValues.message_data_list
+
+const arr = [
+  {
+    name: "Alam",
+    description: "100 jours ferme",
+    image: "path_image",
+    
+  },
+  {
+    name: "Prokash",
+    description: "100 jours ferme",
+    image: "path_image",
+    
+  },
+  {
+    name: "Porosh",
+    description: "100 jours ferme",
+    image: "path_image",
+    
+  },
+  {
+    name: "Alamin",
+    description: "100 jours ferme",
+    image: "path_image",
+    
+	}
+];
+
 
 {/*Login  */}
 export class Chatlist extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
+      search_text:'',
+      searach_vissible : true,
+      listType: 'FlatList',
+      listViewData: Array(Data.length)
+          .fill('')
+          .map((_, i) => ({ key: `${i}`, id: `${Data[i].id}`,  message_by: `${Data[i].message_by}`,  user_id: `${Data[i].user_id}`,  name: `${Data[i].name}`, url: `${Data[i].url}`, message: `${Data[i].message}`, created_at: `${Data[i].created_at}`,})),
+          sectionListData: Array(5)
+          .fill('')
+          .map((_, i) => ({
+              title: `title${i + 1}`,
+              data: [
+                  ...Array(5)
+                      .fill('')
+                      .map((_, j) => ({
+                          key: `${i}.${j}`,
+                          text: `${j}`,
+                      })),
+              ],
+          })),
+  };
 
-        messageData: '',
-        token: '',
 
-        listType: 'FlatList',
-        listViewData: Array(Data.length)
-            .fill('')
-            .map((_, i) => ({ key: `${i}`, text: `${Data[i].text}`,  userNmae: `${Data[i].userNmae}`,  time: `${Data[i].time}`,  images: `${Data[i].images}`, })),
-        sectionListData: Array(5)
-            .fill('')
-            .map((_, i) => ({
-                title: `title${i + 1}`,
-                data: [
-                    ...Array(5)
-                        .fill('')
-                        .map((_, j) => ({
-                            key: `${i}.${j}`,
-                            text: `${j}`,
-                        })),
-                ],
-            })),
-    };
+  this.rowSwipeAnimatedValues = {};
+  Array(Data.length)
+      .fill('')
+      .forEach((_, i) => {
+          this.rowSwipeAnimatedValues[`${i}`] = new Animated.Value(0);
+      });
+  }
 
-    AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+componentDidMount(){
+  // AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+  //   console.log('user_token: ' + result)
+  //   if(result != null){
+  //       this.setState({token: result})
+  //   }
+  //   }).then(
+  //   this.timeoutHandle = setTimeout(()=>{
+  //       // this.getMessageList()
+  //     }, 1000)
 
-        console.log('user_token: ' + result)
+  //   )
 
-        if(result != null){
-            this.setState({token: result})
-        }
-    }).then(
-        this.timeoutHandle = setTimeout(()=>{
-            this.getMessageList()
-          }, 1000)
-    )
-
-    this.rowSwipeAnimatedValues = {};
-    // Array(Data.length)
-    //     .fill('')
-    //     .forEach((_, i) => {
-    //         this.rowSwipeAnimatedValues[`${i}`] = new Animated.Value(0);
-    //     });
 }
 
-getMessageList(){
+// getMessageList(){
 
-    console.log("getting message list");
+//     console.log("getting message list");
 
-    var formData = new FormData();
-    formData.append('api_key', ConstValues.api_key);
+//     var formData = new FormData();
+//     formData.append('api_key', ConstValues.api_key);
 
-    fetch(ConstValues.base_url + 'getMessageList', {
-      method: 'POST',
-      headers:{
-          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
-          'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
-      },
-      body: formData
-    }).then((response) => response.json())
-    .then((responseJson) =>{
+//     fetch(ConstValues.base_url + 'getMessageList', {
+//       method: 'POST',
+//       headers:{
+//           'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+//           'Accept': 'application/json',
+//           'Content-Type': 'multipart/form-data',
+//       },
+//       body: formData
+//     }).then((response) => response.json())
+//     .then((responseJson) =>{
+//         if(responseJson.response.data == undefined){
+//             console.log("getMessageList: undefined data");
+//         }else{
+          
+//           this.setState({messageData: responseJson.response.data})
 
-        console.log("getMessageList: " + responseJson.response.data);
+//           data_original = responseJson.response.data
+//           console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
 
-        this.setState({messageData: responseJson.response.data})
+//           this.timeoutHandle = setTimeout(()=>{
+//             // this.swiperListInvalidate()
 
-        if(responseJson.response.data == undefined){
-            console.log("getMessageList: undefined data");
-        }
-        else{
+//           }, 1000)
 
-        }
+//         }
 
-    })
-}
+//     })
+// }
 
 closeRow(rowMap, rowKey) {
     if (rowMap[rowKey]) {
@@ -141,16 +176,50 @@ onSwipeValueChange = swipeData => {
     };
 
 
-    example = () => {
-
-      this.setState({ visible: !this.state.visible })
+    searchViewClicked = () => {
+      this.setState({ searach_vissible: !this.state.searach_vissible })
      }
 
 
+    //  ----------------------------------
+     searchTextChanged(search_text){
+      this.setState({search_text })
+
+      // // const selectedValue = '309';
+      // console.log(">>>: "+arr.length)
+      // // const newArr = arr.filter(object => object.value === {search_text});
+   
+
+      // const searchValue = search_text.toLowerCase();
+      // // var newArr = arr.filter(item => {
+      // //  Object.keys(item).some(key =>
+      // //     typeof item[key] === "string" && item[key].toLowerCase().includes(searchValue)
+      // // );
+      // //  })
+
+      //  const filteredData = arr.filter(item => {
+      //   Object.keys(item).some(key =>
+      //   typeof item[key] === "string" && item[key].toLowerCase().includes(searchValue)
+      //   );
+      //   });
+
+      // console.log("::: ",filteredData.length)
+
+      // console.log('Search : '+ search_text)
+
+      // console.log(" ???? "+this.filterByValue(Data, search_text)); 
+     }
+    
+
+     filterByValue(array, string) {
+      return array.filter(o =>
+          Object.keys(o).some(k => o['name'].toLowerCase().includes(string.toLowerCase())));
+     }
+    
 
 
- 
-    render() {
+
+     render() {
 
       const { search } = this.state;
       // const header =() => {
@@ -185,22 +254,29 @@ onSwipeValueChange = swipeData => {
                       </NB.Right>
                     </NB.Header> 
 
-                     {(this.state.messageData != undefined && this.state.messageData != '') ? 
-                     <View  style={styles.rowFrontTop}>
+                     
+                      <View  style={styles.rowFrontTop}>
                         <View style={{ width:'80%', }}>
 
-                        {this.state.visible == false ?
+                        {this.state.searach_vissible == false ?
 
                           <NB.Item style={{borderBottomWidth:0,}} >
                                 
                                <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />
-                               <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'/>   
+                               <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'
+                               onChangeText={(search_text) =>{                               
+                                this.searchTextChanged(search_text)
+                               } }
+                               value={this.state.search_text}
+                               />  
+                               <NB.Icon  onPress={() => this.searchViewClicked()}    name="close" style={{fontSize:20,color:'#e74e92', }}  />
+
                           </NB.Item> 
          
                             :
 
                             <View style={{justifyContent:'center',alignItems:'center',}}>
-                            <TouchableOpacity  onPress= {() => this.example()}>
+                            <TouchableOpacity  onPress= {() => this.searchViewClicked()}>
                             <NB.Text style={{color:'#e74e92',fontSize:13}} >
                             <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
                             </TouchableOpacity> 
@@ -215,11 +291,7 @@ onSwipeValueChange = swipeData => {
                           </View> 
                               
                         </View> 
-                        :
-                        null
-                     }
                      
-                     {(this.state.messageData != undefined && this.state.messageData != '') ? 
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
      
@@ -254,7 +326,6 @@ onSwipeValueChange = swipeData => {
                                           
                                     </View>
                                    
-
                                    
                                 }
                                 renderHiddenItem={ (data, rowMap) => (
@@ -273,36 +344,34 @@ onSwipeValueChange = swipeData => {
 
 
               
-                            
-                            
-                            {this.state.listType === 'FlatList' && (
-                    <SwipeListView
-                        data={this.state.messageData}
-                        renderItem={data => (
-                            <TouchableHighlight
-                                onPress={() => console.log('You touched me')}
-                                
-                                underlayColor={'#AAA'}
-                            >
 
-                                  <View    style={styles.rowFront}>
-                                    <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:90,}}>
-                                       <View style={{justifyContent:"flex-start",alignItems:'center',paddingRight:20,paddingTop:10,marginLeft:-10}}>
-                                          <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
-                                       </View>
-                                        
-                                        <View style={{width:"100%"}}>
-                                            <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
-                                              <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
-                                              <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
-                                            </View> 
-                                            <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
-                                            
-                                        </View>
+                {this.state.listType === 'FlatList' && (
+                    <SwipeListView
+                        data={  this.filterByValue(this.state.listViewData, this.state.search_text) }
+                        renderItem={data => (
+                          <TouchableHighlight
+                          onPress={() => console.log('You touched me')}
+                          
+                          underlayColor={'#AAA'}>
+
+                            <View    style={styles.rowFront}>
+                              <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:90,}}>
+                                 <View style={{justifyContent:"flex-start",alignItems:'center',paddingRight:20,paddingTop:10,marginLeft:-10}}>
+                                    <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
+                                 </View>
+                                  
+                                  <View style={{width:"100%"}}>
+                                      <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
+                                        <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
+                                        <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
                                       </View> 
-                                          
-                                    </View> 
-                            </TouchableHighlight>
+                                      <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
+                                      
+                                  </View>
+                                </View> 
+                                    
+                              </View> 
+                      </TouchableHighlight>
                         )}
                         renderHiddenItem={(data, rowMap) => (
                             <View style={styles.rowBack}>
@@ -318,18 +387,17 @@ onSwipeValueChange = swipeData => {
                                         styles.backLeftBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.key)
+                                        this.deleteRow(rowMap, data.item.key)
                                     }
                                 >
-                                {/* {(this.state.messageData != undefined && this.state.messageData != '') ?
-                                <Animated.View
+                               <Animated.View
                                         style={[
                                             styles.trash,
                                             {
                                                 transform: [
                                                     {
                                                         scale: this.rowSwipeAnimatedValues[
-                                                            data.key
+                                                            data.item.key
                                                         ].interpolate({
                                                             inputRange: [
                                                                 45,
@@ -346,9 +414,6 @@ onSwipeValueChange = swipeData => {
                                     >
                                 <Image source={require('../Image/delete.png')} style={{width:28 }} />  
                                 </Animated.View>
-                                :
-                                null
-                                } */}
                                 </TouchableOpacity>   
                                  
                                 <TouchableOpacity
@@ -357,10 +422,9 @@ onSwipeValueChange = swipeData => {
                                         styles.backRightBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.key)
+                                        this.deleteRow(rowMap, data.item.key)
                                     }
                                 >
-                                {/* {(this.state.messageData != undefined && this.state.messageData != '') ?
                                     <Animated.View
                                         style={[
                                             styles.trash,
@@ -368,7 +432,7 @@ onSwipeValueChange = swipeData => {
                                                 transform: [
                                                     {
                                                         scale: this.rowSwipeAnimatedValues[
-                                                            data.key
+                                                            data.item.key
                                                         ].interpolate({
                                                             inputRange: [
                                                                 45,
@@ -385,9 +449,6 @@ onSwipeValueChange = swipeData => {
                                     >
                                     <Image source={require('../Image/delete.png')} style={{width:28 }} />  
                                     </Animated.View>
-                                    :
-                                    null
-                                } */}
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -400,15 +461,10 @@ onSwipeValueChange = swipeData => {
                         onSwipeValueChange={this.onSwipeValueChange}
                     />
                 )}
-                
+
+
                             
                   </NB.Content> 
-
-                  :
-                  <NB.View style={{flex: 1, backgroundColor:"#fff"}}>
-                  <NB.Text style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
-                  </NB.View>
-                }
 
                   </NB.Container>
      </ImageBackground> 
@@ -416,6 +472,231 @@ onSwipeValueChange = swipeData => {
  </Fragment>
       );
     }
+
+
+
+ 
+//     render() {
+
+//       const { search } = this.state;
+//       // const header =() => {
+//       //    return <View style={styles.header}>
+//       //              <Text style={styles.headerText} > List Headers</Text>
+          
+//       //           </View>;
+
+//       // }
+//       return ( 
+//         <Fragment>    
+//          <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
+               
+//                   <NB.Container   style={styles.PageContainerChatList}  >
+                      
+//                   <NB.Header  transparent>
+//                       <NB.Left>
+//                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
+//                         <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+//                         </NB.Button>
+//                       </NB.Left>
+
+//                       <NB.Body  >
+//                       <NB.Segment style={{backgroundColor:'transparent'}}>
+//                           <NB.Text style={{color:'#fff',fontSize:23,}}>Messages     </NB.Text>
+//                           </NB.Segment>
+//                       </NB.Body>
+//                       <NB.Right>
+//                         <NB.Button transparent>
+//                         <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')} style={{fontSize:24,color:'#fff', }} solid />   
+//                         </NB.Button>
+//                       </NB.Right>
+//                     </NB.Header> 
+
+//                      {(this.state.messageData != undefined && this.state.messageData != '') ? 
+//                      <View  style={styles.rowFrontTop}>
+//                         <View style={{ width:'80%', }}>
+
+//                         {this.state.visible == false ?
+
+//                           <NB.Item style={{borderBottomWidth:0,}} >
+                                
+//                                <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />
+//                                <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'/>   
+//                           </NB.Item> 
+         
+//                             :
+
+//                             <View style={{justifyContent:'center',alignItems:'center',}}>
+//                             <TouchableOpacity  onPress= {() => this.example()}>
+//                             <NB.Text style={{color:'#e74e92',fontSize:13}} >
+//                             <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
+//                             </TouchableOpacity> 
+//                             </View>
+
+//                             }
+
+
+                            
+                            
+                              
+//                           </View> 
+                              
+//                         </View> 
+//                         :
+//                         null
+//                      }
+                     
+//                      {(this.state.messageData != undefined && this.state.messageData != '') ? 
+//                 <NB.Content style={{backgroundColor:"#fff"}}>
+
+          
+//                 {this.state.listType === 'FlatList' && (
+//                     <SwipeListView
+//                         data={this.state.listViewData}
+//                         renderItem={data => (
+//                             <TouchableHighlight
+//                                 onPress={() => console.log('You touched me')}
+                                
+//                                 underlayColor={'#AAA'}
+//                             >
+
+//                                   <View    style={styles.rowFront}>
+//                                     <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:90,}}>
+//                                        <View style={{justifyContent:"flex-start",alignItems:'center',paddingRight:20,paddingTop:10,marginLeft:-10}}>
+//                                           <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
+//                                        </View>
+                                        
+//                                         <View style={{width:"100%"}}>
+//                                             <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
+//                                               <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
+//                                               <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
+//                                             </View> 
+//                                             <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
+                                            
+//                                         </View>
+//                                       </View> 
+                                          
+//                                     </View> 
+//                             </TouchableHighlight>
+//                         )}
+//                         renderHiddenItem={(data, rowMap) => (
+//                             <View style={styles.rowBack}>
+
+
+
+
+
+
+//                         <TouchableOpacity
+//                                     style={[
+//                                         styles.backLeftBtn,
+//                                         styles.backLeftBtnRight,
+//                                     ]}
+//                                     onPress={() =>
+//                                         this.deleteRow(rowMap, data.key)
+//                                     }
+//                                 >
+//                                 {/* {(this.state.messageData != undefined && this.state.messageData != '') ?
+//                                 <Animated.View
+//                                         style={[
+//                                             styles.trash,
+//                                             {
+//                                                 transform: [
+//                                                     {
+//                                                         scale: this.rowSwipeAnimatedValues[
+//                                                             data.key
+//                                                         ].interpolate({
+//                                                             inputRange: [
+//                                                                 45,
+//                                                                 90,
+//                                                             ],
+//                                                             outputRange: [0, 1],
+//                                                             extrapolate:
+//                                                                 'clamp',
+//                                                         }),
+//                                                     },
+//                                                 ],
+//                                             },
+//                                         ]}
+//                                     >
+//                                 <Image source={require('../Image/delete.png')} style={{width:28 }} />  
+//                                 </Animated.View>
+//                                 :
+//                                 null
+//                                 } */}
+//                                 </TouchableOpacity>   
+
+
+                                 
+//                                 <TouchableOpacity
+//                                     style={[
+//                                         styles.backRightBtn,
+//                                         styles.backRightBtnRight,
+//                                     ]}
+//                                     onPress={() =>
+//                                         this.deleteRow(rowMap, data.id)
+//                                     }
+//                                 >
+//                                 {(this.state.messageData != undefined && this.state.messageData != '') ?
+//                                     <Animated.View
+//                                         style={[
+//                                             styles.trash,
+//                                             {
+//                                                 transform: [
+//                                                     {
+//                                                         scale: this.rowSwipeAnimatedValues[
+//                                                             data.id
+//                                                         ].interpolate({
+//                                                             inputRange: [
+//                                                                 45,
+//                                                                 90,
+//                                                             ],
+//                                                             outputRange: [0, 1],
+//                                                             extrapolate:
+//                                                                 'clamp',
+//                                                         }),
+//                                                     },
+//                                                 ],
+//                                             },
+//                                         ]}
+//                                     >
+//                                     <Image source={require('../Image/delete.png')} style={{width:28 }} />  
+//                                     </Animated.View>
+//                                     :
+//                                     null
+//                                 }
+//                                 </TouchableOpacity>
+
+
+//                             </View>
+//                         )}
+//                         leftOpenValue={98}
+//                         rightOpenValue={-98}
+//                         previewRowKey={'0'}
+//                         previewOpenValue={-40}
+//                         previewOpenDelay={3000}
+//                         onRowDidOpen={this.onRowDidOpen}
+//                         onSwipeValueChange={this.onSwipeValueChange}
+//                     />
+//                 )}
+                
+                            
+//                   </NB.Content> 
+
+//                   :
+//                   <NB.View style={{flex: 1, backgroundColor:"#fff"}}>
+//                   <NB.Text style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
+//                   </NB.View>
+//                 }
+
+//                   </NB.Container>
+//      </ImageBackground> 
+
+//  </Fragment>
+//       );
+//     }
+
+
+
   }
   {/* End Login */}
 

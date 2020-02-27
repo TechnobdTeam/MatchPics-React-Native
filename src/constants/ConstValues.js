@@ -12,5 +12,7 @@ const ConstValues = {
     user_password: '@user_password',
     fb_login: '@fb_login',
     access_token: '@access_token',
+
+    message_data_list: []
 }
 export default ConstValues;

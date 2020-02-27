@@ -24,6 +24,7 @@ export * from './auth/ForgotPassword'
 export * from './auth/location'
 export * from './auth/Appearance'
 export * from './auth/MyMatchesFavorite'
+export * from './auth/Termsconditions'
 
 export * from './Menu/Menu'
 export * from './Chatlist/Chatlist'
