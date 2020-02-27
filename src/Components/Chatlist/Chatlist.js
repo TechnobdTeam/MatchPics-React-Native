@@ -10,42 +10,18 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
 
-var Data = ConstValues.message_data_list
-
-const arr = [
-  {
-    name: "Alam",
-    description: "100 jours ferme",
-    image: "path_image",
-    
-  },
-  {
-    name: "Prokash",
-    description: "100 jours ferme",
-    image: "path_image",
-    
-  },
-  {
-    name: "Porosh",
-    description: "100 jours ferme",
-    image: "path_image",
-    
-  },
-  {
-    name: "Alamin",
-    description: "100 jours ferme",
-    image: "path_image",
-    
-	}
-];
+var Data = []
 
 
 {/*Login  */}
 export class Chatlist extends React.Component {
   constructor(props) {
     super(props);
+    Data = ConstValues.message_data_list
+
     this.state = { 
       search_text:'',
+      iloding:false,
       searach_vissible : true,
       listType: 'FlatList',
       listViewData: Array(Data.length)
@@ -76,6 +52,18 @@ export class Chatlist extends React.Component {
   }
 
 componentDidMount(){
+
+  // console.log('...................componentDidMount.....................')
+
+  // this.timeoutHandle = setTimeout(()=>{
+  //     this.setState({
+  //   iloding:true,
+  // })
+  // }, 1000)
+
+  // this.setState({
+  //   iloding:true,
+  // })
   // AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
   //   console.log('user_token: ' + result)
   //   if(result != null){
@@ -83,48 +71,48 @@ componentDidMount(){
   //   }
   //   }).then(
   //   this.timeoutHandle = setTimeout(()=>{
-  //       // this.getMessageList()
+  //       this.getMessageList()
   //     }, 1000)
 
   //   )
 
 }
 
-// getMessageList(){
+getMessageList(){
 
-//     console.log("getting message list");
+    console.log("getting message list");
 
-//     var formData = new FormData();
-//     formData.append('api_key', ConstValues.api_key);
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
 
-//     fetch(ConstValues.base_url + 'getMessageList', {
-//       method: 'POST',
-//       headers:{
-//           'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
-//           'Accept': 'application/json',
-//           'Content-Type': 'multipart/form-data',
-//       },
-//       body: formData
-//     }).then((response) => response.json())
-//     .then((responseJson) =>{
-//         if(responseJson.response.data == undefined){
-//             console.log("getMessageList: undefined data");
-//         }else{
+    fetch(ConstValues.base_url + 'getMessageList', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+        if(responseJson.response.data == undefined){
+            console.log("getMessageList: undefined data");
+        }else{
           
-//           this.setState({messageData: responseJson.response.data})
+          this.setState({messageData: responseJson.response.data})
 
-//           data_original = responseJson.response.data
-//           console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
+          data_original = responseJson.response.data
+          console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
 
-//           this.timeoutHandle = setTimeout(()=>{
-//             // this.swiperListInvalidate()
+          this.timeoutHandle = setTimeout(()=>{
+            // this.swiperListInvalidate()
 
-//           }, 1000)
+          }, 1000)
 
-//         }
+        }
 
-//     })
-// }
+    })
+}
 
 closeRow(rowMap, rowKey) {
     if (rowMap[rowKey]) {
@@ -290,6 +278,7 @@ onSwipeValueChange = swipeData => {
                               
                           </View> 
                               
+
                         </View> 
                      
                 <NB.Content style={{backgroundColor:"#fff"}}>
