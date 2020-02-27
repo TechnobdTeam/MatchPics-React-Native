@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity} from 'react-native';
+import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity,  } from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 // NativeBase
@@ -10,9 +10,6 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
-import RangeSlider from 'react-native-range-slider';
-//import Dialog, { DialogContent } from 'react-native-popup-dialog';
-
 {/*Register */}
 export class UserProfile extends React.Component {
 
@@ -182,34 +179,22 @@ export class UserProfile extends React.Component {
 
 
   render() {  
-     
+  
     return (
 
+
         <NB.Root>
-      
+            
         {!this.state.profileData == '' ?
         <View>
-        <ImageBackground   style={{width: '100%', height: '100%', backgroundColor:'#fff'}}   > 
-
- 
-        <ScrollView 
-                    
-                    contentContainerStyle={{flexGrow: 1}}
-                    >
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'stretch',
-                }}>
-                    <View style={{height:550,}} > 
-                    <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
-                            
-                    <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
-                        <View style={{flex: 1,}} >
-                        <NB.Header  transparent>
-                            <NB.Left>
-                                <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent>
+      
+        <ImageBackground style={{width: '100%', height: '100%',zIndex:-1}}   >  
+        
+                       
+                       
+                        <NB.Header  noShadow  style={{ backgroundColor: null, marginTop:30 ,position:"absolute",zIndex:999}} >
+                            <NB.Left> 
+                                <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent >
                                 
                                 <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
                                 
@@ -226,63 +211,58 @@ export class UserProfile extends React.Component {
                             
                                 </NB.Button>
                             </NB.Right>
-                        </NB.Header>  
-                        </View>
+                        </NB.Header>   
+ 
 
-                        <View style={{flex: 3,}} > 
-                            <ImageBackground source={require('../Image/slingle_profile_images_shap.png') } style={{width: '100%', height: '100%',  }}     >
-
-                            <NB.View style={{justifyContent:'flex-end', flex:1}}>
-                            <NB.ListItem style={{borderBottomWidth:0,}}>
-                                <NB.Left>
-                                <NB.Body>
-                                    <NB.Text style={{color:'#fff',fontSize:22,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
-                                    <NB.Text style={{color:'#fff',fontSize:18,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize:16 }}  /> {this.state.profileData.address} </NB.Text>  
-                                    </NB.Body>
-                                </NB.Left>
-                                <NB.Right>
+        <ScrollView   style={{zIndex:-1}}  >
+               
+                <View style={{height:530}} > 
+                    <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
                             
-                                <Icon  name="info-circle" solid style={{color:'#fff',fontSize:40 }}  />  
-                                </NB.Right>
-                            </NB.ListItem>
-                                    </NB.View>
-                            
+                            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
                                 
-                            </ImageBackground> 
-                        </View>
-                    </View>
-    
+                                    <View style={{flex: 3,}} > 
+                                        <ImageBackground source={require('../Image/slingle_profile_images_shap.png') } style={{width: '100%', height: '100%',  }}     >
+
+                                        <NB.View style={{justifyContent:'flex-end', flex:1}}>
+                                        <NB.ListItem style={{borderBottomWidth:0,}}>
+                                            <NB.Left>
+                                            <NB.Body>
+                                                <NB.Text style={{color:'#fff',fontSize:22,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
+                                                <NB.Text style={{color:'#fff',fontSize:18,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize:16 }}  /> {this.state.profileData.address} </NB.Text>  
+                                                </NB.Body>
+                                            </NB.Left>
+                                            <NB.Right>
+                                        
+                                            <Icon  name="info-circle" solid style={{color:'#fff',fontSize:40 }}  />  
+                                            </NB.Right>
+                                        </NB.ListItem>
+                                                </NB.View>
+                                        
+                                            
+                                        </ImageBackground> 
+                                    </View>
+                            </View>
+            
 
 
 
-                    </ImageBackground> 
+                         </ImageBackground> 
                     </View>
 
 
                     <View style={{ flex: 1,}} >   
-                    <NB.View   style={HomeStyle.PageContainerAbout}  >
-
-                
-
-                
-                
-                <NB.View style={{padding:20,}}>
-                <NB.Text style={{fontSize:21,marginBottom:10,color:"#6c6c6c"}}>About</NB.Text>  
-                    <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,}} >
-                    {this.state.profileData.bio}
-    
-                </NB.Text>  
-
-                </NB.View> 
-                
-            
-                
-                </NB.View>
-                    
-                    
+                        <NB.View   style={HomeStyle.PageContainerAbout}  >  
+                            <NB.View style={{padding:20,}}>
+                                        <NB.Text style={{fontSize:21,marginBottom:10,color:"#6c6c6c"}}>About</NB.Text>  
+                                            <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize:17}} >
+                                            {this.state.profileData.bio} 
+                                        </NB.Text>   
+                            </NB.View>  
+                         </NB.View> 
                     </View>
                 
-                </View>
+              
     
                 </ScrollView>
 

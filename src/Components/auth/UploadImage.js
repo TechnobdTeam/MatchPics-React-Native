@@ -4,7 +4,7 @@ import * as NB from 'native-base';
 import {Toast} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import AsyncStorage from '@react-native-community/async-storage';
-//import RangeSlider from 'rn-range-slider';
+
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'

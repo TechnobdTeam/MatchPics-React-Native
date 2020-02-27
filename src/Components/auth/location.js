@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -8,6 +8,7 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
+import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
 {/*Register */}
 export class location  extends React.Component {
 
@@ -54,15 +55,17 @@ export class location  extends React.Component {
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Location</NB.H3>
                            </NB.Item> 
                                 <NB.View style={{backgroundColor:'#fff',}} > 
-                                    <NB.CardItem> 
+                                <TouchableOpacity onPress={() => this.setState({looking: true})} >
+                                    <NB.CardItem   > 
                                         <NB.Body>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
-                                                <NB.Text style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>Dhaka, Bangladesh</NB.Text>
+                                                <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
+                                                <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>Dhaka, Bangladesh</NB.Text>
                                             </NB.Body>  
                                         <View>
                                             <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /> 
                                         </View>
                                 </NB.CardItem>   
+                                </TouchableOpacity>
                                 </NB.View>   
                         
                         </View>
@@ -72,12 +75,36 @@ export class location  extends React.Component {
                                     <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}>
                                         <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
                                         <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
-                                    </NB.Button> 
-
+                                    </NB.Button>  
                         </View>
                     </View> 
             
               </NB.View>
+
+              <ConfirmDialog
+        // title="Confirmation!ss"
+       
+        message={this.confirmMessage}
+        visible={this.state.looking}
+        onTouchOutside={() => this.setState({looking: false})}
+        dialogStyle={{ 
+            borderRadius:5,
+            
+        }
+
+        }
+        >
+          <View>  
+             
+            
+             <NB.Text>Google map</NB.Text>
+           
+            
+           </View>
+
+</ConfirmDialog>
+
+
             </NB.Container>
           </ImageBackground> 
 

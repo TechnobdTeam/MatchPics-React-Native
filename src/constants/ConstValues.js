@@ -10,5 +10,7 @@ const ConstValues = {
     customer_id: '@customer_id',
     user_name: '@user_name',
     user_password: '@user_password',
+
+    message_data_list: []
 }
 export default ConstValues;
