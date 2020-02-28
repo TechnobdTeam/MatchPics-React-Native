@@ -12,7 +12,12 @@ import { WebView } from 'react-native-webview';
 export class Termsconditions  extends React.Component {
 
  
-
+  constructor(props){
+    super(props);
+    this.state = {
+      progressVisible: true,
+    };
+  }
   
 
   render() {
@@ -37,10 +42,21 @@ export class Termsconditions  extends React.Component {
 
                     <View style={{flex: 1, }}>
 
-                    <WebView
-                      source={{uri: 'https://al-quran.technobdapis.com/home/disclaimer'}}
-                      style={{marginTop: 10}}
-                    />
+                        <WebView
+                          source={{uri: 'https://al-quran.technobdapis.com/home/disclaimer'}}
+                          style={{marginTop: 10}}
+                          onLoadEnd={this.state.progressVisible ? this.setState({progressVisible: false}) : null}
+                        />
+
+                        {this.state.progressVisible == true ? 
+                          <ProgressDialog
+                                    visible={this.state.progressVisible}
+                                    title="Loading"
+                                    message="Please wait..."
+                                />
+                                :
+                                null
+                        }
                        
                     </View> 
             
