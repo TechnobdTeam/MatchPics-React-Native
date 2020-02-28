@@ -37,25 +37,17 @@ export class ProfileEdit extends React.Component {
   // };
 
      /// Search //********************** */
-     state = {
-      search: '',
-    };
-  
-    updateSearch = search => {
-      this.setState({ search });
-    };
-  
+   
   
     example = () => {
   
-      this.setState({ visible: !this.state.visible })
+      this.setState({ name_visible: !this.state.name_visible })
      }
 
    
   ///   checkbox
   constructor(props) {
     super(props);
-
  
 
     this.state = {
@@ -67,6 +59,7 @@ export class ProfileEdit extends React.Component {
       date_to: new Date(Date.now()),
       mode: 'date',
       show: false,
+      name_visible : true,
     };
   }
   toggleSwitch1() {
@@ -139,10 +132,10 @@ export class ProfileEdit extends React.Component {
                               <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
                                 
                                 <NB.List >
-                                {this.state.visible == false ?
+                                {this.state.name_visible == false ?
                                       <NB.ListItem selected style={{padding:0,margin:0,height:53}}>
                                        
-                                     <NB.Input style={{paddingLeft:14,paddingLeft:30,}} placeholder='Enter your name ..'/> 
+                                     <NB.Input style={{paddingLeft:14,paddingLeft:30,}} placeholder='B hossain kanon'/> 
                                       
                                      </NB.ListItem>
 

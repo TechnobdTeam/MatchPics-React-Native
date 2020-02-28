@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity,Radio,} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -87,6 +87,7 @@ export class Social extends React.Component {
                                                 maximumValue={sliderData.length-1} 
                                                 minimumTrackTintColor='#92207e'
                                                 maximumTrackTintColor='#92207e'
+                                                
                                                
                                               /> 
 
@@ -155,14 +156,26 @@ export class Social extends React.Component {
         }
         >
           <View>  
-             
-            <NB.Button  style={{backgroundColor:"#e34c91"}}>
-              <NB.Text>Women</NB.Text>
-          </NB.Button>
-
-          <NB.Button  style={{marginTop:7,backgroundColor:"#e34c91"}} >
-             <NB.Text>men</NB.Text>
-          </NB.Button>
+         
+          <NB.ListItem>
+            <NB.Left>
+            <NB.Radio selected={false} />
+            <NB.Text> Women</NB.Text>
+            </NB.Left> 
+          </NB.ListItem>
+          <NB.ListItem>
+            <NB.Left>
+            <NB.Radio selected={true} />
+            <NB.Text> Men</NB.Text>
+            </NB.Left> 
+          </NB.ListItem> 
+          <NB.ListItem>
+            <NB.Left>
+            <NB.Radio selected={false} />
+            <NB.Text> Other</NB.Text>
+            </NB.Left> 
+          </NB.ListItem>
+        
             
            </View>
 
