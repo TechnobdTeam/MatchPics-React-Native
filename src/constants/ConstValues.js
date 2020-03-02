@@ -9,10 +9,13 @@ const ConstValues = {
     user_token: '@user_token',
     customer_id: '@customer_id',
     user_name: '@user_name',
+    user_image: '@user_image',
     user_password: '@user_password',
     fb_login: '@fb_login',
     access_token: '@access_token',
 
-    message_data_list: []
+    message_data_list: [],
+    user_info_data: {},
+    profile_all_details: {}
 }
 export default ConstValues;
