@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
+
 import ConstValues from '../../constants/ConstValues'
 {/*Register */}
 export class location  extends React.Component {
@@ -64,7 +65,7 @@ export class location  extends React.Component {
                                 <TouchableOpacity onPress={() => this.setState({looking: true})} >
                                     <NB.CardItem   > 
                                         <NB.Body>
-                           +--                     <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
+                            <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
                                                 {(this.state.user_location == undefined || this.state.user_location == '') ? 
                                                   <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>Set Location</NB.Text>
                                                   :
@@ -108,7 +109,7 @@ export class location  extends React.Component {
              
             
              <NB.Text>Google map</NB.Text>
-           
+      
             
            </View>
 

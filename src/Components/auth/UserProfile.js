@@ -248,11 +248,20 @@ export class UserProfile extends React.Component {
         <View>
       
         <ImageBackground style={{width: '100%', height: '100%',zIndex:-1}}   >  
+
+         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:10}}>
+
+         <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent >
+                                
+                                <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
+                                
+                                </NB.Button>
+         </NB.View>
         
                        
                        
-                        <NB.Header  noShadow  style={{ backgroundColor: null, marginTop:30 ,position:"absolute",zIndex:999}} >
-                            <NB.Left> 
+                        {/* <NB.Header  noShadow  style={{ backgroundColor:'transparent', marginTop:30 ,zIndex:999}} >
+                            <NB.Left style={{backgroundColor:'transparent'}}> 
                                 <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent >
                                 
                                 <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
@@ -260,17 +269,17 @@ export class UserProfile extends React.Component {
                                 </NB.Button>
                             </NB.Left>
 
-                            <NB.Body  >
+                            <NB.Body style={{backgroundColor:'transparent'}} >
                             <NB.Segment style={{backgroundColor:'transparent'}}>
                                 
                                 </NB.Segment>
                             </NB.Body>
-                            <NB.Right>
+                            <NB.Right style={{backgroundColor:'transparent'}}>
                                 <NB.Button transparent>
                             
                                 </NB.Button>
                             </NB.Right>
-                        </NB.Header>   
+                        </NB.Header>    */}
  
 
         <ScrollView   style={{zIndex:-1}}  >
