@@ -6,13 +6,22 @@ import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import GoogleMapReact from 'google-map-react';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
 import ConstValues from '../../constants/ConstValues'
+
 {/*Register */}
 export class location  extends React.Component {
 
+  static defaultProps = {
+    center: {
+      lat: 59.95,
+      lng: 30.33
+    },
+    zoom: 11
+  };
 
   constructor(props){
     super(props);
@@ -64,7 +73,7 @@ export class location  extends React.Component {
                                 <TouchableOpacity onPress={() => this.setState({looking: true})} >
                                     <NB.CardItem   > 
                                         <NB.Body>
-                           +--                     <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
+                                                <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
                                                 {(this.state.user_location == undefined || this.state.user_location == '') ? 
                                                   <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>Set Location</NB.Text>
                                                   :
@@ -94,25 +103,24 @@ export class location  extends React.Component {
               <ConfirmDialog
         // title="Confirmation!ss"
        
-        message={this.confirmMessage}
-        visible={this.state.looking}
-        onTouchOutside={() => this.setState({looking: false})}
-        dialogStyle={{ 
-            borderRadius:5,
-            
-        }
+                message={this.confirmMessage}
+                visible={this.state.looking}
+                onTouchOutside={() => this.setState({looking: false})}
+                dialogStyle={{ 
+                    borderRadius:5,
+                    
+                }
 
-        }
-        >
-          <View>  
-             
-            
-             <NB.Text>Google map</NB.Text>
-           
-            
-           </View>
+                }
+                >
+                  <View>  
+                    
+                    
+                    <NB.Text>Select your location</NB.Text>
+                    
+                  </View>
 
-</ConfirmDialog>
+        </ConfirmDialog>
 
 
             </NB.Container>
@@ -153,7 +161,25 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 1},
     shadowRadius: 2,
     shadowOpacity: 0.35,
-  }
+  },
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: 300,
+    height: 300
+},
+map_container: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+}
 
 
 });

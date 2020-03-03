@@ -3,12 +3,13 @@ import { Path,View, Image, ImageBackground, FlatList,StyleSheet,Animated , Touch
 import * as NB from 'native-base';
 // NativeBase
 import HomeStyle from '../LayoutsStytle/HomeStyle';
-import {Text, SwipeRow} from 'native-base';
+import {Text, SwipeRow, Toast} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 // import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 
 var Data = []
 
@@ -24,6 +25,7 @@ export class Chatlist extends React.Component {
       iloding:false,
       searach_vissible : true,
       listType: 'FlatList',
+      progressVisible: false ,
       listViewData: Array(Data.length)
           .fill('')
           .map((_, i) => ({ key: `${i}`, id: `${Data[i].id}`,  message_by: `${Data[i].message_by}`,  user_id: `${Data[i].user_id}`,  name: `${Data[i].name}`, url: `${Data[i].url}`, message: `${Data[i].message}`, created_at: `${Data[i].created_at}`,})),
@@ -64,17 +66,17 @@ componentDidMount(){
   // this.setState({
   //   iloding:true,
   // })
-  // AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
-  //   console.log('user_token: ' + result)
-  //   if(result != null){
-  //       this.setState({token: result})
-  //   }
-  //   }).then(
-  //   this.timeoutHandle = setTimeout(()=>{
-  //       this.getMessageList()
-  //     }, 1000)
+  AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+    console.log('user_token: ' + result)
+    if(result != null){
+        this.setState({token: result})
+    }
+    }).then(
+    // this.timeoutHandle = setTimeout(()=>{
+    //     this.getMessageList()
+    //   }, 1000)
 
-  //   )
+    )
 
 }
 
@@ -95,6 +97,12 @@ getMessageList(){
       body: formData
     }).then((response) => response.json())
     .then((responseJson) =>{
+
+        Toast.show({
+            text: responseJson.response.message,
+            textStyle: { color: "yellow" },
+          })
+
         if(responseJson.response.data == undefined){
             console.log("getMessageList: undefined data");
         }else{
@@ -120,14 +128,46 @@ closeRow(rowMap, rowKey) {
     }
 }
 
-deleteRow(rowMap, rowKey) {
-    this.closeRow(rowMap, rowKey);
-    const newData = [...this.state.listViewData];
-    const prevIndex = this.state.listViewData.findIndex(
-        item => item.key === rowKey
-    );
-    newData.splice(prevIndex, 1);
-    this.setState({ listViewData: newData });
+deleteRow(rowMap, rowKey, messageId) {
+
+    this.setState({progressVisible: true})
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+    formData.append('message_id', messageId);
+
+    fetch(ConstValues.base_url + 'removeMessage', {
+      method: 'POST',
+      headers:{
+          'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        this.setState({progressVisible: false})
+
+        Toast.show({
+            text: responseJson.response.message,
+            textStyle: { color: "yellow" },
+          })
+
+        if(responseJson.response.code == 1000){
+
+            this.closeRow(rowMap, rowKey);
+            const newData = [...this.state.listViewData];
+            const prevIndex = this.state.listViewData.findIndex(
+                item => item.key === rowKey
+            );
+            newData.splice(prevIndex, 1);
+            this.setState({ listViewData: newData });
+        }
+
+    })
+
+    console.log("delete_message: " + messageId)
 }
 
 deleteSectionRow(rowMap, rowKey) {
@@ -218,8 +258,9 @@ onSwipeValueChange = swipeData => {
 
       // }
       return ( 
-        <Fragment>    
-         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
+          <NB.Root>
+            <Fragment>    
+                 <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
                
                   <NB.Container   style={styles.PageContainerChatList}  >
                       
@@ -354,7 +395,8 @@ onSwipeValueChange = swipeData => {
                                         <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
                                         <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
                                       </View> 
-                                      <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow')}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
+                                      <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow',
+                                      {id: data.item.id, name: data.item.name, user_id: data.item.user_id})}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
                                       
                                   </View>
                                 </View> 
@@ -376,7 +418,7 @@ onSwipeValueChange = swipeData => {
                                         styles.backLeftBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.item.key)
+                                        this.deleteRow(rowMap, data.item.key, data.item.id)
                                     }
                                 >
                                <Animated.View
@@ -411,7 +453,7 @@ onSwipeValueChange = swipeData => {
                                         styles.backRightBtnRight,
                                     ]}
                                     onPress={() =>
-                                        this.deleteRow(rowMap, data.item.key)
+                                        this.deleteRow(rowMap, data.item.key, data.item.id)
                                     }
                                 >
                                     <Animated.View
@@ -456,9 +498,16 @@ onSwipeValueChange = swipeData => {
                   </NB.Content> 
 
                   </NB.Container>
-     </ImageBackground> 
+                </ImageBackground> 
 
- </Fragment>
+                <ProgressDialog
+                visible={this.state.progressVisible}
+                title="Loading data"
+                message="Please, wait..."
+            />
+
+            </Fragment>
+          </NB.Root>
       );
     }
 

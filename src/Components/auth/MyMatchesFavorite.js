@@ -252,6 +252,11 @@ export class MyMatchesFavorite extends React.Component {
 
                 </NB.Container> 
             </ImageBackground>
+            <ProgressDialog
+                visible={this.state.progressVisible}
+                title="Loading data"
+                message="Please, wait..."
+            />
             </Fragment>    
         );
     }

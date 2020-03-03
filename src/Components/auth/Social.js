@@ -1,38 +1,247 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity,Radio,} from 'react-native';
+import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,TouchableOpacity,Radio,} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
-import {Text} from 'native-base';
+import {Text, Toast} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
+import ConstValues from '../../constants/ConstValues'
+import AsyncStorage from '@react-native-community/async-storage';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
+// import RangeSlider from 'rn-range-slider';
+
+const roundTo = require('round-to');
 
 {/*Register */}
 export class Social extends React.Component {
 
+  // const 
+  //   setNonCollidingMultiSliderValue
+  //  = React.useState([0, 100]);
+
+  //  const 
+  //  nonCollidingMultiSliderValue
+  //  = React.useState([0, 100]);
+  
+
+  // nonCollidingMultiSliderValuesChange = values =>
+  //   setNonCollidingMultiSliderValue(values);
+
+
+  range_min_age = 18
+  range_max_age = 70
+
+  looking_for_id = ''
+  changed_min_age = 0
+  changed_max_age = 0
+
   constructor(props){
     super(props);
     this.state = {
-
+      token: '',
+      about_me: '',
+      looking_for: '',
+      user_min_age: '',
+      user_max_age: '',
+      min_age: 0,
+      max_age: 0,
+      valueMin: 0,
+      valueMax: 0,
+      progressVisible: false,
+      data: [],
+       dialog_title: '',
+       show_list_for: '',
+       progressVisible: false
     };
 
   }
+
+  componentDidMount(){
+
+    AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+        console.log('token: ' + result)
+
+        if(result != null){
+          this.setState({token: result})
+        }
+    })
+
+    this.setState({about_me: ConstValues.user_info_data.bio, 
+      looking_for: ConstValues.user_info_data.looking_for,
+      user_min_age: ConstValues.user_info_data.min_age,
+      user_max_age: ConstValues.user_info_data.max_age,
+      min_age: ConstValues.profile_all_details.discovery.age_range.min,
+      max_age: ConstValues.profile_all_details.discovery.age_range.max,
+      value: ConstValues.profile_all_details.discovery.age_range.min,
+    })
+
+    this.range_min_age = parseInt(ConstValues.profile_all_details.discovery.age_range.min)
+    this.range_max_age = parseInt(ConstValues.profile_all_details.discovery.age_range.max)
+
+      console.log("looking_for: " + this.state.looking_for)
+      console.log("min_age: " + this.state.min_age)
+      console.log("max_age: " + this.state.max_age)
+
+      console.log("range_min_age: " + this.range_min_age)
+      console.log("range_max_age: " + this.range_max_age)
+
+      this.initIDs()
+  }
+
+  initIDs(){
+
+    ConstValues.profile_all_details.discovery.looking_for.map((value, key) =>{
+ 
+       console.log("looping: " + value.name)
+ 
+       if(value.name.toLowerCase() == this.state.looking_for.toLowerCase()){
+ 
+          this.looking_for_id = value.id
+       }
+    })
+
+    console.log("user_min_agelooping: " + ConstValues.user_info_data.min_age)
+
+    if(ConstValues.user_info_data.min_age != null && ConstValues.user_info_data.min_age != '' && ConstValues.user_info_data.min_age != undefined){
+
+      this.setState({valueMin: parseInt(ConstValues.user_info_data.min_age)})
+      this.changed_min_age = parseInt(ConstValues.user_info_data.min_age)
+    }
+    else{
+      this.setState({valueMin: this.state.min_age})
+      this.changed_min_age = this.state.min_age
+    }
+
+    if(ConstValues.user_info_data.max_age != null && ConstValues.user_info_data.max_age != '' && ConstValues.user_info_data.max_age != undefined){
+
+      this.setState({valueMax: parseInt(ConstValues.user_info_data.max_age)})
+      this.changed_max_age = parseInt(ConstValues.user_info_data.max_age)
+    }
+    else{
+      this.setState({valueMax: this.state.max_age})
+      this.changed_max_age = this.state.max_age
+    }
+   }
 
 
   getMatchedUserName(value){
 
     // var Userindex
-    console.log(value | 0)
+    console.log(value | this.state.min_age)
     return sliderData[value | 0].id;
   }
 
+  getRoundValue(value){
+
+    var rvalue = roundTo.down(value, 0)
+    this.setState({value: rvalue})
+  }
+
+  handleChange(values){
+
+    console.log("values: " + values);
+
+    var ageArray = values.toString().split(',');
+
+    console.log("value min: " + ageArray[0]);
+    console.log("value max: " + ageArray[1]);
+
+    this.changed_min_age = parseInt(ageArray[0])
+    this.changed_max_age = parseInt(ageArray[1])
+
+    this.setState({user_min_age:  ageArray[0], user_max_age: ageArray[1]})
+
+  }
+
+  updateProfile(){
+
+    this.setState({progressVisible: true})
+
+    var formData = new FormData();
+        formData.append('api_key', ConstValues.api_key);
+        formData.append('action_type', "update");
+        formData.append('looking_for', this.looking_for_id);
+        formData.append('min_age', this.changed_min_age);
+        formData.append('max_age', this.changed_max_age);
+        formData.append('bio', this.state.about_me);
+
+        fetch(ConstValues.base_url + 'updateCustomerProfile',{
+            method: 'POST',
+            headers:{
+                'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+            body: formData
+            }).then((response) => response.json())
+            .then((responseJson) =>{
+    
+            console.log(responseJson.response.code);
+            console.log(responseJson.response.message);
+
+            this.setState({progressVisible: false})
+
+            Toast.show({
+              text: responseJson.response.message,
+              textStyle: { color: "yellow" },
+            })
+    
+            if(responseJson.response.code == 1000){
+
+                ConstValues.user_info_data = responseJson.response.data ;
+
+                console.log(ConstValues.user_info_data);
+                console.log(ConstValues.user_info_data.age);
+
+                  this.setState({about_me: ConstValues.user_info_data.bio, 
+                    looking_for: ConstValues.user_info_data.looking_for,
+                    user_min_age: ConstValues.user_info_data.min_age,
+                    user_max_age: ConstValues.user_info_data.max_age,
+                    about_me: ConstValues.user_info_data.bio
+                  })
+            }
+            else if(responseJson.response.code == 4001){
+                //session expired, need to navigate login screen
+            }
+            else{
+                console.log("unable to save photo");
+                
+            }
+        })
+  }
+
+  showListFor(value){
+
+    if(value == 'looking_for'){
+ 
+       console.log("looking_for: " + ConstValues.profile_all_details.discovery.looking_for)
+       this.setState({show_list_for: 'looking_for',dialog_title: 'You are looking for?', data: ConstValues.profile_all_details.discovery.looking_for, dialogVisible: true})
+    }
+   }
+
+   changeUserInfo(name, id){
+
+    console.log("user info change: " + this.state.show_list_for + ", " + name + ", " + id)
+ 
+    if(this.state.show_list_for == 'looking_for'){
+ 
+       this.looking_for_id = id
+       this.setState({looking_for: name})
+    }
+ 
+    this.setState({dialogVisible: false})
+   }
 
   render() {
     return (
-        <Fragment>    
+      <NB.Root>
+       <Fragment>    
         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
           <NB.Container   style={HomeStyle.EditprofileContainer}  >
             <NB.View style={HomeStyle.EditprofilePageView} >
@@ -59,12 +268,12 @@ export class Social extends React.Component {
                               <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
                                 
                                 <NB.List  >
-                                    <NB.ListItem selected>
+                                    <NB.ListItem selected onPress = {() => this.showListFor('looking_for')}>
                                     <NB.Left>
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>looking for</NB.Text>
                                     </NB.Left>
                                     <NB.Right style={{flex:1,}}>
-                                       <NB.Text onPress={() => this.setState({looking: true})} style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>Women  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.looking_for}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                     </NB.Right>
                                     </NB.ListItem>
                                  </NB.List> 
@@ -74,22 +283,46 @@ export class Social extends React.Component {
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Age range</NB.Text>
                                     </NB.Left>
                                     <NB.Right>
-                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>{this.getMatchedUserName(this.state.value)}+</NB.Text> 
+                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>{this.state.user_min_age}-{this.state.user_max_age}</NB.Text> 
                                     </NB.Right> 
                                     </NB.ListItem>
                                       <View style={{paddingLeft:40,paddingRight:30,marginTop:-7,marginBottom:5}}> 
-                                         <Slider
+                                         {/* <Slider
                                                 value={this.state.value}
-                                                onValueChange={value => this.setState({ value })}
+                                                onValueChange={value => this.getRoundValue(value)}
                                                 trackStyle={styles.track}
                                                 thumbStyle={styles.thumb}
-                                                minimumValue={0}
-                                                maximumValue={sliderData.length-1} 
+                                                minimumValue={this.state.min_age}
+                                                maximumValue={this.state.max_age} 
                                                 minimumTrackTintColor='#92207e'
                                                 maximumTrackTintColor='#92207e'
                                                 
                                                
-                                              /> 
+                                              />  */}
+              <MultiSlider
+                  values={[ this.state.valueMin,this.state.valueMax]}
+                      sliderLength={250}
+                      onValuesChange={values => this.handleChange(values)}
+                      min={this.range_min_age}
+                      max={this.range_max_age}
+                      step={1}
+                      allowOverlap={false}
+                      snapped
+                    />
+
+
+
+
+                                              {/* <RangeSlider
+                                                  min={200}
+                                                  max={1000}
+                                                  step={20}
+                                                  rangeEnabled = {true}
+                                                  selectionColor="#3df"
+                                                  blankColor="#f618"
+                                                  onValueChanged={(low, high, fromUser) => {
+                                                      // this.setState({rangeLow: low, rangeHigh: high})
+                                                  }}/> */}
 
 
                                         </View>
@@ -113,14 +346,18 @@ export class Social extends React.Component {
                                 </NB.Item>
                                 */}
 
-                               <NB.Textarea style={{paddingLeft:31,borderColor:"#fff"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  />
+                               <NB.Textarea style={{paddingLeft:31,borderColor:"#fff"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  
+                                 value = {this.state.about_me}
+                                 onChangeText={(text) => {this.setState({about_me: text}) }}
+                               />
                                 
 
                               </NB.View> 
 
 
                               <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
-                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}>
+                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                                onPress = {() => this.updateProfile()}>
                                       <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
                                       <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
                                 </NB.Button> 
@@ -145,43 +382,62 @@ export class Social extends React.Component {
           <ConfirmDialog
         // title="Confirmation!ss"
        
-        message={this.confirmMessage}
-        visible={this.state.looking}
-        onTouchOutside={() => this.setState({looking: false})}
-        dialogStyle={{ 
-            borderRadius:5,
+            message={this.confirmMessage}
+            visible={this.state.looking}
+            onTouchOutside={() => this.setState({looking: false})}
+            dialogStyle={{ 
+                borderRadius:5,
+                
+            }
+
+            }
+            >
+              <View>  
             
-        }
-
-        }
-        >
-          <View>  
-         
-          <NB.ListItem>
-            <NB.Left>
-            <NB.Radio selected={false} />
-            <NB.Text> Women</NB.Text>
-            </NB.Left> 
-          </NB.ListItem>
-          <NB.ListItem>
-            <NB.Left>
-            <NB.Radio selected={true} />
-            <NB.Text> Men</NB.Text>
-            </NB.Left> 
-          </NB.ListItem> 
-          <NB.ListItem>
-            <NB.Left>
-            <NB.Radio selected={false} />
-            <NB.Text> Other</NB.Text>
-            </NB.Left> 
-          </NB.ListItem>
-        
+              <NB.ListItem>
+                <NB.Left>
+                <NB.Radio selected={false} />
+                <NB.Text> Women</NB.Text>
+                </NB.Left> 
+              </NB.ListItem>
+              <NB.ListItem>
+                <NB.Left>
+                <NB.Radio selected={true} />
+                <NB.Text> Men</NB.Text>
+                </NB.Left> 
+              </NB.ListItem> 
+              <NB.ListItem>
+                <NB.Left>
+                <NB.Radio selected={false} />
+                <NB.Text> Other</NB.Text>
+                </NB.Left> 
+              </NB.ListItem>
             
-           </View>
+                
+              </View>
 
-</ConfirmDialog>
+            </ConfirmDialog>
 
-  </Fragment>
+            <ProgressDialog
+                  visible={this.state.progressVisible}
+                  title="Updating"
+                  message="Please, wait..."
+              />
+
+              <Dialog
+                    visible={this.state.dialogVisible}
+                    title={this.state.dialog_title}
+                    onTouchOutside={() => this.setState({dialogVisible: false})} >
+                    <View>
+                      <FlatList
+                          data={this.state.data}
+                          renderItem={({item}) => <Text style={styles.item} onPress = {() => this.changeUserInfo(item.name, item.id)}>{item.name} </Text>}
+                      />
+                    </View>
+                </Dialog>
+
+       </Fragment>
+      </NB.Root>
        
     );
   }
@@ -216,7 +472,12 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 1},
     shadowRadius: 2,
     shadowOpacity: 0.35,
-  }
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 
 
 });

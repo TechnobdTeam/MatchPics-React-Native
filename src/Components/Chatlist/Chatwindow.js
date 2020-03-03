@@ -9,36 +9,109 @@ import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { GiftedChat , MessageText, MessageImage, Time, utils ,Bubble } from 'react-native-gifted-chat';
 const { isSameUser, isSameDay } = utils;
+import ConstValues from '../../constants/ConstValues';
+import AsyncStorage from '@react-native-community/async-storage';
 
 {/*Login  */}
 export class Chatwindow extends React.Component {  
    
-    state = {
-        messages: [],
-      }
+  constructor(props) {
+    super(props);
+      this.state = {
+          messages: [],
+          user_name: '',
+          user_id: '',
+          message_id: '',
+          token: '',
+          customer_id: ''
+        }
+    }
     
-      componentDidMount() {
-        this.setState({
-          messages: [
-            {
-              _id: 1,
-              text: 'Hello developer',
-              createdAt: new Date(),
-              user: {
-                _id: 2,
-                name: 'React Native',
-                avatar: 'https://placeimg.com/140/140/any',
-              },
-              
-            },
-          ],
-        })
-      }
+    componentDidMount() {
+      this.setState({
+        // messages: [
+        //   {
+        //     _id: 1,
+        //     text: 'Hello developer',
+        //     createdAt: new Date(),
+        //     user: {
+        //       _id: 2,
+        //       name: 'React Native',
+        //       avatar: 'https://placeimg.com/140/140/any',
+        //     },
+            
+        //   },
+        // ],
+      })
+
+      AsyncStorage.getItem(ConstValues.customer_id, (error, result) =>{
+
+        console.log('customer_id: ' + JSON.parse(result))
+
+        if(result != null){
+            this.setState({customer_id: JSON.parse(result)})
+        }
+      })
+
+      AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
+
+        console.log('user_token: ' + result)
+
+        if(result != null){
+            this.setState({token: result})
+        }
+      }).then(
+          this.timeoutHandle = setTimeout(()=>{
+            if(this.state.user_name == ''){
+              //getting user id passed from previous page
+              this.setState({user_name: this.props.navigation.state.params.name,
+                user_id: this.props.navigation.state.params.user_id,
+                message_id: this.props.navigation.state.params.id});
+      
+              console.log("user_name: " + this.state.user_id);
+
+              this.getPreviousConversation();
+            }
+          }, 500)
+      )
+    }
     
       onSend(messages = []) {
-        this.setState(previousState => ({
-          messages: GiftedChat.append(previousState.messages, messages),
-        }))
+
+        console.log("send_message: " + messages[0].text)
+
+        var formData = new FormData();
+        formData.append('api_key', ConstValues.api_key);
+        formData.append('user_id', this.state.user_id);
+        formData.append('message', messages[0].text);
+
+        fetch(ConstValues.base_url + 'sendMessage', {
+          method: 'POST',
+          headers:{
+              'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data',
+          },
+          body: formData
+        }).then((response) => response.json())
+        .then((responseJson) =>{
+
+            if(responseJson.response.data == undefined){
+                console.log("getPreviousConversation: undefined data");
+            }else{
+              console.log("sendMessage: " + responseJson.response.message);
+              // this.setState({messages: responseJson.response.data})
+
+              if(responseJson.response.code == 1000){
+
+                this.setState(previousState => ({
+                  messages: GiftedChat.append(previousState.messages, messages),
+                }))
+              }
+
+            }
+
+        })
       }
       renderBubble (props) {
         return (
@@ -91,6 +164,62 @@ export class Chatwindow extends React.Component {
       }
       
  
+      getPreviousConversation(){
+
+        console.log("getPreviousConversation");
+
+        var formData = new FormData();
+        formData.append('api_key', ConstValues.api_key);
+        formData.append('user_id', this.state.user_id);
+
+        fetch(ConstValues.base_url + 'getPreviousConversation', {
+          method: 'POST',
+          headers:{
+              'Authorization': 'Bearer ' + JSON.parse(this.state.token), 
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data',
+          },
+          body: formData
+        }).then((response) => response.json())
+        .then((responseJson) =>{
+
+            if(responseJson.response.data == undefined){
+                console.log("getPreviousConversation: undefined data");
+            }else{
+              console.log("getPreviousConversation: " + responseJson.response.data);
+              // this.setState({messages: responseJson.response.data})
+
+              var responseMessage = []
+
+              responseJson.response.data.map((item) => {
+                
+                console.log("getPreviousConversation: " + item.message);
+
+                var userObject = {}
+
+                userObject['_id'] = parseInt(item.user_id)
+                userObject['name'] = item.name
+                userObject['avatar'] = item.url
+
+                console.log("user info object: " + userObject._id);
+
+                responseMessage.push({
+                  ['_id']: item.message_id,
+                  ['text']: item.message,
+                  ['createdAt']: item.created_at,
+                  ['user']: userObject
+                })
+              })
+
+              responseMessage.map((item) => {
+                console.log("response message: " + item._id);
+              })
+
+              this.setState({messages: responseMessage})
+            }
+
+        })
+      }
 
     render() {   
       return ( 
@@ -106,7 +235,7 @@ export class Chatwindow extends React.Component {
 
                      <NB.Body  >
                       <NB.Segment style={{backgroundColor:'transparent'}}>
-                           <NB.Text style={{color:'#fff',fontSize:23,}}>Eric Scott      </NB.Text>
+                           <NB.Text style={{color:'#fff',fontSize:23,}}> {this.state.user_name}   </NB.Text>
                           </NB.Segment>
                        </NB.Body>
                       <NB.Right>
@@ -123,7 +252,7 @@ export class Chatwindow extends React.Component {
                       renderSend={this.renderSend}
                       
                       user={{
-                        _id: 1, 
+                        _id: this.state.customer_id, 
                       }} 
                        
                     />

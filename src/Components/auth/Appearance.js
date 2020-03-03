@@ -55,13 +55,13 @@ export class Appearance extends React.Component {
          }
    })
 
-   this.setState({user_ethnicity: JSON.stringify(ConstValues.user_info_data.ethnicity), 
-      user_body_type: JSON.stringify(ConstValues.user_info_data.body_type),
-      user_hair_color: JSON.stringify(ConstValues.user_info_data.hair_color),
-      user_eye_color: JSON.stringify(ConstValues.user_info_data.eye_color),
-      user_spend_time: JSON.stringify(ConstValues.user_info_data.spend_time),
-      user_smoking: JSON.stringify(ConstValues.user_info_data.smoking),
-      user_drinking: JSON.stringify(ConstValues.user_info_data.drinking)})
+   this.setState({user_ethnicity: ConstValues.user_info_data.ethnicity, 
+      user_body_type: ConstValues.user_info_data.body_type,
+      user_hair_color: ConstValues.user_info_data.hair_color,
+      user_eye_color: ConstValues.user_info_data.eye_color,
+      user_spend_time: ConstValues.user_info_data.spend_time,
+      user_smoking: ConstValues.user_info_data.smoking,
+      user_drinking: ConstValues.user_info_data.drinking})
 
       console.log("user_ethnicity: " + this.state.user_ethnicity)
 
@@ -233,6 +233,8 @@ export class Appearance extends React.Component {
 
    this.setState({progressVisible: true})
 
+   console.log("ethinicity_id: " + this.ethnicity_id)
+
    var formData = new FormData();
        formData.append('api_key', ConstValues.api_key);
        formData.append('action_type', "update");
@@ -272,13 +274,13 @@ export class Appearance extends React.Component {
                console.log(ConstValues.user_info_data);
                console.log(ConstValues.user_info_data.age);
 
-               this.setState({user_ethnicity: JSON.stringify(ConstValues.user_info_data.ethnicity), 
-                  user_body_type: JSON.stringify(ConstValues.user_info_data.body_type),
-                  user_hair_color: JSON.stringify(ConstValues.user_info_data.hair_color),
-                  user_eye_color: JSON.stringify(ConstValues.user_info_data.eye_color),
-                  user_spend_time: JSON.stringify(ConstValues.user_info_data.spend_time),
-                  user_smoking: JSON.stringify(ConstValues.user_info_data.smoking),
-                  user_drinking: JSON.stringify(ConstValues.user_info_data.drinking)})
+               this.setState({user_ethnicity: ConstValues.user_info_data.ethnicity, 
+                  user_body_type: ConstValues.user_info_data.body_type,
+                  user_hair_color: ConstValues.user_info_data.hair_color,
+                  user_eye_color: ConstValues.user_info_data.eye_color,
+                  user_spend_time: ConstValues.user_info_data.spend_time,
+                  user_smoking: ConstValues.user_info_data.smoking,
+                  user_drinking: ConstValues.user_info_data.drinking})
            }
            else if(responseJson.response.code == 4001){
                //session expired, need to navigate login screen

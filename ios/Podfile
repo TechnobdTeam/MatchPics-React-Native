@@ -53,6 +53,9 @@ target 'reactnavigation' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+
+  pod 'rn-range-slider', :path => '../node_modules/rn-range-slider'
+
   target 'reactnavigationTests' do
     inherit! :search_paths
     # Pods for testing

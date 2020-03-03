@@ -43,6 +43,10 @@
           <provider android:authorities="com.facebook.app.FacebookContentProvider1234"
           android:name="com.facebook.FacebookContentProvider"
           android:exported="true" />
+
+          <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBW5YTlgm_LSmjgwcxtCbrEw4iGFJjcEMc"/>
           
     </application>
 
