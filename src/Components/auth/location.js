@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,TouchableOpacity} from 'react-native';
+import { View, Image, ImageBackground,PermissionsAndroid, Platform, StyleSheet,TouchableOpacity, Dimensions,Alert} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -9,34 +9,120 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
-
 import ConstValues from '../../constants/ConstValues'
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+
+import Geolocation from '@react-native-community/geolocation';
+
+import MapView, { Marker, ProviderPropType ,AnimatedRegion} from 'react-native-maps';
+
+
+// import flagPinkImg from './marker_icon.png';
+
+const { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+var LATITUDE = 37.78825;
+var LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.0922;
+var LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+
 {/*Register */}
 export class location  extends React.Component {
-
+  map = null;
 
   constructor(props){
     super(props);
+    this.mounted = false;
     this.state = {
-      user_location:''
+      user_location:'',
+      location_loaded: false,
+      ready: true,
+      location_address:'',
     };
-
   }
 
+  setLocationMarker(){
+    console.log("setLocationMarker: --------------01-------------------")
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      ).then(granted => {
+        if (granted && this.mounted) {
+          this.watchLocation();
+        }
+      });
+    } else {
+      this.watchLocation();
+    }
+  }
+
+    watchLocation() {
+
+      Geolocation.getCurrentPosition(info =>{
+
+        console.log(info)
+        LATITUDE =  info.coords.latitude;
+        LONGITUDE = info.coords.longitude
+        LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+        this.setState({
+          location_loaded: true,
+          ready: true,
+         })
+
+         //Animation camera in mapview
+         this.map.animateToRegion({
+          latitude: LATITUDE,
+          longitude: LONGITUDE,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }, 500);
+
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + LATITUDE + ',' + LONGITUDE + '&key=' + 'AIzaSyBW5YTlgm_LSmjgwcxtCbrEw4iGFJjcEMc')
+        .then((response) => response.json())
+            .then((responseJson) => {
+
+              this.setState({
+                location_address: JSON.stringify(responseJson)
+              })
+            alert('error')
+            alert('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
+        })
+
+      } );
+  }
+
+  onMapReady = (e) => {
+    if(!this.state.ready) {
+      this.setState({ready: true});
+    }
+  };
+
   componentDidMount(){
+    this.mounted = true;
     this.setState({user_location: ConstValues.user_info_data.address})
   }
 
-
   getMatchedUserName(value){
-
     // var Userindex
     console.log(value | 0)
     return sliderData[value | 0].id;
   }
 
+  selectCountry (val) {
+    this.setState({ country: val });
+  }
+
+  selectRegion (val) {
+    this.setState({ region: val });
+  }
+
 
   render() {
+    const { country, region } = this.state;    
+
     return (
         <Fragment>    
         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
@@ -62,7 +148,7 @@ export class location  extends React.Component {
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Location</NB.H3>
                            </NB.Item> 
                                 <NB.View style={{backgroundColor:'#fff',}} > 
-                                <TouchableOpacity onPress={() => this.setState({looking: true})} >
+                                <TouchableOpacity onPress={() => this.setLocationMarker()} >
                                     <NB.CardItem   > 
                                         <NB.Body>
                             <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
@@ -78,9 +164,51 @@ export class location  extends React.Component {
                                 </NB.CardItem>   
                                 </TouchableOpacity>
                                 </NB.View>   
-                        
+  
+                
                         </View>
+                  <View style={{flex: 10,marginTop:70}} > 
+
+                <View style={styles.container}>
+
+                
+                <MapView
+                      provider={this.props.provider}
+                      ref={ map => { this.map = map }}
+                      onMapReady={this.onMapReady}
+                      showsMyLocationButton={true}
+                      minZoomLevel={16}
+                      maxZoomLevel={17}
+                      style={styles.map}
+                      initialRegion={{
+                        latitude: LATITUDE,
+                        longitude: LONGITUDE,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA,
+                      }}
+                      
+                      >
                         
+
+                { this.state.location_loaded ? 
+                              <MapView.Marker
+                                  coordinate={{latitude: LATITUDE, longitude: LONGITUDE}}
+                                  title={"title"}
+                                  description={"description"}
+                              /> : null }
+                               
+                </MapView>
+                    
+                </View>
+                       </View>
+
+
+
+                       <NB.Text>{this.state.location_address} </NB.Text>
+                   
+
+                   
+
                         <View style={{flex: 4, backgroundColor: '#f3f3f3',alignItems:"center",justifyContent:"flex-end",marginBottom:30,}} >
 
                                     <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}>
@@ -92,7 +220,7 @@ export class location  extends React.Component {
             
               </NB.View>
 
-              <ConfirmDialog
+              <Dialog
         // title="Confirmation!ss"
        
         message={this.confirmMessage}
@@ -105,15 +233,10 @@ export class location  extends React.Component {
 
         }
         >
-          <View>  
-             
-            
-             <NB.Text>Google map</NB.Text>
-      
-            
-           </View>
-
-</ConfirmDialog>
+          
+      <View>                   
+      </View> 
+          </Dialog>
 
 
             </NB.Container>
@@ -126,6 +249,9 @@ export class location  extends React.Component {
 }
 {/* End Register */}
 
+location.propTypes = {
+  provider: ProviderPropType,
+};
 
 const styles = StyleSheet.create({
  
@@ -154,7 +280,34 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 1},
     shadowRadius: 2,
     shadowOpacity: 0.35,
-  }
-
-
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  bubble: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  latlng: {
+    width: 200,
+    alignItems: 'stretch',
+  },
+  button: {
+    width: 80,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    backgroundColor: 'transparent',
+  },
 });
