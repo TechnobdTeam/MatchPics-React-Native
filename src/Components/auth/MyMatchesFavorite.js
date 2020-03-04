@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
 import ImageLoad from 'react-native-image-placeholder';
+
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
@@ -188,27 +189,27 @@ export class MyMatchesFavorite extends React.Component {
                         this.state.matchData.map((item,i) => {
                             var total_match = item.total_match + 1;
                             console.log("total_match: " + total_match);
-                        return <NB.View key={i}>
+                        return  <NB.View key={i}>
                                 <NB.Card   style={{marginTop:-2,}}>
                                     <NB.CardItem   >
                                     <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <View style={{marginRight:15,marginLeft:-10,}}>
-                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:80, height: 80}} borderRadius={37.5}  source={{uri: item.match_photo}} style={{ width:80, height: 80, borderRadius: 37.5, }} />
+                                    <View style={{marginRight:15,marginLeft:-12,}}>
+                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:80, height: 80,borderRadius: 50,}} borderRadius={50.5}  source={{uri: item.match_photo}} style={{ width:80, height: 80, borderRadius: 50, }} />
                                 
                                     </View>
                                     <View  >
                                             <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>{item.match_date}</NB.Text>
-                                            <View style={{flex: 1, flexDirection: 'row',marginTop:7,}} >
+                                            <View style={{flex: 1, flexDirection: 'row',marginTop:7, }} >
 
                                             {item.match_result.map((item2,j) => {
                                                 console.log("inside loop: " + j);
                                                 total_match = total_match - 1;
-                                                return <NB.View key = {i +j}>
+                                                return <NB.View  key = {i +j}>
                                                 {j != 5 ? 
                                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile',{
                                                         id: item2.profile_id
                                                     })} > 
-                                                    <ImageLoad placeholderStyle={{width:45, height: 45}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
+                                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:45, height: 45,borderRadius: 50}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
                                                     </TouchableOpacity>
                                                     :
                                                     <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
@@ -216,7 +217,7 @@ export class MyMatchesFavorite extends React.Component {
                                                         photo_id: item.photo_id,
                                                         match_id: item.match_type_id
                                                     })} > 
-                                                    <ImageLoad  placeholderStyle={{width:45, height: 45}} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
+                                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:45, height: 45,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
                                                     {total_match > 1 ? 
                                                        
                                                             <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
@@ -240,7 +241,7 @@ export class MyMatchesFavorite extends React.Component {
 
                              
                         
-                        </NB.View>
+                        </NB.View> 
                         
                         })
                         :

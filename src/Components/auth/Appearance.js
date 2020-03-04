@@ -335,7 +335,7 @@ export class Appearance extends React.Component {
                                        <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('ethnicity')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Ethnicity</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Ethnicity</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_ethnicity}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -346,7 +346,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('body_type')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>body type</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>body type</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_body_type}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -357,7 +357,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('hair_color')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Hair color</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Hair color</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_hair_color}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -368,7 +368,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('eye_color')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>eye color</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>eye color</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_eye_color} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -393,7 +393,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('spend_time')}>
                                              
-                                          <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>favorite way to spend time</NB.Text>
+                                          <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,}}>favorite way to spend time</NB.Text>
                                           
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_spend_time}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -405,7 +405,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('smoking')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Smoking</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Smoking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_smoking}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -418,7 +418,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('drinking')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>drinking</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>drinking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_drinking}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
@@ -429,7 +429,7 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>asdfas dfasdf</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>asdfas dfasdf</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
                                                 <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>asdfasdfasdf  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 

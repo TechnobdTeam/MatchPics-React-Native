@@ -286,7 +286,7 @@ export class Social extends React.Component {
                                   <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>{this.state.user_min_age}-{this.state.user_max_age}</NB.Text> 
                                     </NB.Right> 
                                     </NB.ListItem>
-                                      <View style={{paddingLeft:40,paddingRight:30,marginTop:-7,marginBottom:5}}> 
+                                      <View style={{paddingLeft:45,paddingRight:0,marginTop:-7,marginBottom:5,flex:1}}> 
                                          {/* <Slider
                                                 value={this.state.value}
                                                 onValueChange={value => this.getRoundValue(value)}
@@ -300,14 +300,22 @@ export class Social extends React.Component {
                                                
                                               />  */}
               <MultiSlider
+              
                   values={[ this.state.valueMin,this.state.valueMax]}
-                      sliderLength={250}
+                      sliderLength={320}
                       onValuesChange={values => this.handleChange(values)}
                       min={this.range_min_age}
                       max={this.range_max_age}
                       step={1}
                       allowOverlap={false}
                       snapped
+                      selectedStyle={{backgroundColor:"#92207e"}}
+                      unselectedStyle={{backgroundColor:"#522070"}} 
+                      trackStyle={{ height: 5,borderRadius:3 }}
+           
+                     
+
+                      
                     />
 
 
