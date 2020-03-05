@@ -13,14 +13,17 @@ import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 {/*Login  */}
 export class Notification extends React.Component {
 
+pageNum = 1;
+notificationArray = []
+
   /// Search //********************** */
   constructor(props){
     super(props);
     this.state = {
       search: '',
-      notificationData: '',
       progressVisible: true,
       token: '',
+      onEndReachedCalledDuringMomentum : false,
     };
 
     AsyncStorage.getItem(ConstValues.user_token, (error, result) =>{
@@ -39,10 +42,11 @@ export class Notification extends React.Component {
 
   getNotificationList(){
 
-    console.log("getting notification list");
+    console.log("getting notification list: " + this.pageNum);
 
     var formData = new FormData();
     formData.append('api_key', ConstValues.api_key);
+    formData.append('pageNum', this.pageNum);
 
     fetch(ConstValues.base_url + 'getNotificationList', {
       method: 'POST',
@@ -57,14 +61,28 @@ export class Notification extends React.Component {
 
         console.log("getNotificationList: " + responseJson.response.data);
 
-        this.setState({notificationData: responseJson.response.data})
-
-        if(responseJson.response.data == undefined){
+        if(responseJson.response.data == undefined || responseJson.response.data.length == 0){
             console.log("getNotificationList: undefined data");
         }
         else{
 
+
+          // responseJson.response.data.map((item) =>{
+          //   this.notificationArray.push(item)
+
+
+          // })
+          
+          this.setState({
+            notificationData: this.pageNum === 1 ? responseJson.response.data : [...this.state.notificationData, ...responseJson.response.data],
+            onEndReachedCalledDuringMomentum: false,
+            progressVisible: false,
+          })
+
+          this.pageNum = this.pageNum + 1;
         }
+
+        // this.setState({progressVisible: false})
 
     })
   }
@@ -80,154 +98,114 @@ export class Notification extends React.Component {
    }
 
 
+   onEndReached = ({ distanceFromEnd }) => {
+     console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.notificationData.length)
+
+
+          // if(!this.onEndReachedCalledDuringMomentum ){
+            this.onEndReachedCalledDuringMomentum = true;
+            console.log("bottom reached:......................."+  this.state.notificationData.length +" ")
+
+            if( this.state.notificationData.length % 9 === 0){
+
+            this.setState(
+            {
+            progressVisible : true ,
+            onEndReachedCalledDuringMomentum: false
+            },
+            () => {
+              console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+
+
+            this.getNotificationList()
+            }
+            );
+
+            // }
+            
+            
+          }
+    }
+
+    renderItem =({ item, index }) => {
+      return (
+        <View    style={styles.rowFront}>
+        <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
+            <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,marginLeft:-10}}>
+                <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} />
+            </View>
+  
+            <View  style={{width:"100%"}}>
+            <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
+              <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{item.name} </Text> 
+              <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{item.create_date}  </Text> 
+            </View> 
+            <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10}}>{item.notification}  </Text> 
+  
+              
+            </View>
+        
+        
+        </View>
+        
+        </View> 
+      );
+    }
+
+    // renderItem = (item)=>{
+      
+
+    // }
 
     render() {
       return ( 
-        <Fragment>    
-         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
-               
-                  <NB.Container   style={styles.PageContainerChatList}  >
-                      
-                  <NB.Header  transparent>
-                      <NB.Left>
-                        <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
-                        </NB.Button>
-                      </NB.Left>
+      <View style={{flex: 1, paddingTop:0}}>
 
-                      <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>Notifications </NB.Text>
-                          </NB.Segment>
-                      </NB.Body>
-                      <NB.Right>
-                        <NB.Button transparent>
-                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
-                        </NB.Button>
-                      </NB.Right>
-                    </NB.Header> 
+      <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
+      <NB.Container   style={styles.PageContainerChatList}  >
 
-{/*                      
-                    <View  style={styles.rowFrontTop}>
-                        <View style={{ width:'80%', }}>
+      <NB.Header  transparent>
+        <NB.Left>
+          <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
+          <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+          </NB.Button>
+        </NB.Left>
 
-                        {this.state.visible == false ?
-
-                          <NB.Item style={{borderBottomWidth:0,}} >
-                                
-                               <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />
-                               <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'/>   
-                          </NB.Item> 
-         
-                            :
-
-                            <View style={{justifyContent:'center',alignItems:'center',}}>
-                            <TouchableOpacity  onPress= {() => this.example()}>
-                            <NB.Text style={{color:'#e74e92',fontSize:13}} >
-                            <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
-                            </TouchableOpacity> 
-                            </View>
-
-                            }
+        <NB.Body  >
+        <NB.Segment style={{backgroundColor:'transparent'}}>
+            <NB.Text style={{color:'#fff',fontSize:23,}}>Notifications </NB.Text>
+            </NB.Segment>
+        </NB.Body>
+        <NB.Right>
+          {/* <NB.Button transparent>
+          <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
+          </NB.Button> */}
+        </NB.Right>
+      </NB.Header>
 
 
-                            
-                            
-                              
-                          </View> 
-                              
-                        </View>  */}
-                     
-                <NB.Content style={{backgroundColor:"#fff"}}>
-
-                    
-                    {this.state.notificationData != undefined && this.state.notificationData != '' ?
-                    
-                    <FlatList
-                              data={this.state.notificationData}
-                              renderItem={({item}) => 
+      <FlatList
+            data={this.state.notificationData}
+            onEndReached={this.onEndReached.bind(this)}
+            onEndReachedThreshold={0.5}
+            renderItem={this.renderItem}
+            keyExtractor={({id}, index) => id}
+            keyExtractor={item => item.id}
+          />
 
 
-                              <View    style={styles.rowFront}>
-                                  <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
-                                      <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,marginLeft:-10}}>
-                                          <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} />
-                                      </View>
+      </NB.Container>
 
-                                      <View  style={{width:"100%"}}>
-                                      <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
-                                        <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{item.name} </Text> 
-                                        <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{item.create_date}  </Text> 
-                                      </View> 
-                                      <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10}}>{item.notification}  </Text> 
-
-                                        
-                                      </View>
-                                  
-                                  
-                                  </View>
-                                  
-                              </View> 
-
-                              }
-                            />
-                            :
-                            <ProgressDialog
-                                visible={this.state.progressVisible}
-                                title="Loading data"
-                                message="Please wait..."
-                            />
-                    }               
+            
 
 
-               
-                       {/* <SwipeListView
-                                data={Data}
-                                renderItem={({item}) => 
-                                 
-                                    <View style={styles.rowFront}>
-                                    <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,}}>
-                                       <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,}}>
-                                          <Image source={item.images} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
-                                       </View>
-                                        
-                                        <View>
-                                            <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between"}}>
-                                              <Text style={{color:'#e74e92',}}>{item.userNmae} ,{item.id}</Text>
-                                              <Text style={{color:'#1c1721'}}>{item.time}</Text>
-                                            </View> 
-                                           <Text style={{color:'#1c1721',textAlign:'left',marginTop:2,}}>{item.text} </Text>  
-                                        </View>
-                                      </View> 
-                                          
-                                    </View>
-                                   
+</ImageBackground>
 
-                                   
-                                }
-                                renderHiddenItem={ (data, rowMap) => (
-                                   
-                                    <View style={styles.rowBack}>
-                                        <Text><NB.Icon name="md-close"  style={{color:'#fff',fontSize:40,}}/></Text>
-                                        <Text><NB.Icon name="md-close" style={{color:'#fff',fontSize:40,}} /></Text>
-                                    </View>
-                                     
-                                )}
-                                
-                                leftOpenValue={95}
-                                rightOpenValue={-95}
-                                
-                            />   
- */}
+          { this.state.isLoading ?   
+                    <Loading /> : null 
+                }
 
-              
-    
-                  </NB.Content> 
-
-                  </NB.Container>
-     </ImageBackground> 
-
- </Fragment>
+          </View>
       );
     }
   }

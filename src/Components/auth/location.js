@@ -26,6 +26,8 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 var LATITUDE = 23.78825;
 var LONGITUDE = 96.4324;
+var CHANGED_LATITUDE = 23.78825;
+var CHANGED_LONGITUDE = 96.4324;
 const LATITUDE_DELTA = 0.0922;
 var LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -74,8 +76,16 @@ export class location  extends React.Component {
       Geolocation.getCurrentPosition(info =>{
 
         console.log(info)
-        LATITUDE =  info.coords.latitude;
-        LONGITUDE = info.coords.longitude
+
+        if(LATITUDE == "" || LATITUDE == ""){
+
+          LATITUDE =  info.coords.latitude;
+          LONGITUDE = info.coords.longitude
+
+          CHANGED_LATITUDE =  info.coords.latitude;
+          CHANGED_LONGITUDE = info.coords.longitude
+        }
+        
         LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
         this.setState({
@@ -129,6 +139,18 @@ export class location  extends React.Component {
 
     this.setState({user_location: ConstValues.user_info_data.address,
       location_address: ConstValues.user_info_data.address})
+
+      console.log("user_lat: " + ConstValues.user_info_data.user_lat)
+      console.log("user_lon: " + ConstValues.user_info_data.user_lon)
+
+      LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
+      LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
+
+      CHANGED_LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
+      CHANGED_LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
+
+      this.setLocationMarker()
+
   }
 
   getMatchedUserName(value){
@@ -152,6 +174,9 @@ export class location  extends React.Component {
     //insert values to forms
     console.log("lat_lon: " + event.nativeEvent.coordinate.latitude)
 
+    CHANGED_LATITUDE = event.nativeEvent.coordinate.latitude
+    CHANGED_LONGITUDE = event.nativeEvent.coordinate.longitude
+
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.nativeEvent.coordinate.latitude + ',' + event.nativeEvent.coordinate.longitude + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
         .then((response) => response.json())
             .then((responseJson) => {
@@ -167,12 +192,12 @@ updateProfile(){
 
   this.setState({progressVisible: true})
 
-  console.log("ethinicity_id: " + this.ethnicity_id)
-
   var formData = new FormData();
       formData.append('api_key', ConstValues.api_key);
       formData.append('action_type', "update");
       formData.append('address', this.state.location_address);
+      formData.append('user_lat', CHANGED_LATITUDE);
+      formData.append('user_lon', CHANGED_LONGITUDE);
 
       fetch(ConstValues.base_url + 'updateCustomerProfile',{
           method: 'POST',
@@ -201,6 +226,9 @@ updateProfile(){
 
               console.log(ConstValues.user_info_data);
 
+              LATITUDE = CHANGED_LATITUDE
+              LONGITUDE = CHANGED_LONGITUDE
+
               this.setState({user_location: ConstValues.user_info_data.address,
                 location_address: ConstValues.user_info_data.address})
           }
@@ -218,7 +246,8 @@ updateProfile(){
     const { country, region } = this.state;    
 
     return (
-        <Fragment>    
+      <NB.Root>
+      <Fragment>    
         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
           <NB.Container   style={HomeStyle.EditprofileContainer}  >
             <NB.View style={HomeStyle.EditprofilePageView} >
@@ -331,11 +360,11 @@ updateProfile(){
                     
                 }
 
-        }
-        >
-          
-      <View>                   
-      </View> 
+              }
+              >
+                
+            <View>                   
+            </View> 
           </Dialog>
 
 
@@ -348,7 +377,8 @@ updateProfile(){
                 message="Please, wait..."
           />
 
-  </Fragment>
+        </Fragment>
+      </NB.Root>
        
     );
   }

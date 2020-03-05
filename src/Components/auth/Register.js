@@ -11,6 +11,7 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import { Value } from 'react-native-reanimated'; 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
+import AsyncStorage from '@react-native-community/async-storage';
 {/*Register */}
 
 const options = {

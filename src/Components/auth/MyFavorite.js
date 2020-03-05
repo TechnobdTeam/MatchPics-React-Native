@@ -55,6 +55,8 @@ function isIPhoneX() {
 
 export class MyFavorite extends React.Component {
 
+    pageNum = 1
+
     constructor(props) {
         super(props);
         this.state = {
@@ -65,6 +67,7 @@ export class MyFavorite extends React.Component {
           progressVisible: true ,
           favData: '',
           columns: 2, 
+          onEndReachedCalledDuringMomentum : false,
           statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
         };
 
@@ -120,14 +123,51 @@ export class MyFavorite extends React.Component {
 
             console.log("myFavourites: " + responseJson.response.data);
 
-            this.setState({favData: responseJson.response.data, progressVisible: false})
-
             if(responseJson.response.data == undefined){
                 console.log("myFavourites: undefined data");
+            }
+            else{
+                this.setState({
+                    favData: this.pageNum === 1 ? responseJson.response.data : [...this.state.favData, ...responseJson.response.data],
+                    onEndReachedCalledDuringMomentum: false,
+                    progressVisible: false,
+                  })
+        
+                  this.pageNum = this.pageNum + 1;
             }
 
         })
       }
+
+      onEndReached = ({ distanceFromEnd }) => {
+        console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.favData.length)
+        console.log("bottom reached:.......................pagenum"+ this.pageNum)
+
+   
+             // if(!this.onEndReachedCalledDuringMomentum ){
+               this.onEndReachedCalledDuringMomentum = true;
+               console.log("bottom reached:......................."+  this.state.favData.length +" ")
+   
+               if( this.state.favData.length % 4 === 0){
+   
+               this.setState(
+               {
+               progressVisible : true ,
+               onEndReachedCalledDuringMomentum: false
+               },
+               () => {
+                 console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+   
+   
+               this.getMyFavoriteList()
+               }
+               );
+   
+               // }
+               
+               
+             }
+       }
 
     render() {
         const { statusBarPaddingTop } = this.state;
@@ -162,7 +202,8 @@ export class MyFavorite extends React.Component {
                 
                         <MasonryList
                         spacing="2"
-                        
+                        onEndReached={this.onEndReached.bind(this)}
+                        onEndReachedThreshold={0.5}
                         backgroundColor="transparent"
                         imageContainerStyle={{
                         borderRadius: 5, 

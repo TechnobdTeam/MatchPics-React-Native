@@ -229,28 +229,24 @@ export class AppSearch extends React.Component {
                             // onPress={() => Linking.openURL("#")} 
                             >
                         
-
-                    
                             <View style={[styles.masonryHeader, {
                                 width: data.masonryDimensions.width,
                                 margin: data.masonryDimensions.gutter / 2,
                             
-
                             }]}>
 
-                            
-                            
-                            
                                 <View style={{flex: 1, }}>
                                     
+                                {data.is_favourite.toLowerCase() == 'yes' ? 
                                     <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                    {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                        {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                        
+                                        <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
+                                    </View>
+                                    :
+                                    null
+                                }
                                     
-                                    {/* <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} /> */}
-                                </View>
-                                    
-                                    
-                                
                                     <View style={{ flex: 1, }} >
                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
                                     <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
@@ -275,8 +271,6 @@ export class AppSearch extends React.Component {
                                 
                             </View>
                         
-
-
                         </TouchableWithoutFeedback>
                     );
                 }}

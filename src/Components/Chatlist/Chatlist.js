@@ -19,6 +19,9 @@ var Data = []
 
 {/*Login  */}
 export class Chatlist extends React.Component {
+
+    pageNum = 1
+
   constructor(props) {
     super(props);
     Data = ConstValues.message_data_list
@@ -28,6 +31,7 @@ export class Chatlist extends React.Component {
       iloding:false,
       searach_vissible : true,
       listType: 'FlatList',
+      onEndReachedCalledDuringMomentum : false,
       progressVisible: false ,
       listViewData: Array(Data.length)
           .fill('')
@@ -57,6 +61,8 @@ export class Chatlist extends React.Component {
   }
 
 componentDidMount(){
+
+    this.pageNum = 2
 
   // console.log('...................componentDidMount.....................')
 
@@ -89,6 +95,7 @@ getMessageList(){
 
     var formData = new FormData();
     formData.append('api_key', ConstValues.api_key);
+    formData.append('pageNum', pageNum);
 
     fetch(ConstValues.base_url + 'getMessageList', {
       method: 'POST',
@@ -110,10 +117,16 @@ getMessageList(){
             console.log("getMessageList: undefined data");
         }else{
           
-          this.setState({messageData: responseJson.response.data})
+        //   this.setState({messageData: responseJson.response.data})
 
           data_original = responseJson.response.data
           console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
+
+          this.setState({
+            messageData: this.pageNum === 1 ? responseJson.response.data : [...this.state.messageData, ...responseJson.response.data],
+            onEndReachedCalledDuringMomentum: false,
+            progressVisible: false,
+          })
 
           this.timeoutHandle = setTimeout(()=>{
             // this.swiperListInvalidate()
@@ -247,8 +260,34 @@ onSwipeValueChange = swipeData => {
           Object.keys(o).some(k => o['name'].toLowerCase().includes(string.toLowerCase())));
      }
     
-
-
+     onEndReached = ({ distanceFromEnd }) => {
+        console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.messageData.length)
+   
+   
+             // if(!this.onEndReachedCalledDuringMomentum ){
+               this.onEndReachedCalledDuringMomentum = true;
+               console.log("bottom reached:......................."+  this.state.messageData.length +" ")
+   
+               if( this.state.messageData.length % 9 === 0){
+   
+               this.setState(
+               {
+               progressVisible : true ,
+               onEndReachedCalledDuringMomentum: false
+               },
+               () => {
+                 console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+   
+   
+               this.getMessageList()
+               }
+               );
+   
+               // }
+               
+               
+             }
+       }
 
      render() {
 
@@ -381,6 +420,8 @@ onSwipeValueChange = swipeData => {
                 {this.state.listType === 'FlatList' && (
                     <SwipeListView
                         data={  this.filterByValue(this.state.listViewData, this.state.search_text) }
+                        // onEndReached={this.onEndReached.bind(this)}
+                        //  onEndReachedThreshold={0.5}
                         renderItem={data => (
                           <TouchableHighlight
                           onPress={() => console.log('You touched me')}

@@ -153,6 +153,8 @@ export class Chatwindow extends React.Component {
 
               if(responseJson.response.code == 1000){
 
+                GiftedChat.
+
                 this.setState(previousState => ({
                   messages: GiftedChat.append(previousState.messages, messages),
                 }))

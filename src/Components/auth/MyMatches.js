@@ -52,6 +52,8 @@ function isIPhoneX() {
 }
 
 export class MyMatches extends React.Component {
+
+    pageNum = 1
  
     constructor(props) {
         super(props);
@@ -64,11 +66,14 @@ export class MyMatches extends React.Component {
             columns: 2, 
             matchData: '',
             progressVisible: true ,
+            onEndReachedCalledDuringMomentum : false,
             statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
         }
     }
 
     componentDidMount(){
+
+        this.pageNum = 1;
 
         this.setState({photo_id: '', match_type: ''})
 
@@ -120,6 +125,7 @@ export class MyMatches extends React.Component {
         formData.append('api_key', ConstValues.api_key);
         formData.append('user_name', this.state.email);
         formData.append('password', this.state.password);
+        formData.append('pageNum', this.pageNum);
 
         if(this.state.photo_id != ''){
 
@@ -142,14 +148,51 @@ export class MyMatches extends React.Component {
 
             console.log("getMyMatches: " + responseJson.response.message);
 
-            this.setState({matchData: responseJson.response.data, progressVisible: false})
-
             if(responseJson.response.data == undefined){
                 console.log("myFavourites: undefined data");
+            }
+            else{
+                this.setState({
+                    matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
+                    onEndReachedCalledDuringMomentum: false,
+                    progressVisible: false,
+                  })
+        
+                  this.pageNum = this.pageNum + 1;
             }
 
         })
     }
+
+    onEndReached = ({ distanceFromEnd }) => {
+        console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.matchData.length)
+        console.log("bottom reached:.......................pagenum"+ this.pageNum)
+
+   
+             // if(!this.onEndReachedCalledDuringMomentum ){
+               this.onEndReachedCalledDuringMomentum = true;
+               console.log("bottom reached:......................."+  this.state.matchData.length +" ")
+   
+               if( this.state.matchData.length % 4 === 0){
+   
+               this.setState(
+               {
+               progressVisible : true ,
+               onEndReachedCalledDuringMomentum: false
+               },
+               () => {
+                 console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+   
+   
+               this.getMatchList()
+               }
+               );
+   
+               // }
+               
+               
+             }
+       }
 
     render() {
         const { statusBarPaddingTop } = this.state;
@@ -185,6 +228,8 @@ export class MyMatches extends React.Component {
                 {this.state.matchData != undefined ?
                 
                 <MasonryList
+                onEndReached={this.onEndReached.bind(this)}
+                onEndReachedThreshold={0.5}
                 spacing="2"
                 
                 backgroundColor="transparent"
@@ -216,20 +261,19 @@ export class MyMatches extends React.Component {
                             
 
                             }]}>
-
-                            
-                            
                             
                                 <View style={{flex: 1, }}>
-                                    
+
+                                {data.is_favourite.toLowerCase() == 'yes' ? 
                                     <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                    {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                        {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                        
+                                        <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
+                                    </View>
+                                    :
+                                    null
+                                }
                                     
-                                    {/* <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} /> */}
-                                </View>
-                                    
-                                    
-                                
                                     <View style={{ flex: 1, }} >
                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
                                     <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
