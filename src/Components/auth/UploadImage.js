@@ -285,7 +285,7 @@ export class UploadImage extends React.Component {
               </NB.Left>
 
               <NB.Body  >
-              <NB.Segment style={{backgroundColor:'transparent'}}>
+              <NB.Segment style={{backgroundColor:'transparent',}}>
                   <NB.Text style={{color:'#fff',fontSize:23,}}>Upload Photo </NB.Text>
                   </NB.Segment>
               </NB.Body>
@@ -358,7 +358,7 @@ export class UploadImage extends React.Component {
                      <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
                            <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}
                            onPress = {() => this.gotoMyMatches()}>
-                             <NB.Text style={{fontSize:17,}}>continue</NB.Text>
+                             <NB.Text style={{fontSize:17,marginTop:-2}}>continue</NB.Text>
                            </NB.Button>
 
 
@@ -413,14 +413,20 @@ const styles = StyleSheet.create({
     thumb: {
       width: 30,
       height: 30,
-      shadowColor: '#000',
+      // shadowColor: '#000',
       backgroundColor: '#fff',
       borderColor: '#cdcd',
-      borderWidth: 1,
+      // borderWidth: 1,
       borderRadius: 40 / 2,
-      shadowOffset: {width: 2, height: 1},
-      shadowRadius: 2,
-      shadowOpacity: 0.35,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      }, 
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      
     }
 
 

@@ -7,7 +7,7 @@ import {Text, SwipeRow} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { GiftedChat , MessageText, MessageImage, Time, utils ,Bubble } from 'react-native-gifted-chat';
+import { GiftedChat , MessageText, MessageImage, Time, utils ,Bubble,InputToolbar } from 'react-native-gifted-chat';
 const { isSameUser, isSameDay } = utils;
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -255,6 +255,9 @@ export class Chatwindow extends React.Component {
               left: {
                 color: "#757983",
               }
+
+
+
             }}
             wrapperStyle={{
               right: {
@@ -293,7 +296,15 @@ export class Chatwindow extends React.Component {
         );
       }
       
+
+      renderInputToolbar (props) {
+        //Add the extra styles via containerStyle
+       return <InputToolbar {...props} placeholderTextColor="#aeb7c5"  placeholder="Write a message ..." containerStyle={{borderTopWidth:0,backgroundColor:"#f2f7f9",}} />
+     }
  
+    
+
+
       getPreviousConversation(){
         console.log('2. $$$$$$***************getPreviousConversation: ' + this.state.messages.length )
 
@@ -493,12 +504,20 @@ export class Chatwindow extends React.Component {
                     {console.log('1. ***************this.state.messages: '+this.state.messages.length)}
 
                     {loadEarlier ? 
-                      <GiftedChat
+                      <GiftedChat 
                       messages={this.state.messages}
                       onSend={messages => this.onSend(messages)}
                       renderSend={this.renderSend}
                       onLoadEarlier={messages => this.loadEarlierMessage()}
                       loadEarlier = {true}
+                      renderBubble={this.renderBubble.bind(this)}
+                      // showUserAvatar={true}
+                      // showAvatarForEveryMessage={true}
+                      renderInputToolbar={this.renderInputToolbar} 
+                      isLoadingEarlier={this.state.isLoadingEarlier}
+                      loadEarlier={this.state.loadEarlier}
+                       
+
                       user={{
                         _id: this.state.customer_id, 
                       }} 
@@ -508,8 +527,12 @@ export class Chatwindow extends React.Component {
                     <GiftedChat
                       messages={this.state.messages}
                       onSend={messages => this.onSend(messages)}
+                      renderBubble={this.renderBubble.bind(this)} 
                       renderSend={this.renderSend}
                       loadEarlier = {false}
+                      renderInputToolbar={this.renderInputToolbar} 
+                      isLoadingEarlier={this.state.isLoadingEarlier}
+                      loadEarlier={this.state.loadEarlier}
                       user={{
                         _id: this.state.customer_id, 
                       }} 
