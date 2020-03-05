@@ -13,7 +13,6 @@ import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-// import RangeSlider from 'rn-range-slider';
 
 const roundTo = require('round-to');
 
