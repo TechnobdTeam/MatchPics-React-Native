@@ -314,8 +314,8 @@ onSwipeValueChange = swipeData => {
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>Messages     </NB.Text>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                          <NB.Text style={{color:'#fff',fontSize:23,}}>Messages</NB.Text>
                           </NB.Segment>
                       </NB.Body>
                       <NB.Right>
@@ -440,7 +440,7 @@ onSwipeValueChange = swipeData => {
                                         <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
                                       </View> 
                                       <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow',
-                                      {id: data.item.id, name: data.item.name, user_id: data.item.user_id})}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15}}>{data.item.message} </Text>  
+                                      {id: data.item.id, name: data.item.name, user_id: data.item.user_id})}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15,height:57}}>{data.item.message} </Text>  
                                       
                                   </View>
                                 </View> 

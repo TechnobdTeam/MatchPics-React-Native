@@ -266,11 +266,11 @@ updateProfile(){
                     </NB.CardItem>
 
                     <View style={{flex: 1, }}>
-                        <View style={{flex: 1,}} > 
+                        <View style={{flex: 3,}} > 
                         <NB.Item style={{borderBottomWidth:0,}}>
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Location</NB.H3>
                            </NB.Item> 
-                                <NB.View style={{backgroundColor:'#fff',}} > 
+                                <NB.View style={{backgroundColor:'#fff', }} > 
                                 <TouchableOpacity onPress={() => this.setLocationMarker()} >
                                     <NB.CardItem   > 
                                         <NB.Body>
@@ -290,7 +290,7 @@ updateProfile(){
   
                 
                         </View>
-                  <View style={{flex: 8,marginTop:60}} > 
+                  <View style={{flex: 8,}} > 
 
                 <View style={styles.container}>
 
@@ -339,10 +339,9 @@ updateProfile(){
                       }
                         <View style={{flex: 3, backgroundColor: '#f3f3f3',alignItems:"center",justifyContent:"flex-end",marginBottom:15,}} >
 
-                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                        <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
-                                        <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
+                                        <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
                                     </NB.Button>  
                         </View>
                     </View> 

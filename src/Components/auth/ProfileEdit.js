@@ -386,30 +386,32 @@ export class ProfileEdit extends React.Component {
                                     <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Birthday</NB.H3>
                               </NB.Item>
                               <NB.View style={{backgroundColor:'#fff',marginLeft:-17,}} >
-                                    
+                             
                                     <NB.List  >
-                                        <NB.ListItem selected>
+                                    
+                                        <NB.ListItem onPress={() => this.datepicker()}  selected>
+                                        
                                         <NB.Left>
                                             <NB.Text onPress={() => this.datepicker()}   style={{color:'#696969',paddingLeft:30,textTransform:"uppercase"}}>{this.state.user_dob != '' ? this.state.user_dob : "Select Birthday"}</NB.Text>
                           
                                         </NB.Left>
                                         <NB.Right>
                                           
-                                            <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17}}  /> 
+                                            <Icon onPress={() => this.datepicker()}  name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17}}  /> 
                                         </NB.Right>
-                  
+                                       
                                         </NB.ListItem>
+                                        
                                     </NB.List>
-
+                                
               
                                   </NB.View> 
                                 
 
                                   <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"32%",marginBottom:30}} >
-                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                          <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
-                                          <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
+                                          <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
                                     </NB.Button> 
                                 </NB.Item>
 

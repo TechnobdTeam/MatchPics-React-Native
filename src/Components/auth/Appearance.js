@@ -393,10 +393,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('spend_time')}>
                                              
-                                          <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,}}>favorite way to spend time</NB.Text>
+                                          <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,width:"60%"}}>favorite way to spend time</NB.Text>
                                           
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_spend_time}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_spend_time} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -408,7 +408,7 @@ export class Appearance extends React.Component {
                                                 <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Smoking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_smoking}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_smoking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -421,7 +421,7 @@ export class Appearance extends React.Component {
                                                 <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>drinking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_drinking}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_drinking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -444,10 +444,10 @@ export class Appearance extends React.Component {
                                     
 
                                        <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
-                                       <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                                       <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                        onPress = {() => this.updateProfile()}>
-                                             <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
-                                             <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
+                                             <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                             
                                        </NB.Button> 
                                     </NB.Item>
 

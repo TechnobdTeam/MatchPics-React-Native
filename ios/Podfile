@@ -54,7 +54,7 @@ target 'reactnavigation' do
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
 
-  pod 'rn-range-slider', :path => '../node_modules/rn-range-slider'
+
 
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 

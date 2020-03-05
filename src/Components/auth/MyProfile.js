@@ -290,8 +290,8 @@ export class MyProfile extends React.Component {
                             </NB.Left>
     
                             <NB.Body  >
-                            <NB.Segment style={{backgroundColor:'transparent'}}>
-                                <NB.Text style={{color:'#fff',fontSize:23,}}>My Profile    </NB.Text>
+                            <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                                <NB.Text style={{color:'#fff',fontSize:23,}}>My Profile</NB.Text>
                                 </NB.Segment>
                             </NB.Body>
                             <NB.Right>
@@ -303,7 +303,7 @@ export class MyProfile extends React.Component {
     
                         <NB.Content >
     
-                            <TouchableOpacity >
+                            {/* <TouchableOpacity > */}
                                 <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:10,marginBottom:60,}} >
                                     <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:110,width:219,height:219,overflow:'hidden',}}>
     
@@ -312,19 +312,21 @@ export class MyProfile extends React.Component {
                                         :
                                         <Image style={{width:'100%',height:'100%'}}   source={{uri: this.state.user_image}} />
                                     }
-                                
+                                  
                                         <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:-33,}} >
+                                        <TouchableOpacity onPress={this.onPress} >
                                             <NB.View  style={{alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderRadius:100,height:35,width:35, }}>
-                                                {/* <NB.Icon style={{color:'#b53386'}} name="ios-create"  /> */}
-                                                <Icon name={'edit'}  style={{fontSize:16,color:'#b53386', }} solid onPress={this.onPress}/>   
+                                                {/* <NB.Icon style={{color:'#b53386'}} name="ios-create"  /> */} 
+                                                <Icon  name={'edit'}  style={{fontSize:16,color:'#b53386', }} solid />   
                                             </NB.View>
+                                            </TouchableOpacity> 
                                         </NB.View> 
-                                    
+                                         
                                     </NB.View>
         
                                         <NB.View><NB.Text style={{color:'#94217e',fontSize:21,}}>{this.state.name}</NB.Text></NB.View>
                                 </NB.View>
-                            </TouchableOpacity>
+                            {/* </TouchableOpacity> */}
     
                             <NB.View style={HomeStyle.UserProfileCard}  >  
                                     <ImageBackground source={require('../Image/user_bnt_bg.png') } style={{  }} >

@@ -13,7 +13,6 @@ import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-// import RangeSlider from 'rn-range-slider';
 
 const roundTo = require('round-to');
 
@@ -273,7 +272,7 @@ export class Social extends React.Component {
                                         <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>looking for</NB.Text>
                                     </NB.Left>
                                     <NB.Right style={{flex:1,}}>
-                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.looking_for}<Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.looking_for} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
                                     </NB.Right>
                                     </NB.ListItem>
                                  </NB.List> 
@@ -309,9 +308,26 @@ export class Social extends React.Component {
                       step={1}
                       allowOverlap={false}
                       snapped
-                      selectedStyle={{backgroundColor:"#92207e"}}
-                      unselectedStyle={{backgroundColor:"#522070"}} 
+                      selectedStyle={{backgroundColor:"#f74a61"}}
+                      unselectedStyle={{backgroundColor:"#9e2681"}} 
                       trackStyle={{ height: 5,borderRadius:3 }}
+                      pressedMarkerStyle={{ width: 30,height:30}}
+                      // disabledMarkerStyle={{width: 48,height:48}}
+                      markerStyle={{
+                        width: 25,
+                        height:25,
+                        backgroundColor:"#fff",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
+                        marginTop:3,
+                    
+                    }}
            
                      
 
@@ -364,10 +380,9 @@ export class Social extends React.Component {
 
 
                               <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
-                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:0,}}
+                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                 onPress = {() => this.updateProfile()}>
-                                      <NB.Text style={{fontSize:17,color:'#ffffff',}}>save </NB.Text>
-                                      <Icon name="check"  style={{color:'#fff',paddingRight:30,fontSize:17}}  /> 
+                                      <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
                                 </NB.Button> 
                                 </NB.View> 
 
