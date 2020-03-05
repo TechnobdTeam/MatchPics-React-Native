@@ -16,6 +16,7 @@ export class UserProfile extends React.Component {
  confirmMessage = 'Hello'
  performAction = ''
  reportTextString = ''
+ fromScreen = ''
 
   constructor(props) {
     super(props);
@@ -68,6 +69,7 @@ export class UserProfile extends React.Component {
     if(this.state.user_id == ''){
         //getting user id passed from previous page
         this.setState({user_id: this.props.navigation.state.params.id});
+        this.fromScreen = this.props.navigation.state.params.from
         console.log("user_profile_id: " + this.state.user_id);
     }
 
@@ -251,7 +253,7 @@ export class UserProfile extends React.Component {
 
          <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:10}}>
 
-         <NB.Button onPress={() => this.props.navigation.navigate('MyMatches')} transparent >
+         <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
                                 
                                 <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
                                 

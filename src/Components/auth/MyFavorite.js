@@ -219,7 +219,7 @@ export class MyFavorite extends React.Component {
                                 <TouchableWithoutFeedback  
                                     
                                     onPress={() => this.props.navigation.navigate('UserProfile',{
-                                        id: data.user_id
+                                        id: data.user_id, from: "MyFavorite"
                                     })}
                                     onPressIn={() => console.log("profile_id: " + data.user_id)}
                                     // onPress={() => Linking.openURL("#")} 

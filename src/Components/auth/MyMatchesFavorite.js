@@ -207,7 +207,7 @@ export class MyMatchesFavorite extends React.Component {
                                                 return <NB.View  key = {i +j}>
                                                 {j != 5 ? 
                                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile',{
-                                                        id: item2.profile_id
+                                                        id: item2.profile_id, from: "MyMatchesFavorite"
                                                     })} > 
                                                     <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:45, height: 45,borderRadius: 50}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
                                                     </TouchableOpacity>

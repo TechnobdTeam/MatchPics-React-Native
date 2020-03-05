@@ -66,11 +66,15 @@ function isIPhoneX() {
 
 export class AppSearch extends React.Component {
  
+    pageNum = 1
+
     state = {
         search: '',
         token: '',
         columns: 2, 
         matchData: '',
+        searach_vissible : true,
+        onEndReachedCalledDuringMomentum: false,
          
         statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
     }
@@ -83,12 +87,16 @@ export class AppSearch extends React.Component {
   };
 
 
-  example = () => {
+  AppSearchView = () => {
 
-    this.setState({ visible: !this.state.visible })
+    this.pageNum = 1
+    this.setState({matchData: '', visible: !this.state.visible })
    }
+   
 
    componentDidMount(){
+
+    this.pageNum = 1
 
     this.setState({photo_id: '', match_type: ''})
 
@@ -109,6 +117,8 @@ export class AppSearch extends React.Component {
    searchMyMatches(text){
 
     var query = '';
+
+    this.pageNum = 1
 
     if(text != undefined){
 
@@ -137,13 +147,58 @@ export class AppSearch extends React.Component {
 
             console.log("getSearchMyMatches: " + responseJson.response.message);
 
-            this.setState({matchData: responseJson.response.data, progressVisible: false})
+            // this.setState({matchData: responseJson.response.data, progressVisible: false})
 
             if(responseJson.response.data == undefined){
                 console.log("getSearchMyMatches: undefined data");
+
+                if(this.pageNum == 1){
+                    this.setState({matchData: ''})
+                }
+               
+                this.setState({onEndReachedCalledDuringMomentum: false})
+            }
+            else{
+                this.setState({
+                    matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
+                    onEndReachedCalledDuringMomentum: false,
+                    progressVisible: false,
+                  })
+        
+                  this.pageNum = this.pageNum + 1;
             }
 
         })
+   }
+
+   onEndReached = ({ distanceFromEnd }) => {
+    console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.matchData.length)
+    console.log("bottom reached:.......................pagenum"+ this.pageNum)
+
+
+         // if(!this.onEndReachedCalledDuringMomentum ){
+           this.onEndReachedCalledDuringMomentum = true;
+           console.log("bottom reached:......................."+  this.state.matchData.length +" ")
+
+           if( this.state.matchData.length % 4 === 0){
+
+           this.setState(
+           {
+           progressVisible : true ,
+           onEndReachedCalledDuringMomentum: false
+           },
+           () => {
+             console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+
+
+           this.searchMyMatches()
+           }
+           );
+
+           // }
+           
+           
+         }
    }
 
     render() {
@@ -185,12 +240,13 @@ export class AppSearch extends React.Component {
                                <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'
                                    onChangeText={(value) => {this.searchMyMatches(value)}}
                                />   
+                                 <NB.Icon  onPress={() => this.AppSearchView()}    name="close" style={{fontSize:20,color:'#e74e92', }}  />
                           </NB.Item> 
          
                             :
 
                             <View style={{justifyContent:'center',alignItems:'center',}}>
-                            <TouchableOpacity  onPress= {() => this.example()}>
+                            <TouchableOpacity  onPress= {() => this.AppSearchView()}>
                             <NB.Text style={{color:'#e74e92',fontSize:13}} >
                             <Icon name="search"  style={{fontSize:13,color:'#e74e92', }}  />  Search for messages or users</NB.Text>
                             </TouchableOpacity> 
@@ -203,11 +259,12 @@ export class AppSearch extends React.Component {
                         </View> 
                     
                 
-                        {this.state.matchData != undefined ?
+                        {this.state.matchData != '' ?
                 
                 <MasonryList
                 spacing="2"
-                
+                onEndReached={this.onEndReached.bind(this)}
+                onEndReachedThreshold={0.5}
                 backgroundColor="transparent"
                 imageContainerStyle={{
                 borderRadius: 5, 
@@ -223,7 +280,7 @@ export class AppSearch extends React.Component {
                         <TouchableWithoutFeedback  
                             
                             onPress={() => this.props.navigation.navigate('UserProfile',{
-                                id: data.id
+                                id: data.id, from: "AppSearch"
                             })}
                             onPressIn={() => console.log("profile_id: " + data.id)}
                             // onPress={() => Linking.openURL("#")} 
@@ -237,15 +294,14 @@ export class AppSearch extends React.Component {
 
                                 <View style={{flex: 1, }}>
                                     
-                                {data.is_favourite.toLowerCase() == 'yes' ? 
+                                {/* {data.is_favourite.toLowerCase() == 'yes' ? 
                                     <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                        {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
                                         
                                         <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
                                     </View>
                                     :
                                     null
-                                }
+                                } */}
                                     
                                     <View style={{ flex: 1, }} >
                                     <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >

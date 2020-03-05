@@ -221,7 +221,10 @@ onSwipeValueChange = swipeData => {
 
 
     searchViewClicked = () => {
-      this.setState({ searach_vissible: !this.state.searach_vissible })
+        if(!this.state.searach_vissible){
+            this.searchTextChanged("")
+        }
+         this.setState({ searach_vissible: !this.state.searach_vissible })
      }
 
 

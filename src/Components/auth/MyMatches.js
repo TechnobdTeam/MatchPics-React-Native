@@ -247,7 +247,7 @@ export class MyMatches extends React.Component {
                         <TouchableWithoutFeedback  
                             
                             onPress={() => this.props.navigation.navigate('UserProfile',{
-                                id: data.id
+                                id: data.id, from: "MyMatches"
                             })}
                             onPressIn={() => console.log("profile_id: " + data.id)}
                             // onPress={() => Linking.openURL("#")} 
