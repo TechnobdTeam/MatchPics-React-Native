@@ -68,7 +68,7 @@ export class Register extends React.Component {
 
                 this.setState({image_uri: response.uri});
                 this.setState({image_type: response.type});
-                this.setState({image_name: response.name});
+                this.setState({image_name: response.fileName});
                 this.setState({addAvatarTextVisible: false});
                 console.log('Image selected: ' + response.uri);
               }
@@ -87,9 +87,8 @@ export class Register extends React.Component {
               } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
               } else {
-                this.setState({image_uri: response.uri});
-                this.setState({image_type: response.type});
-                this.setState({image_name: response.name});
+                this.setState({image_uri: response.uri, image_type: response.type, image_name: response.fileName});
+              console.log('Image selected: ' + response.uri);
                 this.setState({addAvatarTextVisible: false});
                 console.log('Image clicked: ' + response.uri);
               }

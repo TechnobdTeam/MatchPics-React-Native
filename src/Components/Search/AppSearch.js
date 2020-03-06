@@ -67,6 +67,7 @@ function isIPhoneX() {
 export class AppSearch extends React.Component {
  
     pageNum = 1
+    prevText = ''
 
     state = {
         search: '',
@@ -116,13 +117,18 @@ export class AppSearch extends React.Component {
 
    searchMyMatches(text){
 
+    console.log("previous_text: " + this.prevText)
+    console.log("previous_text: " + text)
+
     var query = '';
 
-    this.pageNum = 1
+    
 
     if(text != undefined){
 
         query = text
+        this.prevText = text
+        this.pageNum = 1
     }
     
     console.log("search with " + query);

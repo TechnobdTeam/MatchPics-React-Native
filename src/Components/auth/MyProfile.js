@@ -136,8 +136,8 @@ export class MyProfile extends React.Component {
             } else if (response.customButton) {
               console.log('User tapped custom button: ', response.customButton);
             } else {
-              this.setState({image_uri: response.uri});
-              this.setState({image_type: response.type});
+                this.setState({image_uri: response.uri, image_type: response.type, image_name: response.fileName});
+                console.log('Image selected: ' + response.uri);
               console.log('Image clicked: ' + response.uri);
     
               this.changeProfilePicture();

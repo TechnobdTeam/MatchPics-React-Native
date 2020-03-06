@@ -8,6 +8,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
+import ImageLoad from 'react-native-image-placeholder';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 
 {/*Login  */}
@@ -132,7 +133,8 @@ notificationArray = []
         <View    style={styles.rowFront}>
         <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
             <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,marginLeft:-10}}>
-                <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} />
+                {/* <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} /> */}
+                <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:60, height: 60,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item.url}}  style={{ width:60, height: 60, borderRadius: 37.5 }} />
             </View>
   
             <View  style={{width:"100%"}}>
