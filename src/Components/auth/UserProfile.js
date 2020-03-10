@@ -406,6 +406,10 @@ export class UserProfile extends React.Component {
             </Dialog>
         }
         <ConfirmDialog
+         dialogStyle={{ 
+            borderRadius:7,
+            
+        }}
         title="Confirmation!"
         message={this.confirmMessage}
         visible={this.state.confirmVisible}
@@ -418,6 +422,7 @@ export class UserProfile extends React.Component {
             title: "NO",
             onPress: () => this.setState({confirmVisible: false})
         }}
+        
     />
 
     <ConfirmDialog
@@ -445,10 +450,15 @@ export class UserProfile extends React.Component {
            </TouchableOpacity>
             </View>
 
-                <View>
-                    <Icon  name="exclamation-triangle" solid style={{color:'#e57a1c',fontSize:30 }}  />  
-                    <NB.Text style={{color:"#000",fontWeight:"700",fontSize:16,}}>Please select a problem to continue</NB.Text>  
-                    <NB.Text style={{color:"#696969",fontSize:15,}}>You Can report the profile after selecting a problem.</NB.Text> 
+                <View style={{flex:1,flexDirection:'row',marginBottom:53}}>
+                    <View style={{width:50}}> 
+                    <Icon  name="exclamation-triangle" solid style={{color:'#e57a1c',fontSize:30 }}  /> 
+                     </View>
+                    <View style={{width:280}} >  
+                     
+                    <NB.Text style={{color:"#000",fontWeight:"700",fontSize: width * 0.033,flexWrap: 'wrap'}}>Please select a problem to continue</NB.Text>  
+                    <NB.Text style={{color:"#696969",fontSize: width * 0.030, }}>You Can report the profile after selecting a problem.</NB.Text> 
+                    </View>
                 </View>
                 <ScrollView>
                 <View style={{flexWrap:"wrap", display:'flex',alignContent:"space-around",flexDirection: 'row',marginTop:5,}} > 
