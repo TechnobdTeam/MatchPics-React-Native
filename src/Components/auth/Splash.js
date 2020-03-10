@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground,StatusBar} from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import * as NB from 'native-base';
 // NativeBase
@@ -313,6 +313,7 @@ export class Splash extends React.Component {
     render() {
       return (  
         <Fragment >    
+           <StatusBar translucent = {true} barStyle="light-content" backgroundColor="#e76995" />
             <ImageBackground source={require('../Image/splash.jpg') } style={{width: '100%', height: '100%', justifyContent: 'center', alignItems:'center',}}   > 
             <Button light style={{marginTop:10}}
                  onPress={() => this.props.navigation.navigate('UploadImage')}

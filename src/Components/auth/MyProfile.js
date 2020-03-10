@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, FlatList , TouchableOpacity,PermissionsAndroid } from 'react-native';
+import { View, Image, ImageBackground, FlatList , TouchableOpacity,PermissionsAndroid,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 import{Toast} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -275,6 +275,7 @@ export class MyProfile extends React.Component {
     }
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
         <NB.Root>
             <Fragment>    
@@ -284,19 +285,24 @@ export class MyProfile extends React.Component {
                     <NB.Container   style={HomeStyle.MyprofileContainer}  >
                         <NB.Header  transparent>
                             <NB.Left>
-                                <NB.Button onPress={() => this.props.navigation.navigate('Menu')} transparent>
-                                    <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                                <NB.Button  transparent>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} > 
+                                    <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                                    </TouchableOpacity> 
                                 </NB.Button>
                             </NB.Left>
     
                             <NB.Body  >
                             <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
-                                <NB.Text style={{color:'#fff',fontSize:23,}}>My Profile</NB.Text>
+                                <NB.Text style={{color:'#fff',fontSize: width * 0.05, fontFamily:'OpenSans-Regular'}} >My Profile</NB.Text>
                                 </NB.Segment>
                             </NB.Body>
                             <NB.Right>
                                 <NB.Button transparent>
-                                <Icon   onPress={() => this.props.navigation.navigate('Notification')} name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >   
+                                <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                                <Icon    name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }}  light />   
+                                </TouchableOpacity> 
                                 </NB.Button>
                             </NB.Right>
                         </NB.Header>
@@ -317,14 +323,14 @@ export class MyProfile extends React.Component {
                                         <TouchableOpacity onPress={this.onPress} >
                                             <NB.View  style={{alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderRadius:100,height:35,width:35, }}>
                                                 {/* <NB.Icon style={{color:'#b53386'}} name="ios-create"  /> */} 
-                                                <Icon  name={'edit'}  style={{fontSize:16,color:'#b53386', }} solid />   
+                                                <Icon  name={'edit'}  style={{fontSize: width * 0.037,color:'#b53386', }} solid />   
                                             </NB.View>
                                             </TouchableOpacity> 
                                         </NB.View> 
                                          
                                     </NB.View>
         
-                                        <NB.View><NB.Text style={{color:'#94217e',fontSize:21,}}>{this.state.name}</NB.Text></NB.View>
+                                        <NB.View><NB.Text style={{color:'#94217e',fontSize: width * 0.037,fontFamily:'OpenSans-Regular',marginTop:15,}}>{this.state.name}</NB.Text></NB.View>
                                 </NB.View>
                             {/* </TouchableOpacity> */}
     
@@ -334,13 +340,13 @@ export class MyProfile extends React.Component {
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
                                                     
-                                                    <Icon name={'user-circle'}  style={{color:'#fff',fontSize:21,}}   />   
-                                                    <NB.Text  style={{color:'#fff',fontSize:21,}} >Profile</NB.Text>
+                                                    <Icon name={'user-circle'}  style={{color:'#fff',fontSize: width * 0.06,}}   />   
+                                                    <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}} >Profile</NB.Text>
                                                 </NB.Left>
     
                                                 <NB.Right>
                                                     <NB.Button onPress={() => this.props.navigation.navigate('ProfileEdit')}   light style={{backgroundColor:'#e32a89',borderRadius:7,height:35,marginTop:5,}}> 
-                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize'}}>Change</NB.Text>
+                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>Change</NB.Text>
                                                     </NB.Button>
     
                                                 </NB.Right>
@@ -354,13 +360,13 @@ export class MyProfile extends React.Component {
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
                                                 
-                                                    <Icon name={'dice'}  style={{color:'#fff',fontSize:21,}}   />   
-                                                    <NB.Text  style={{color:'#fff',fontSize:21,}} >Social</NB.Text>
+                                                    <Icon name={'dice'}  style={{color:'#fff',fontSize: width * 0.06,}}   />   
+                                                    <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}} >Social</NB.Text>
                                                 </NB.Left>
     
                                                 <NB.Right>
                                                     <NB.Button onPress={() => this.props.navigation.navigate('Social')}  light style={{backgroundColor:'#00a8ff',borderRadius:7,height:35,marginTop:5,}}> 
-                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
+                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>Change</NB.Text>
                                                     </NB.Button>
     
                                                 </NB.Right>
@@ -373,13 +379,13 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
-                                                <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize:21,}}   />  
-                                                    <NB.Text   style={{color:'#fff',fontSize:21,}} >Location</NB.Text>
+                                                <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize: width * 0.06,}}   />  
+                                                    <NB.Text   style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}} >Location</NB.Text>
                                                 </NB.Left>
     
                                                 <NB.Right>
                                                     <NB.Button onPress={() => this.props.navigation.navigate('location')}  light style={{backgroundColor:'#f68e1e',borderRadius:7,height:35,marginTop:5,}}> 
-                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
+                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize: width * 0.032,fontFamily:'OpenSans-Regular',}}>Change</NB.Text>
                                                     </NB.Button>
     
                                                 </NB.Right>
@@ -392,13 +398,13 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
-                                                <Icon name={'male'}  style={{color:'#fff',fontSize:21,}}   />  
-                                                    <NB.Text  style={{color:'#fff',fontSize:21,}} >Appearance</NB.Text>
+                                                <Icon name={'male'}  style={{color:'#fff',fontSize: width * 0.06,}}   />  
+                                                    <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}} >Appearance</NB.Text>
                                                 </NB.Left>
     
                                                 <NB.Right>
                                                     <NB.Button onPress={() => this.props.navigation.navigate('Appearance')}  light style={{backgroundColor:'#2ed573',borderRadius:7,height:35,marginTop:5,}}> 
-                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize:14}}>Change</NB.Text>
+                                                        <NB.Text style={{color:'#fff',textTransform:'capitalize',fontSize: width * 0.032,fontFamily:'OpenSans-Regular',}}>Change</NB.Text>
                                                     </NB.Button>
     
                                                 </NB.Right>

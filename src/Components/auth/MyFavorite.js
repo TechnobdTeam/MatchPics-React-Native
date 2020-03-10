@@ -9,6 +9,7 @@ import {
     TouchableWithoutFeedback,
     Image,
     ImageBackground,
+    TouchableOpacity,
 } from "react-native";
 import * as NB from 'native-base';
 import MasonryList from "react-native-masonry-list";
@@ -65,6 +66,7 @@ export class MyFavorite extends React.Component {
           password: '',
           token: '',
           progressVisible: true ,
+          progressVisibleBottom: false ,
           favData: '',
           columns: 2, 
           onEndReachedCalledDuringMomentum : false,
@@ -131,6 +133,7 @@ export class MyFavorite extends React.Component {
                     favData: this.pageNum === 1 ? responseJson.response.data : [...this.state.favData, ...responseJson.response.data],
                     onEndReachedCalledDuringMomentum: false,
                     progressVisible: false,
+                    progressVisibleBottom: false
                   })
         
                   this.pageNum = this.pageNum + 1;
@@ -152,7 +155,8 @@ export class MyFavorite extends React.Component {
    
                this.setState(
                {
-               progressVisible : true ,
+            //    progressVisible : true ,
+               progressVisibleBottom: true,
                onEndReachedCalledDuringMomentum: false
                },
                () => {
@@ -171,6 +175,7 @@ export class MyFavorite extends React.Component {
 
     render() {
         const { statusBarPaddingTop } = this.state;
+        const {width, height} = Dimensions.get('window');
 
         return (
 
@@ -180,19 +185,24 @@ export class MyFavorite extends React.Component {
              <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
                       <NB.Header  transparent>
                       <NB.Left>
-                        <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                        <NB.Button transparent  >
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')}>
+                         <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                         </TouchableOpacity>
                         </NB.Button>
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>My favourites </NB.Text>
+                      <NB.Segment style={{backgroundColor:'transparent', width:"100%"}}>
+                          <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My favourites</NB.Text>
                           </NB.Segment>
                       </NB.Body>
                       <NB.Right>
-                        <NB.Button transparent>
-                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <NB.Button transparent> 
+                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >
+                         <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                           <Icon name={'bell'}    style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid />   
+                         </TouchableOpacity>
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
@@ -254,12 +264,12 @@ export class MyFavorite extends React.Component {
 
                                                 <View style={{width:"80%",flexDirection:"column-reverse",}}>
                                                     
-                                                    <Text style={{color:"#fff",fontSize:11,}} >{data.gender}, {data.age} </Text> 
-                                                    <Text style={{color:"#fff",fontSize:13,}}>{data.name}</Text>  
+                                                    <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
+                                                    <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
                                                 </View>
 
                                                 <View style={{width:"20%", flexDirection:"column-reverse",}}>
-                                                <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
+                                                <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
                                                 </View> 
 
                                             </View>
@@ -281,13 +291,29 @@ export class MyFavorite extends React.Component {
                     <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
                     }
                    
-                    <ProgressDialog
+                    <Dialog
                         visible={this.state.progressVisible}
-                        title="Loading data"
-                        message="Please, wait..."
-                    />
-                    
-                    
+                        // title="Loading data"
+                        // message="Please, wait..."
+                        dialogStyle={{
+                            backgroundColor:"transparent",
+                            elevation: 0,
+                            
+                            
+                         }}
+                    >
+
+                        <NB.Spinner color='#fff' />
+
+                    </Dialog>
+
+                    {this.state.progressVisibleBottom ? 
+                        <NB.Spinner color='#fff'  />
+                        :
+                        null
+                        }
+                       
+                        
 
                 </NB.Container> 
             </ImageBackground>

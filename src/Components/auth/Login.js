@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground,KeyboardAvoidingView } from 'react-native';
+import { View, Image, ImageBackground,KeyboardAvoidingView,StatusBar,Dimensions } from 'react-native';
 import * as NB from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -409,10 +409,11 @@ export class Login extends React.Component {
 
 
     render() {
-      return ( 
+      const {width, height} = Dimensions.get('window');
+      return (  
         <Root>
         <Fragment>   
-      
+         <StatusBar  barStyle="light-content" backgroundColor="#e74e92" />
          <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
           <NB.Container  style={HomeStyle.PageContainerLogin}  >
             
@@ -435,24 +436,24 @@ export class Login extends React.Component {
                        
                          <NB.Form >
                             <NB.Item  style={{marginTop:20}} >
-                              <NB.Input   placeholder='EMAIL'
+                              <NB.Input style={{fontSize: width * 0.032,color:"#696969",fontFamily:'OpenSans-Regular'}}   placeholderTextColor="#696969"  placeholder='EMAIL'
                                 onChangeText={(value) => this.setState({email: value})}
                               /> 
                             </NB.Item>
                             <NB.Item style={{marginTop:50}}>
-                              <NB.Input   placeholder='PASSWORD'
+                              <NB.Input style={{fontSize: width * 0.032,color:"#696969",fontFamily:'OpenSans-Regular'}}  placeholderTextColor="#696969"   placeholder='PASSWORD'
                                 onChangeText={(value) => this.setState({password: value})} secureTextEntry={true}
                               />
                               {/* <NB.Icon name='close-circle' /> */}
                             </NB.Item> 
                           
-                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:40,marginBottom:30,}} >
-                              <NB.Text  onPress={() => this.props.navigation.navigate('ForgotPassword')}  style={{fontSize:21,color:'#333333',}}> Forgot Password? </NB.Text>
+                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:50,marginBottom:30,}} >
+                              <NB.Text  onPress={() => this.props.navigation.navigate('ForgotPassword')}  style={{fontSize: width * 0.038,color:'#333333',fontFamily:'OpenSans-Regular',textDecorationLine: 'underline'}}>Forgot Password?</NB.Text>
                              </NB.Item> 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center'}} >
-                                <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,width:'75%',justifyContent: 'center',alignItems:'center',height:59,}} onPress={() => this.verifyLogin()}>
-                                      <NB.Text style={{fontSize:18,color:'#ffffff',}}>Sign in</NB.Text>
+                                <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,justifyContent: 'center',alignItems:'center',height:59,paddingLeft:62,paddingRight:62}} onPress={() => this.verifyLogin()}>
+                                      <NB.Text style={{fontSize: width * 0.032,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>Sign in</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
                               
@@ -465,19 +466,19 @@ export class Login extends React.Component {
 
 
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,}} >
-                                <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,width:'99%',height:59,  justifyContent: 'center',alignItems:"center"}} 
+                                <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,height:59,  justifyContent: 'center',alignItems:"center",paddingTop:2,paddingLeft:11,paddingRight:18}} 
                                 onPress={() => this.handleFacebookLogin()}>
-                                   <NB.Text style={{fontSize:18,color:'#ffffff',}}>  <Icon name={'facebook-f'}  style={{fontSize:24,color:'#fff', }} light />   Sign in with facebook</NB.Text>
+                                   <NB.Text style={{fontSize: width * 0.032,color:'#ffffff',fontFamily:'OpenSans-Regular' }}>  <Icon name={'facebook-f'}  style={{fontSize:16,color:'#fff',marginTop:4}} light />   Sign in with facebook</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
 
 
-                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:90,marginBottom:15,}} >
-                              <NB.Text style={{fontSize:21,color:'#333333',}}>Don’t have a account yet? </NB.Text>
+                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center', alignItems:'center',marginTop:"40%",marginBottom:15,}} >
+                              <NB.Text style={{fontSize: width * 0.037,color:'#333333',fontFamily:'OpenSans-Regular'}}>Don’t have a account yet? </NB.Text>
                              </NB.Item>  
                                 <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:5,marginBottom:10,}} >
-                                    <NB.Button onPress={() => this.props.navigation.navigate('Register')}  iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff9900',width:'80%',height:58,  justifyContent: 'center',alignItems:"center"}}>
-                                      <NB.Text style={{fontSize:18,color:'#ffffff',}}>  sign up for free</NB.Text>
+                                    <NB.Button onPress={() => this.props.navigation.navigate('Register')}  iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff9900',height:58,  justifyContent: 'center',alignItems:"center",paddingLeft:33,paddingRight:33}}>
+                                      <NB.Text style={{fontSize: width * 0.032,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>  sign up for free</NB.Text>
                                     </NB.Button> 
                               </NB.Item>
 

@@ -302,6 +302,7 @@ onSwipeValueChange = swipeData => {
       //           </View>;
 
       // }
+      const {width, height} = Dimensions.get('window');
       return ( 
           <NB.Root>
             <Fragment>    
@@ -309,27 +310,55 @@ onSwipeValueChange = swipeData => {
                
                   <NB.Container   style={styles.PageContainerChatList}  >
                       
+                  {this.state.searach_vissible == false ?
+                 <NB.Header  transparent style={{paddingLeft:0,paddingRight:0, }}>
+                    <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:10,paddingLeft:10,paddingRight:10,height:50}}> 
+                      <NB.Item style={{borderBottomWidth:0,}} > 
+                          <Icon name="search"  style={{fontSize: width * 0.05,color:'#e74e92', }}  />
+                          <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'
+                          onChangeText={(search_text) =>{                               
+                            this.searchTextChanged(search_text)
+                          } }
+                          value={this.state.search_text}
+                          />  
+                          <NB.Icon  onPress={() => this.searchViewClicked()}    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
+
+                      </NB.Item>
+                </View>
+                </NB.Header>
+                  :
+                
                   <NB.Header  transparent>
                       <NB.Left>
                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                        <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
                         </NB.Button>
                       </NB.Left>
 
                       <NB.Body  >
                       <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>Messages</NB.Text>
+                          <NB.Text style={{color:'#fff',fontSize:23,fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Messages</NB.Text>
                           </NB.Segment>
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')} style={{fontSize:24,color:'#fff', }} solid />   
+                        <TouchableOpacity 
+                        onPress={() => this.searchViewClicked()}
+                         >
+                        <Icon name={'search'}  style={{fontSize: width * 0.05,color:'#fff', }} solid />   
+                      </TouchableOpacity> 
+                        </NB.Button>
+                        <NB.Button transparent>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate('Notification')} >
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                           <Icon name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid />   
+                      </TouchableOpacity> 
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
-
+     }
                      
-                      <View  style={styles.rowFrontTop}>
+                      {/* <View  style={styles.rowFrontTop}>
                         <View style={{ width:'80%', }}>
 
                         {this.state.searach_vissible == false ?
@@ -356,16 +385,15 @@ onSwipeValueChange = swipeData => {
                             </TouchableOpacity> 
                             </View>
 
-                            }
-
-
-                            
+                            } 
                             
                               
                           </View> 
                               
 
-                        </View> 
+                        </View>  */}
+
+
                      
                 <NB.Content style={{backgroundColor:"#fff"}}>
 
@@ -439,11 +467,11 @@ onSwipeValueChange = swipeData => {
                                   
                                   <View style={{width:"100%"}}>
                                       <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
-                                        <Text    style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{data.item.name} </Text> 
-                                        <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{data.item.created_at}  </Text> 
+                                        <Text    style={{color:'#e74e92',fontSize: width * 0.04,fontFamily:'OpenSans-Semibold',}}>{data.item.name} </Text> 
+                                        <Text style={{color:'#1c1721',fontSize: width * 0.027,fontFamily:'OpenSans-Semibold',}}>{data.item.created_at}  </Text> 
                                       </View> 
                                       <Text  numberOfLines={2}  onPress={() => this.props.navigation.navigate('Chatwindow',
-                                      {id: data.item.id, name: data.item.name, user_id: data.item.user_id})}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:15,height:57}}>{data.item.message} </Text>  
+                                      {id: data.item.id, name: data.item.name, user_id: data.item.user_id})}  style={{color:'#1c1721',textAlign:'left',fontSize: width * 0.033,paddingBottom:10,height:57,fontFamily:'OpenSans-Regular' }}>{data.item.message} </Text>  
                                       
                                   </View>
                                 </View> 

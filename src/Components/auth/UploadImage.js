@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,StatusBar,TouchableOpacity,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 import {Toast, Root} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
@@ -265,37 +265,48 @@ export class UploadImage extends React.Component {
   }
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
+    
       <Root>
+      
         <Fragment> 
+        <StatusBar translucent={false} barStyle="light-content" backgroundColor="#e74e92" />
        {/* <NB.Container   style={HomeStyle.UplodeprofileContainer}  > */}
 
-       <NavigationEvents onDidFocus={() => 
+       <NavigationEvents    onDidFocus={() => 
          (this.state.change_photo_url != '' || this.state.match_type != '1') ? this.resetValue() : console.log('I am triggered')} />
 
           <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
 
           <NB.Container   style={HomeStyle.PageContainer}  >
 
-            <NB.Header  transparent>
+            <NB.Header   transparent>
               <NB.Left>
-                <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+            
+                <NB.Button transparent  >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')}>
+                   <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                </TouchableOpacity>
                 </NB.Button>
+              
               </NB.Left>
 
               <NB.Body  >
-              <NB.Segment style={{backgroundColor:'transparent',}}>
-                  <NB.Text style={{color:'#fff',fontSize:23,}}>Upload Photo </NB.Text>
+              <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                  <NB.Text style={{color:'#fff',fontSize: width * 0.05, fontFamily:'OpenSans-Regular'}}>Upload Photo </NB.Text>
                   </NB.Segment>
               </NB.Body>
               <NB.Right>
-                <NB.Button transparent>
-                <Icon  onPress={() => this.props.navigation.navigate('Notification')}  name={'bell'}  style={{fontSize:24,color:'#fff', }}  light />   
+                <NB.Button  transparent  >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >  
+                   <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />   
+                    <Icon    name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }}  light />   
+                 </TouchableOpacity>
                 </NB.Button>
               </NB.Right>
             </NB.Header> 
-
+           
 
               <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,}}> 
 
@@ -318,11 +329,11 @@ export class UploadImage extends React.Component {
                     </NB.View>
 
                     <NB.View>
-                      <NB.Button style={{backgroundColor:'#fff',borderRadius:50,width:200,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,}} >
+                      <NB.Button style={{backgroundColor:'#fff',borderRadius:50,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,paddingLeft:47,paddingRight:47}} >
                       {this.state.change_photo_url == '' ? 
-                            <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>upload</NB.Text>
+                            <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Regular'}} onPress={this.onPress}>upload</NB.Text>
                             :
-                            <NB.Text style={{color:'#92207e',fontSize:18,}} onPress={this.onPress}>change</NB.Text>
+                            <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Regular'}} onPress={this.onPress}>change</NB.Text>
                       }
                       </NB.Button>
                     </NB.View>
@@ -332,7 +343,7 @@ export class UploadImage extends React.Component {
             <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12,}}>
                   
             {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
-                  <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
+                  <NB.Text style={{ fontSize: width * 0.037,fontFamily:'OpenSans-Regular',color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize: width * 0.037,fontFamily:'OpenSans-Regular' }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
 
               :
               null
@@ -356,22 +367,49 @@ export class UploadImage extends React.Component {
                   }
                     </NB.View> 
                      <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
-                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,width:200}}
+                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,paddingLeft:40,paddingRight:40,}}
                            onPress = {() => this.gotoMyMatches()}>
-                             <NB.Text style={{fontSize:17,marginTop:-2}}>continue</NB.Text>
+                             <NB.Text style={{fontSize: width * 0.037,fontFamily:'OpenSans-Regular',marginTop:-2}}>continue</NB.Text>
                            </NB.Button>
 
 
                      </NB.View>
 
                      <Dialog
+                      dialogStyle={{
+                        borderRadius:7,
+                        width:300,
+                        marginLeft:"9%"
+                     }}
+                     titleStyle={{
+                      textAlign: 'center',
+  
+                     }}
                       visible={this.state.imagePickOptionDialog}
-                      title="Select an option..."
+                      title="Uplode Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                      <NB.View>
-                          <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
-                          <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
-                          <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
+                      <NB.View style={{height:50,}}>
+                      {/* <NB.Text style={{fontSize:20,color:'#333333', marginBottom: 10,fontFamily:'OpenSans-Regular'}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text> */}
+                      <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                            <NB.View style={{width:80, alignItems: 'center',}}>
+                                <TouchableOpacity onPress={this.onPressFromGallery}  > 
+                                <Icon    name={'images'}  style={{fontSize:30, color:"#e1e1e1" }}    />  
+                                </TouchableOpacity> 
+                            </NB.View>
+                            <NB.View style={{width:80, alignItems: 'center',}}>
+                               <TouchableOpacity onPress={this.onPressOpenCamera} > 
+                                <Icon    name={'camera'}  style={{fontSize:30, color:"#e1e1e1" }}   /> 
+                                </TouchableOpacity>  
+                            </NB.View>
+                        </NB.View>
+                       
+
+                     
+
+
+                         
+                          {/* <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View> */}
+                          {/* <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text> */}
                       </NB.View>
                   </Dialog>
 
@@ -405,14 +443,14 @@ const styles = StyleSheet.create({
        },
 
     track: {
-      height: 10,
+      height: 5,
       borderRadius: 3, 
       backgroundColor: '#e44c91',
     },
 
     thumb: {
-      width: 30,
-      height: 30,
+      width: 20,
+      height: 20,
       // shadowColor: '#000',
       backgroundColor: '#fff',
       borderColor: '#cdcd',
@@ -421,7 +459,7 @@ const styles = StyleSheet.create({
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
-        height: 2,
+        height: 3,
       }, 
       shadowOpacity: 0.25,
       shadowRadius: 3.84,

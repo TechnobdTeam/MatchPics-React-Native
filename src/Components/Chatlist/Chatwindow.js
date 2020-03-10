@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, BackHandler, ImageBackground, Clipboard, StyleSheet, TouchableOpacity,ViewPropTypes, Platform,} from 'react-native';
+import { View, BackHandler, ImageBackground, Clipboard, StyleSheet, TouchableOpacity,ViewPropTypes, Platform,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import HomeStyle from '../LayoutsStytle/HomeStyle';
@@ -462,7 +462,8 @@ export class Chatwindow extends React.Component {
         this.getPreviousConversation();
       }
 
-    render() {   
+    render() {  
+      const {width, height} = Dimensions.get('window'); 
       return ( 
 
         <Fragment>
@@ -477,26 +478,30 @@ export class Chatwindow extends React.Component {
      
                    <NB.Header  transparent>
                       <NB.Left>
-                         <NB.Button transparent onPress={() => {
+                         <NB.Button  transparent >
+                            <TouchableOpacity   onPress={() => {
                            screen_on = false
                           //  this.setState({screen_on: false})
                             this.props.navigation.navigate('Chatlist')}
-                         }
-                          >
-                         <Icon name="long-arrow-alt-left"  style={{fontSize:24,color:'#fff', }}  /> 
+                         }> 
+                               <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                            </TouchableOpacity>
                         </NB.Button>
 
                 
                       </NB.Left>
                       <NB.Body  >
                           <NB.Segment style={{width:"100%",backgroundColor:'transparent'}}>
-                           <NB.Text style={{color:'#fff',fontSize:23,}}> {this.state.user_name}   </NB.Text>
+                           <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}> {this.state.user_name}   </NB.Text>
                           </NB.Segment>
                        </NB.Body>
                     
                       <NB.Right>
                          <NB.Button transparent>
-                         <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid /> 
+                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  > 
+                         <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                         <Icon name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid /> 
+                         </TouchableOpacity>
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 

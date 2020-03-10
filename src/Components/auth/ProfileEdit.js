@@ -1,5 +1,5 @@
 import React,  { Fragment, Component ,useState } from 'react';
-import { Image, ImageBackground,TouchableOpacity,  Radio,View, Button} from 'react-native';
+import { Image, ImageBackground,TouchableOpacity,  Radio,View, Button,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
@@ -238,7 +238,7 @@ export class ProfileEdit extends React.Component {
   
   render() {
     const { statusBarPaddingTop } = this.state; 
-
+    const {width, height} = Dimensions.get('window');
  
     return (
 
@@ -249,12 +249,13 @@ export class ProfileEdit extends React.Component {
                 <NB.View style={HomeStyle.EditprofilePageView} >
                       <NB.CardItem style={{backgroundColor:'transparent'}} > 
                             
-                        <NB.Button onPress={() => this.props.navigation.navigate('MyProfile')} iconRight transparent style={{ }}>
-                          
-                              <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                        <NB.Button  iconRight transparent style={{ }}>
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')} > 
+                              <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.07,color:'#333333',  }}  /> 
+                            </TouchableOpacity>
                           </NB.Button>
                           <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
-                              <NB.Text style={{fontSize:40,color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
+                              <NB.Text style={{fontSize: width * 0.08,fontFamily:'OpenSans-Regular',color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
                             
                           </NB.Left>
                         
@@ -265,7 +266,7 @@ export class ProfileEdit extends React.Component {
                             <NB.Form>
                               
                               <NB.Item style={{borderBottomWidth:0,}}>
-                                    <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Real Name</NB.H3>
+                                    <NB.H3 style={{color:'#333333',paddingBottom:8,fontFamily:'OpenSans-Semibold',fontSize: width * 0.039,paddingLeft:15,}}>Real Name</NB.H3>
                               </NB.Item>
                                   <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
                                     
@@ -273,7 +274,7 @@ export class ProfileEdit extends React.Component {
                                     {this.state.name_visible == false ?
                                           <NB.ListItem selected style={{padding:0,margin:0,height:53}}>
                                           
-                                        <NB.Input style={{paddingLeft:14,paddingLeft:30,}} 
+                                        <NB.Input style={{fontFamily:'OpenSans-Regular',fontSize: width * 0.039,paddingLeft:30,}} 
                                         value = {this.state.user_name}
                                           onChangeText = {val => this.setState({ user_name: val })}
                                         /> 
@@ -284,10 +285,10 @@ export class ProfileEdit extends React.Component {
                                         <NB.ListItem selected>
                                           <TouchableOpacity  onPress= {() => this.example()} style={{flex:1,flexDirection: 'row'}}>
                                         <NB.Left>
-                                            <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>{this.state.user_name}</NB.Text>
+                                            <NB.Text style={{color:'#696969',textTransform:"uppercase",paddingLeft:30,fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>{this.state.user_name}</NB.Text>
                                         </NB.Left>
                                         <NB.Right>
-                                        <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17}}  /> 
+                                        <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:15,fontSize:17}}  /> 
                                         </NB.Right>
                                         </TouchableOpacity>
                                         </NB.ListItem>
@@ -301,7 +302,7 @@ export class ProfileEdit extends React.Component {
 
 
                                 <NB.Item style={{borderBottomWidth:0,}}>
-                                    <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Here For</NB.H3>
+                                    <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontFamily:'OpenSans-Semibold',fontSize: width * 0.039,paddingLeft:15,}}>Here For</NB.H3>
                               </NB.Item>
                               <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
 
@@ -324,10 +325,10 @@ export class ProfileEdit extends React.Component {
 
                 return <NB.ListItem button onPress={() => this.toggleSwitch1()} style={{paddingLeft:30,marginLeft:-12,paddingRight:30,}} >
                 <NB.Body>
-                  <NB.Text style={{color:"#696969",fontSize:17,}}>{item.name}</NB.Text>
+                  <NB.Text style={{color:"#696969",fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>{item.name}</NB.Text>
                 </NB.Body>
                 <NB.CheckBox
-                  style={{borderRadius:15,}} 
+                  style={{borderRadius:15,fontSize: width * 0.039}} 
                   color="#c6c6c6"
                   checked={item.name.toLowerCase() == this.state.user_here_for.toLowerCase() ? true : false}
                   onPress={() => {this.setState({user_here_for: item.name}), this.here_for_id= item.id}}
@@ -383,7 +384,7 @@ export class ProfileEdit extends React.Component {
 
 
                                   <NB.Item style={{borderBottomWidth:0,}}>
-                                    <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Birthday</NB.H3>
+                                    <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontFamily:'OpenSans-Semibold',fontSize: width * 0.039,paddingLeft:15,}}>Birthday</NB.H3>
                               </NB.Item>
                               <NB.View style={{backgroundColor:'#fff',marginLeft:-17,}} >
                              
@@ -392,12 +393,12 @@ export class ProfileEdit extends React.Component {
                                         <NB.ListItem onPress={() => this.datepicker()}  selected>
                                         
                                         <NB.Left>
-                                            <NB.Text onPress={() => this.datepicker()}   style={{color:'#696969',paddingLeft:30,textTransform:"uppercase"}}>{this.state.user_dob != '' ? this.state.user_dob : "Select Birthday"}</NB.Text>
+                                            <NB.Text onPress={() => this.datepicker()}   style={{color:'#696969',paddingLeft:30,textTransform:"uppercase",fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>{this.state.user_dob != '' ? this.state.user_dob : "Select Birthday"}</NB.Text>
                           
                                         </NB.Left>
                                         <NB.Right>
                                           
-                                            <Icon onPress={() => this.datepicker()}  name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17}}  /> 
+                                            <Icon onPress={() => this.datepicker()}  name="chevron-right"  style={{color:'#c6c6c6',paddingRight:15,fontSize:17}}  /> 
                                         </NB.Right>
                                        
                                         </NB.ListItem>
@@ -408,10 +409,10 @@ export class ProfileEdit extends React.Component {
                                   </NB.View> 
                                 
 
-                                  <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"32%",marginBottom:30}} >
-                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
+                                  <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"33%",marginBottom:30}} >
+                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                          <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                          <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
                                     </NB.Button> 
                                 </NB.Item>
 

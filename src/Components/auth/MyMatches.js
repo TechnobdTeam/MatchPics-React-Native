@@ -9,6 +9,8 @@ import {
     TouchableWithoutFeedback,
     Image,
     ImageBackground,
+    TouchableOpacity,
+     
 } from "react-native";
 import * as NB from 'native-base';
 import MasonryList from "react-native-masonry-list";
@@ -196,6 +198,7 @@ export class MyMatches extends React.Component {
 
     render() {
         const { statusBarPaddingTop } = this.state;
+        const {width, height} = Dimensions.get('window');
 
         return (
 
@@ -206,18 +209,23 @@ export class MyMatches extends React.Component {
                       <NB.Header  transparent>
                       <NB.Left>
                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >  
+                            <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                        </TouchableOpacity> 
                         </NB.Button>
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>My Matches </NB.Text>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                          <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My Matches</NB.Text>
                           </NB.Segment>
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  >
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                          <Icon name={'bell'}   style={{fontSize: width * 0.05,color:'#fff', width:21}} solid />   
+                        </TouchableOpacity>
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
@@ -281,12 +289,12 @@ export class MyMatches extends React.Component {
 
                                         <View style={{width:"80%",flexDirection:"column-reverse",}}>
                                             
-                                            <Text style={{color:"#fff",fontSize:11,}} >{data.gender}, {data.age} </Text> 
-                                            <Text style={{color:"#fff",fontSize:13,}}>{data.name}</Text>  
+                                            <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
+                                            <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
                                         </View>
 
                                         <View style={{width:"20%", flexDirection:"column-reverse",}}>
-                                        <Icon name={'user-circle'}  style={{fontSize:24,color:'#fff', textAlign:"right"}} solid />  
+                                        <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
                                         </View> 
 
                                     </View>

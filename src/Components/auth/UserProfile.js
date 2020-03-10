@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity,  } from 'react-native';
+import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions } from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 // NativeBase
@@ -240,7 +240,7 @@ export class UserProfile extends React.Component {
 
 
   render() {  
-  
+      const {width, height} = Dimensions.get('window');
     return (
 
 
@@ -255,7 +255,7 @@ export class UserProfile extends React.Component {
 
          <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
                                 
-                                <Icon name="arrow-left"  style={{fontSize:24,color:'#fff', }}  /> 
+                                <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
                                 
                                 </NB.Button>
          </NB.View>
@@ -298,13 +298,13 @@ export class UserProfile extends React.Component {
                                         <NB.ListItem style={{borderBottomWidth:0,}}>
                                             <NB.Left>
                                             <NB.Body>
-                                                <NB.Text style={{color:'#fff',fontSize:22,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
-                                                <NB.Text style={{color:'#fff',fontSize:18,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize:16 }}  /> {this.state.profileData.address} </NB.Text>  
+                                                <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
+                                                <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
                                                 </NB.Body>
                                             </NB.Left>
                                             <NB.Right>
                                         
-                                            <Icon  name="info-circle" solid style={{color:'#fff',fontSize:40 }}  />  
+                                            <Icon  name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
                                             </NB.Right>
                                         </NB.ListItem>
                                                 </NB.View>
@@ -324,8 +324,8 @@ export class UserProfile extends React.Component {
                     <View style={{ flex: 1,}} >   
                         <NB.View   style={HomeStyle.PageContainerAbout}  >  
                             <NB.View style={{padding:20,}}>
-                                        <NB.Text style={{fontSize:21,marginBottom:10,color:"#6c6c6c"}}>About</NB.Text>  
-                                            <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize:17}} >
+                                        <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#6c6c6c",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
+                                            <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
                                             {this.state.profileData.bio} 
                                         </NB.Text>   
                             </NB.View>  
@@ -338,36 +338,47 @@ export class UserProfile extends React.Component {
 
                     <NB.Footer style={{height:72}} >
                         <NB.FooterTab style={{backgroundColor:'#fff',}}>
-                            <NB.Button badge vertical onPress={() => this.props.navigation.navigate('Chatwindow',
-                            {id: "0", name: this.state.profileData.name, user_id: this.state.user_id})} >
+                            <NB.Button badge vertical  >
+                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Chatwindow',
+                            {id: "0", name: this.state.profileData.name, user_id: this.state.user_id})}>
                             {/* <NB.Badge><NB.Text>2</NB.Text></NB.Badge>  */}
-                            <Icon name="comment" light  style={{color:'#e41b5b',fontSize:24, marginBottom:8,}}  /> 
-                            <NB.Text style={{color:'#333333',fontSize:14,}}>Message</NB.Text>
+                            <Icon name="comment" light  style={{textAlign:"center",color:'#e41b5b',fontSize:24, marginBottom:8,}}  /> 
+                            <NB.Text style={{textAlign:"center",color:'#333333',fontSize: width * 0.033,fontFamily:'OpenSans-Regular'}}>Message</NB.Text>
+                            </TouchableOpacity>
                             </NB.Button>
-                            <NB.Button vertical onPress={() => this.setState({confirmVisible: true})}
+
+                            <NB.Button vertical>
+                            <TouchableOpacity onPress={() => this.setState({confirmVisible: true})}
                             onPressIn={() => this.state.profileData.is_fab.toLowerCase() == 'yes' ?
                             this.removeUserFromFav()
                             :
-                            this.addUserIntoFav()}>
+                            this.addUserIntoFav()} >
                             {this.state.profileData.is_fab.toLowerCase() == 'yes' ?
-                            <Icon name="heart" solid  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  /> 
+                            <Icon name="heart" solid  style={{textAlign:"center", color:'#e41b5b',fontSize:24,marginBottom:8, }}  /> 
                             :
-                            <Icon name="heart" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  /> 
+                            <Icon name="heart" light  style={{textAlign:"center",color:'#e41b5b',fontSize:24,marginBottom:8, }}  /> 
                             }
-                            <NB.Text style={{color:'#333333',fontSize:14,}} >Favorite</NB.Text>
+                            <NB.Text style={{textAlign:"center",color:'#333333',fontSize: width * 0.033,fontFamily:'OpenSans-Regular'}} >Favorite</NB.Text>
+                          </TouchableOpacity>
                             </NB.Button>
-                            <NB.Button    vertical onPress={() => this.setState({confirmVisible: true})}
+                            <NB.Button   vertical > 
+                           <TouchableOpacity onPress={() => this.setState({confirmVisible: true})}
                             onPressIn={() => this.state.profileData.is_blocked.toLowerCase() == 'yes' ?
                             this.removeBlock()
+                             
                             :
-                            this.blockUser()}> 
-                            <Icon name="ban" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />  
-                            <NB.Text   style={{color:'#333333',fontSize:14,}}>Block</NB.Text>
+                            this.blockUser()} 
+                           > 
+                            <Icon name="ban" light  style={{textAlign:"center",color:'#e41b5b',fontSize:24,marginBottom:8, }}  />  
+                            <NB.Text   style={{textAlign:"center",color:'#333333',fontSize: width * 0.033,fontFamily:'OpenSans-Regular'}}>Block</NB.Text>
+                            </TouchableOpacity>
                             </NB.Button>
 
-                            <NB.Button vertical vertical onPress={() => this.setState({Report: true})}>
-                            <Icon name="flag" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8, }}  />   
-                            <NB.Text style={{color:'#333333',fontSize:14,}}>Report</NB.Text>
+                            <NB.Button vertical   >
+                            <TouchableOpacity    onPress={() => this.setState({Report: true})} > 
+                            <Icon name="flag" light  style={{color:'#e41b5b',fontSize:24,marginBottom:8,textAlign:"center" }}  />   
+                            <NB.Text style={{color:'#333333',textAlign:"center",fontSize: width * 0.033,fontFamily:'OpenSans-Regular'}}>Report</NB.Text>
+                            </TouchableOpacity> 
                             </NB.Button>
 
                         </NB.FooterTab>
@@ -415,12 +426,14 @@ export class UserProfile extends React.Component {
         >
 
         <View style={{marginLeft:-24,marginRight:-24,marginTop:-24,marginBottom:-90,padding:24,}}>
-
+        
             <View style={{borderBottomWidth:1,borderBottomColor:"#ededed",marginBottom:20,alignItems:"flex-end",paddingBottom:7}}>
                 {/* <Icon onPress={() => this.setState({Report: false})}   name="times" solid style={{color:'#5b5b5b',fontSize:30, }}  />   */}
-                <NB.Icon onPress={() => {
+                <TouchableOpacity onPress={() => {
                     this.reportTextString = ''
-                    this.setState({Report: false, reportText: ''})}}  name="close" style={{color:'#5b5b5b',fontSize:30, }}  /> 
+                    this.setState({Report: false, reportText: ''})}} > 
+                <NB.Icon   name="close" style={{color:'#5b5b5b',fontSize:30, }}  /> 
+           </TouchableOpacity>
             </View>
 
                 <View>
@@ -428,7 +441,7 @@ export class UserProfile extends React.Component {
                     <NB.Text style={{color:"#000",fontWeight:"700",fontSize:16,}}>Please select a problem to continue</NB.Text>  
                     <NB.Text style={{color:"#696969",fontSize:15,}}>You Can report the profile after selecting a problem.</NB.Text> 
                 </View>
-
+                <ScrollView>
                 <View style={{flexWrap:"wrap", display:'flex',alignContent:"space-around",flexDirection: 'row',marginTop:5,}} > 
 
                 {this.state.reportTypeData != '' ? 
@@ -457,8 +470,16 @@ export class UserProfile extends React.Component {
                    null
                    }                              */}
                         {/* <NB.Text style={HomeStyle.Peporttag}  > Pretending to be someone </NB.Text>   */}
-                </View>
 
+  
+                             <NB.Form  style={{width:"100%"}}>
+                              <NB.Textarea rowSpan={3} bordered placeholder="Textarea" />
+                             </NB.Form>
+    
+             
+                   
+                </View>
+                </ScrollView>
                 <View style={{marginTop:10,}}> 
                     <TouchableOpacity>
                     {this.state.reportText == '' ? 

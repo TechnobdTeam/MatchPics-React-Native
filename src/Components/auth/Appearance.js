@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet} from 'react-native';
+import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,TouchableOpacity,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // NativeBase
@@ -302,6 +302,7 @@ export class Appearance extends React.Component {
 
 
   render() {
+   const {width, height} = Dimensions.get('window');
     return (
 
       <NB.Root>
@@ -312,12 +313,13 @@ export class Appearance extends React.Component {
                      <NB.View style={HomeStyle.EditprofilePageView} >
                            <NB.CardItem style={{backgroundColor:'transparent'}} > 
                                  
-                              <NB.Button onPress={() => this.props.navigation.navigate('MyProfile')} iconRight transparent style={{ }}>
-                              
-                                 <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                              <NB.Button  iconRight transparent style={{ }}>
+                              <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')} > 
+                              <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.07,color:'#333333',  }}  /> 
+                              </TouchableOpacity>
                               </NB.Button>
                               <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
-                                 <NB.Text style={{fontSize:40,color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
+                                 <NB.Text style={{fontSize: width * 0.08,fontFamily:'OpenSans-Regular',color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
                                  
                               </NB.Left>
                            
@@ -328,17 +330,17 @@ export class Appearance extends React.Component {
                                  <NB.Form>
                                  
                                     <NB.Item style={{borderBottomWidth:0,}}>
-                                       <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Appearence</NB.H3>
+                                       <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.039,fontFamily:'OpenSans-Semibold',paddingLeft:15,}}>Appearence</NB.H3>
                                     </NB.Item>
                                        <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
                                        
                                        <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('ethnicity')}>
-                                             <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Ethnicity</NB.Text>
+                                             <NB.Left   >
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>Ethnicity</NB.Text>
                                              </NB.Left>
-                                             <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_ethnicity}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                             <NB.Right style={{flex:2}}>
+                                                <NB.Text style={{paddingRight:15,color:'#696969',fontSize: width * 0.039,fontFamily:'OpenSans-Regular',alignItems:"center",justifyContent:"center", }}>{this.state.user_ethnicity}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -346,10 +348,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('body_type')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>body type</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,ffontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>body type</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_body_type}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_body_type}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -357,10 +359,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('hair_color')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Hair color</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>Hair color</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_hair_color}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_hair_color}  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -368,10 +370,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('eye_color')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>eye color</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>eye color</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_eye_color} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_eye_color} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -385,7 +387,7 @@ export class Appearance extends React.Component {
 
 
                                     <NB.Item style={{borderBottomWidth:0,}}>
-                                       <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Lifestyle</NB.H3>
+                                       <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize: width * 0.039,fontFamily:'OpenSans-Semibold',paddingLeft:15,}}>Lifestyle</NB.H3>
                                     </NB.Item>
                                  
                                     <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
@@ -393,10 +395,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('spend_time')}>
                                              
-                                          <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,width:"60%"}}>favorite way to spend time</NB.Text>
+                                          <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,width:"60%",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>favorite way to spend time</NB.Text>
                                           
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_spend_time} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_spend_time} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -405,10 +407,10 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('smoking')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>Smoking</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>Smoking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_smoking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_smoking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
@@ -418,24 +420,24 @@ export class Appearance extends React.Component {
                                           <NB.List  >
                                              <NB.ListItem selected onPress = {() => this.showListFor('drinking')}>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>drinking</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>drinking</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.user_drinking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>{this.state.user_drinking} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
                                           </NB.List>
 
-                                          <NB.List  >
+                                          {/* <NB.List  >
                                              <NB.ListItem selected>
                                              <NB.Left>
-                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize:17,}}>asdfas dfasdf</NB.Text>
+                                                <NB.Text style={{color:'#333333',textTransform:"uppercase",paddingLeft:30,fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>asdfas dfasdf</NB.Text>
                                              </NB.Left>
                                              <NB.Right style={{flex:1,}}>
-                                                <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>asdfasdfasdf  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                                <NB.Text style={{paddingRight:15,color:'#696969',alignItems:"center",justifyContent:"center",fontSize: width * 0.039,fontFamily:'OpenSans-Regular',}}>asdfasdfasdf  <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize: width * 0.039,}}  /></NB.Text> 
                                              </NB.Right>
                                              </NB.ListItem>
-                                          </NB.List>
+                                          </NB.List> */}
 
 
 
@@ -443,10 +445,10 @@ export class Appearance extends React.Component {
                                     </NB.View> 
                                     
 
-                                       <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
-                                       <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
+                                       <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"30%",}} >
+                                       <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                        onPress = {() => this.updateProfile()}>
-                                             <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                             <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize: width * 0.037,}}  /> 
                                              
                                        </NB.Button> 
                                     </NB.Item>
@@ -464,7 +466,7 @@ export class Appearance extends React.Component {
                                  <View>
                                     <FlatList
                                        data={this.state.data}
-                                       renderItem={({item}) => <Text style={styles.item} onPress = {() => this.changeUserInfo(item.name, item.id)}>{item.name} </Text>}
+                                       renderItem={({item}) => <Text style={styles.item}  onPress = {() => this.changeUserInfo(item.name, item.id)}>{item.name} </Text>}
                                     />
                                  </View>
                               </Dialog>
@@ -520,5 +522,6 @@ const styles = StyleSheet.create({
    padding: 10,
    fontSize: 18,
    height: 44,
+   borderBottomColor:"#e1e1e1",borderBottomWidth:1,
  },
 });

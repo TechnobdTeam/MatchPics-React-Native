@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet} from 'react-native';
+import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -21,6 +21,7 @@ export class Termsconditions  extends React.Component {
   
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
         <Fragment>    
         <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
@@ -28,12 +29,13 @@ export class Termsconditions  extends React.Component {
             <NB.View style={HomeStyle.EditprofilePageView} >
                   <NB.CardItem style={{backgroundColor:'transparent'}} > 
                         
-                     <NB.Button onPress={() => this.props.navigation.navigate('Menu')} iconRight transparent style={{ }}>
-                      
-                          <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                     <NB.Button  iconRight transparent style={{ }}>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} > 
+                          <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.06,color:'#333333',  }}  />
+                          </TouchableOpacity> 
                       </NB.Button>
                       <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
-                          <NB.Text style={{fontSize:30,color:'#333333',alignItems:'center',justifyContent:'center'}} > Terms & Conditions </NB.Text> 
+                          <NB.Text style={{fontSize: width * 0.05,fontFamily:'OpenSans-Regular',color:'#333333',alignItems:'center',justifyContent:'center'}} > Terms & Conditions </NB.Text> 
                          
                       </NB.Left>
                     
