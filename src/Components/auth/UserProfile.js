@@ -390,11 +390,20 @@ export class UserProfile extends React.Component {
             </ImageBackground> 
         </View>
         :
-        <ProgressDialog
+        <Dialog
+        dialogStyle={{
+            backgroundColor:"transparent",
+            elevation: 0, 
+            
+         }}
             visible={this.state.progressVisible}
-            title="Getting details"
-            message="Please, wait..."
-        />
+
+           
+            // title="Getting details"
+            // message="Please, wait..."
+        >
+ <NB.Spinner color='#fff' />
+            </Dialog>
         }
         <ConfirmDialog
         title="Confirmation!"

@@ -307,7 +307,7 @@ export class MyFavorite extends React.Component {
 
                     </Dialog>
 
-                    {this.state.progressVisibleBottom ? 
+ {this.state.progressVisibleBottom ? 
                         <NB.Spinner color='#fff'  />
                         :
                         null

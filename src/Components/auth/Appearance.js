@@ -13,6 +13,8 @@ import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
 {/*Register */}
 
+var appearance_length = 0;
+
 export class Appearance extends React.Component {
 
    ethnicity_id = ''
@@ -38,7 +40,9 @@ export class Appearance extends React.Component {
        data: [],
        dialog_title: '',
        show_list_for: '',
-       progressVisible: false
+       progressVisible: false,
+       
+
 
     };
 
@@ -144,37 +148,41 @@ export class Appearance extends React.Component {
   showListFor(value){
 
    if(value == 'ethnicity'){
+      appearance_length = ConstValues.profile_all_details.appearance.ethnicity.length
 
-      console.log("ethnicity: " + ConstValues.profile_all_details.appearance.ethnicity)
-      this.setState({show_list_for: 'ethnicity',dialog_title: 'Select your ethnicity', data: ConstValues.profile_all_details.appearance.ethnicity, dialogVisible: true})
+      console.log("ethnicity: " +appearance_length+" ??? "+ ConstValues.profile_all_details.appearance.ethnicity)
+     
+      this.setState({show_list_for: 'ethnicity',dialog_title: 'Select your ethnicity', data: ConstValues.profile_all_details.appearance.ethnicity, dialogVisible: true, })
    }
    else if(value == 'body_type'){
+      appearance_length = ConstValues.profile_all_details.appearance.body_type.length
 
       console.log("body_type: " + ConstValues.profile_all_details.appearance.body_type)
       this.setState({show_list_for: 'body_type',dialog_title: 'Select body type', data: ConstValues.profile_all_details.appearance.body_type, dialogVisible: true})
    }
    else if(value == 'hair_color'){
-
+      appearance_length = ConstValues.profile_all_details.appearance.hair_color.length
       console.log("hair_color: " + ConstValues.profile_all_details.appearance.hair_color)
       this.setState({show_list_for: 'hair_color',dialog_title: 'Select hair color', data: ConstValues.profile_all_details.appearance.hair_color, dialogVisible: true})
    }
    else if(value == 'eye_color'){
-
+      appearance_length = ConstValues.profile_all_details.appearance.eye_color.length
       console.log("eye_color: " + ConstValues.profile_all_details.appearance.eye_color)
       this.setState({show_list_for: 'eye_color',dialog_title: 'Select eye color', data: ConstValues.profile_all_details.appearance.eye_color, dialogVisible: true})
    }
    else if(value == 'spend_time'){
-
-      console.log("spend_time: " + ConstValues.profile_all_details.lifestyle.spend_time)
+      
+      console.log("spend_time >>>: " + ConstValues.profile_all_details.lifestyle.spend_time.length)
+      appearance_length = ConstValues.profile_all_details.lifestyle.spend_time.length
       this.setState({show_list_for: 'spend_time',dialog_title: 'Your favorite way to spend time', data: ConstValues.profile_all_details.lifestyle.spend_time, dialogVisible: true})
    }
    else if(value == 'smoking'){
-
+      appearance_length = ConstValues.profile_all_details.lifestyle.smoking.length
       console.log("smoking: " + ConstValues.profile_all_details.lifestyle.smoking)
       this.setState({show_list_for: 'smoking',dialog_title: 'Select smoking type', data: ConstValues.profile_all_details.lifestyle.smoking, dialogVisible: true})
    }
    else if(value == 'drinking'){
-
+      appearance_length = ConstValues.profile_all_details.lifestyle.drinking.length
       console.log("drinking: " + ConstValues.profile_all_details.lifestyle.drinking)
       this.setState({show_list_for: 'drinking', dialog_title: 'Select drinking type', data: ConstValues.profile_all_details.lifestyle.drinking, dialogVisible: true})
    }
@@ -466,7 +474,8 @@ export class Appearance extends React.Component {
                                  <View>
                                     <FlatList
                                        data={this.state.data}
-                                       renderItem={({item}) => <Text style={styles.item}  onPress = {() => this.changeUserInfo(item.name, item.id)}>{item.name} </Text>}
+                                       renderItem={({item, index}) =><TouchableOpacity><Text style={ index == (appearance_length-1) ? styles.item_last: styles.item}  
+                                       onPress = {() => this.changeUserInfo(item.name, item.id)}>{item.name} </Text></TouchableOpacity>}
                                     />
                                  </View>
                               </Dialog>
@@ -524,4 +533,9 @@ const styles = StyleSheet.create({
    height: 44,
    borderBottomColor:"#e1e1e1",borderBottomWidth:1,
  },
+ item_last: {
+   padding: 10,
+   fontSize: 18,
+   height: 44,
+ }
 });

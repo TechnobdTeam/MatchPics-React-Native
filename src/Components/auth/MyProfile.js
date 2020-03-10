@@ -413,14 +413,41 @@ export class MyProfile extends React.Component {
                                 </NB.View>
     
                                 <Dialog
+                                  dialogStyle={{
+                                    borderRadius:7,
+                                    width:300,
+                                    marginLeft:"9%"
+                                 }}
+                                 titleStyle={{
+                                  textAlign: 'center',
+              
+                                 }}
                                     visible={this.state.imagePickOptionDialog}
-                                    title="Select an option..."
+                                    title="Uplode Photo"
                                     onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                                    <NB.View>
+
+<NB.View style={{height:50,}}>
+                      
+                      <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
+                        <NB.View style={{width:80, alignItems: 'center',}}>
+                            <TouchableOpacity  onPress={this.onPressFromGallery}  > 
+                            <Icon    name={'images'}  style={{fontSize:30, color:"#e1e1e1" }}    />  
+                            </TouchableOpacity> 
+                        </NB.View>
+                        <NB.View style={{width:80, alignItems: 'center',}}>
+                           <TouchableOpacity onPress={this.onPressOpenCamera} > 
+                            <Icon    name={'camera'}  style={{fontSize:30, color:"#e1e1e1" }}   /> 
+                            </TouchableOpacity>  
+                        </NB.View>
+                    </NB.View> 
+                  </NB.View>
+
+
+                                    {/* <NB.View>
                                         <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
                                         <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
                                         <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
-                                    </NB.View>
+                                    </NB.View> */}
                                 </Dialog>
     
                                 <ProgressDialog

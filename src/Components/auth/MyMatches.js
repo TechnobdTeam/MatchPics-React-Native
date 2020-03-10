@@ -316,11 +316,20 @@ export class MyMatches extends React.Component {
             <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
             }
            
-            <ProgressDialog
+            <Dialog
                 visible={this.state.progressVisible}
-                title="Loading data"
-                message="Please, wait..."
-            />
+                // title="Loading data"
+                // message="Please, wait..."
+                dialogStyle={{
+                    backgroundColor:"transparent",
+                    elevation: 0,
+                    
+                    
+                 }}
+            >
+
+<NB.Spinner color='#fff' />
+                </Dialog>
        
                  
 
