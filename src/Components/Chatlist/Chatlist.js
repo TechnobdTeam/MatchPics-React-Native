@@ -3,16 +3,14 @@ import { Path,View, Image, ImageBackground, FlatList,StyleSheet,Animated , Touch
 import * as NB from 'native-base';
 // NativeBase
 import HomeStyle from '../LayoutsStytle/HomeStyle';
-import {Text, SwipeRow, Toast} from 'native-base';
+import {Text, SwipeRow} from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 // import Data from "./Data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
-
-
-
+import Toast from 'react-native-toast-native';
 
 var Data = []
 
@@ -108,10 +106,10 @@ getMessageList(){
     }).then((response) => response.json())
     .then((responseJson) =>{
 
-        Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-          })
+        // Toast.show({
+        //     text: responseJson.response.message,
+        //     textStyle: { color: "yellow" },
+        //   })
 
         if(responseJson.response.data == undefined){
             console.log("getMessageList: undefined data");
@@ -165,10 +163,12 @@ deleteRow(rowMap, rowKey, messageId) {
 
         this.setState({progressVisible: false})
 
-        Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-          })
+        // Toast.show({
+        //     text: responseJson.response.message,
+        //     textStyle: { color: "yellow" },
+        //   })
+
+        Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
         if(responseJson.response.code == 1000){
 
@@ -447,8 +447,8 @@ onSwipeValueChange = swipeData => {
 
 
               
-
-                {this.state.listType === 'FlatList' && (
+              {this.state.listViewData.length> 0 ? 
+                this.state.listType === 'FlatList' && (
                     <SwipeListView
                         data={  this.filterByValue(this.state.listViewData, this.state.search_text) }
                         // onEndReached={this.onEndReached.bind(this)}
@@ -566,10 +566,12 @@ onSwipeValueChange = swipeData => {
                         onRowDidOpen={this.onRowDidOpen}
                         onSwipeValueChange={this.onSwipeValueChange}
                     />
-                )}
+                )
+              : 
+              <NB.Text style={{flex: 1, color:'#9a9a9a',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No message found! </NB.Text>
+              }
 
-
-                            
+                
                   </NB.Content> 
 
                   </NB.Container>
@@ -940,3 +942,16 @@ rowFrontTop: {
 },
 
   };
+
+  const style={
+    backgroundColor: "#000000",
+    width: 400,
+    height: Platform.OS === ("ios") ? 50 : 135,
+    color: "#ffffff",
+    fontSize: 15,
+    lineHeight: 2,
+    lines: 1,
+    borderRadius: 15,
+    fontWeight: "bold",
+    yOffset: 40
+};

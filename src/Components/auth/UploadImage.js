@@ -100,12 +100,12 @@ export class UploadImage extends React.Component {
     }).then((response) => response.json())
     .then((responseJson) =>{
 
-        console.log("myFavourites: " + responseJson.response.data);
+        console.log("getMatchTypes: " + responseJson.response.data);
 
         this.setState({matchTypeData: responseJson.response.data})
 
         if(responseJson.response.data == undefined){
-            console.log("myFavourites: undefined data");
+            console.log("getMatchTypes: undefined data");
         }
         else{
 
@@ -184,7 +184,7 @@ export class UploadImage extends React.Component {
 
   requestImage= () =>{
 
-    this.setState({progressVisible: true});
+    this.setState({change_photo_url: '', progressVisible: true});
 
     console.log("token222: " + JSON.parse(this.state.user_token));
     console.log("image222: " + this.state.image_uri);
@@ -346,7 +346,7 @@ export class UploadImage extends React.Component {
                   <NB.Text style={{ fontSize: width * 0.037,fontFamily:'OpenSans-Regular',color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize: width * 0.037,fontFamily:'OpenSans-Regular' }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
 
               :
-              null
+              <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}> </NB.Text></NB.Text>
             }
                   <NB.View style={{ }}>
                   {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
@@ -363,7 +363,17 @@ export class UploadImage extends React.Component {
                     /> 
                   </View> 
                   :
-                  null
+                  <View style={styles.container}>
+                    <Slider
+                      value={this.state.value}
+                      trackStyle={styles.track}
+                       thumbStyle={styles.thumb}
+                       minimumValue={0}
+                       maximumValue={100} 
+                      minimumTrackTintColor='#92207e'
+                      maximumTrackTintColor='#92207e'
+                    /> 
+                  </View> 
                   }
                     </NB.View> 
                      <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>

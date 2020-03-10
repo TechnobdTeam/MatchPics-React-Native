@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions } from 'react-native';
+import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView } from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 // NativeBase
@@ -10,6 +10,8 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
+
+const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 {/*Register */}
 export class UserProfile extends React.Component {
 
@@ -32,6 +34,7 @@ export class UserProfile extends React.Component {
       is_blocked: false,
       reportTypeData: '',
       reportText: '',
+      note: '',
       columns: 2, 
     };
 
@@ -207,12 +210,15 @@ export class UserProfile extends React.Component {
 
   reportAgainstUser(){
 
+    console.log("report value: " + this.state.note)
+
     this.setState({progressVisible: true})
 
     var formData = new FormData();
     formData.append('api_key', ConstValues.api_key);
     formData.append('report_user_id', this.state.user_id);
     formData.append('report_issue', this.reportTextString);
+    formData.append('note', this.state.note);
 
     fetch(ConstValues.base_url + 'addReportUser', {
         method: 'POST',
@@ -425,6 +431,8 @@ export class UserProfile extends React.Component {
         
     />
 
+<KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={{width:"100%"}}>
+
     <ConfirmDialog
         // title="Confirmation!ss"
        
@@ -491,11 +499,9 @@ export class UserProfile extends React.Component {
                         {/* <NB.Text style={HomeStyle.Peporttag}  > Pretending to be someone </NB.Text>   */}
 
   
-                             <NB.Form  style={{width:"100%"}}>
-                              <NB.Textarea rowSpan={3} bordered placeholder="Textarea" />
-                             </NB.Form>
-    
-             
+                                <NB.Form  style={{width:"100%"}}>
+                                    <NB.Textarea onChangeText={(value) => this.setState({note: value})} rowSpan={3} bordered placeholder="Describe problem..." />
+                                </NB.Form>
                    
                 </View>
                 </ScrollView>
@@ -511,6 +517,7 @@ export class UserProfile extends React.Component {
                 
          </View> 
     </ConfirmDialog>
+    </KeyboardAvoidingView>
 
     </NB.Root>
     );

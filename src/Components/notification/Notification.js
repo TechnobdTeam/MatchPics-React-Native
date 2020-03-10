@@ -134,14 +134,23 @@ notificationArray = []
         <View    style={styles.rowFront}>
         <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
             <View style={{justifyContent:'center',alignItems:'center',paddingRight:20,marginLeft:-10}}>
+            <TouchableOpacity onPress={() =>this.props.navigation.navigate('UserProfile',{
+                                        id: item.user_id, from: "Notification"
+                                    })}>
+            <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:60, height: 60,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item.url}}  style={{ width:60, height: 60, borderRadius: 37.5 }} />
+            </TouchableOpacity>
                 {/* <Image source={{uri: item.url}} style={{ width:60, height: 60, borderRadius: 37.5 }} /> */}
-                <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:60, height: 60,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item.url}}  style={{ width:60, height: 60, borderRadius: 37.5 }} />
             </View>
   
             <View  style={{width:"100%"}}>
             <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
-              <Text    style={{color:'#e74e92',fontSize: width * 0.032,fontFamily:'OpenSans-Semibold',}}>{item.name} </Text> 
-              <Text style={{color:'#1c1721',fontSize: width * 0.027,fontFamily:'OpenSans-Semibold',}}>{item.create_date}  </Text> 
+              
+               <TouchableOpacity onPress={() =>this.props.navigation.navigate('UserProfile',{
+                                        id: item.user_id, from: "Notification"
+                                    })}>
+                <Text    style={{color:'#e74e92',fontSize: width * 0.032,fontFamily:'OpenSans-Semibold',}}>{item.name} </Text>             
+                </TouchableOpacity> 
+               <Text style={{color:'#1c1721',fontSize: width * 0.027,fontFamily:'OpenSans-Semibold',}}>{item.create_date}  </Text> 
             </View> 
             <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10,fontFamily:'OpenSans-Regular',}}>{item.notification}  </Text> 
   

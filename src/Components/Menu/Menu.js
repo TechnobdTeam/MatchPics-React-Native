@@ -94,11 +94,14 @@ export class Menu extends React.Component {
     .then((responseJson) =>{
         if(responseJson.response.data == undefined){
             console.log("getMessageList: undefined data");
+            ConstValues.message_data_list = []
         }else{
           ConstValues.message_data_list = responseJson.response.data ;
           console.log("getMessageList: --------------- " + responseJson.response.data.length +" ??? "+ ConstValues.message_data_list.length );
-          this.props.navigation.navigate('Chatlist')
+          
         }
+
+        this.props.navigation.navigate('Chatlist')
 
     })
 }
@@ -175,7 +178,7 @@ messageListClicked(){
                                     <Icon name="cloud-upload-alt"  style={{fontSize: width * 0.05,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}} >Upload Photo </NB.Text>
+                                        <NB.Text  style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}}>upload photo </NB.Text>
                                         </NB.Body>
                                         </TouchableOpacity>
                                     </NB.ListItem>
@@ -269,7 +272,7 @@ messageListClicked(){
                                     <Icon name="door-open" style={{fontSize: width * 0.05,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                          <NB.Text    style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}} >login </NB.Text>
+                                          <NB.Text style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}} >Sign in </NB.Text>
                                         </NB.Body>
                                         </TouchableOpacity>
                                     </NB.ListItem>
@@ -285,7 +288,7 @@ messageListClicked(){
                                     <Icon name="door-open" style={{fontSize: width * 0.05,color:'#e41b5b', }}  /> 
                                     </NB.View>
                                         <NB.Body>
-                                        <NB.Text   style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}} >logout</NB.Text>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Regular'}} >Sign Out</NB.Text>
                                         </NB.Body>
                                       </TouchableOpacity>
                                     

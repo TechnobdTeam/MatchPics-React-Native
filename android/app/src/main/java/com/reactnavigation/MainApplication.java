@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.toast.RCTToastPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;

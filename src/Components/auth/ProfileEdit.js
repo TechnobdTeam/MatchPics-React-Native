@@ -1,7 +1,6 @@
 import React,  { Fragment, Component ,useState } from 'react';
 import { Image, ImageBackground,TouchableOpacity,  Radio,View, Button,Dimensions} from 'react-native';
 import * as NB from 'native-base';
-import {Toast} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // NativeBase
 import {Text,DatePicker,} from 'native-base';
@@ -11,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-toast-native';
 
 // const [date, setDate] = useState(new Date(1598051730000));
 // const [mode, setMode] = useState('date');
@@ -94,14 +94,18 @@ export class ProfileEdit extends React.Component {
       user_here_for: '',
       user_dob: '',
       here_for: {},
-      progressVisible: false
+      progressVisible: false,
+      changed: false
     };
 
   }
   toggleSwitch1() {
+    console.log("changed value: " + this.state.changed)
     this.setState({
+      changed: false,
       checkbox1: !this.state.checkbox1
     });
+    console.log("changed value2: " + this.state.changed)
   }
   toggleSwitch2() {
     this.setState({
@@ -150,23 +154,23 @@ export class ProfileEdit extends React.Component {
   
     var day = dateArray[2];
     var year = dateArray[3];
-    var month = ''
+    var month = dateArray[1]
 
-    Object.entries(months).map(([key, value]) => {
+  //   Object.entries(months).map(([key, value]) => {
 
-      if(key.toLowerCase() == dateArray[1].toLowerCase()){
+  //     if(key.toLowerCase() == dateArray[1].toLowerCase()){
 
-        console.log("matched_month: " + key)
+  //       console.log("matched_month: " + key)
 
-        month = value;
+  //       month = value;
         
-      }
-    }
+  //     }
+  //   }
      
-   )
+  //  )
 
     this.changed_dob = day + "-" + month + "-" + year;
-    this.setState({user_dob: this.changed_dob})
+    this.setState({changed: false, user_dob: this.changed_dob})
     }
 
   show = mode => {
@@ -211,10 +215,12 @@ export class ProfileEdit extends React.Component {
 
             this.setState({progressVisible: false})
 
-            Toast.show({
-              text: responseJson.response.message,
-              textStyle: { color: "yellow" },
-            })
+            // Toast.show({
+            //   text: responseJson.response.message,
+            //   textStyle: { color: "yellow" },
+            // })
+
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
     
             if(responseJson.response.code == 1000){
 
@@ -223,7 +229,7 @@ export class ProfileEdit extends React.Component {
                 console.log(ConstValues.user_info_data);
                 console.log(ConstValues.user_info_data.age);
 
-                this.setState({user_name: ConstValues.user_info_data.full_name, user_here_for: ConstValues.user_info_data.here_for,
+                this.setState({changed: true, user_name: ConstValues.user_info_data.full_name, user_here_for: ConstValues.user_info_data.here_for,
                   user_dob: ConstValues.user_info_data.dob})
             }
             else if(responseJson.response.code == 4001){
@@ -276,7 +282,7 @@ export class ProfileEdit extends React.Component {
                                           
                                         <NB.Input style={{fontFamily:'OpenSans-Regular',fontSize: width * 0.039,paddingLeft:30,}} 
                                         value = {this.state.user_name}
-                                          onChangeText = {val => this.setState({ user_name: val })}
+                                          onChangeText = {val => this.setState({ changed: false, user_name: val })}
                                         /> 
                                           
                                         </NB.ListItem>
@@ -323,7 +329,7 @@ export class ProfileEdit extends React.Component {
                 
                 console.log("here_for_id: " + this.here_for_id);
 
-                return <NB.ListItem button onPress={() => this.toggleSwitch1()} style={{paddingLeft:30,marginLeft:-12,paddingRight:30,}} >
+                return <NB.ListItem button onPress={() =>  this.toggleSwitch1()} style={{paddingLeft:30,marginLeft:-12,paddingRight:30,}} >
                 <NB.Body>
                   <NB.Text style={{color:"#696969",fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>{item.name}</NB.Text>
                 </NB.Body>
@@ -331,7 +337,7 @@ export class ProfileEdit extends React.Component {
                   style={{borderRadius:15,fontSize: width * 0.039}} 
                   color="#c6c6c6"
                   checked={item.name.toLowerCase() == this.state.user_here_for.toLowerCase() ? true : false}
-                  onPress={() => {this.setState({user_here_for: item.name}), this.here_for_id= item.id}}
+                  onPress={() => {this.setState({changed: false, user_here_for: item.name}), this.here_for_id= item.id}}
                 />
               </NB.ListItem>
               }
@@ -412,7 +418,12 @@ export class ProfileEdit extends React.Component {
                                   <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"33%",marginBottom:30}} >
                                     <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                          <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                          <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text>
+                                          {this.state.changed ? 
+                                            <Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                            :
+                                            null
+                                          }
                                     </NB.Button> 
                                 </NB.Item>
 
@@ -452,3 +463,16 @@ export class ProfileEdit extends React.Component {
 
   }
 }
+
+const style={
+  backgroundColor: "#000000",
+  width: 400,
+  height: Platform.OS === ("ios") ? 50 : 135,
+  color: "#ffffff",
+  fontSize: 15,
+  lineHeight: 2,
+  lines: 1,
+  borderRadius: 15,
+  fontWeight: "bold",
+  yOffset: 40
+};

@@ -1,7 +1,6 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, FlatList , TouchableOpacity,PermissionsAndroid,Dimensions} from 'react-native';
 import * as NB from 'native-base';
-import{Toast} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues'
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
@@ -11,6 +10,8 @@ import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ImageLoad from 'react-native-image-placeholder';
+import Toast from 'react-native-toast-native';
 
 const options = {
     title: 'Select Avatar',
@@ -251,10 +252,12 @@ export class MyProfile extends React.Component {
 
         this.setState({progressVisible: false});
 
-        Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-          });
+        // Toast.show({
+        //     text: responseJson.response.message,
+        //     textStyle: { color: "yellow" },
+        //   });
+
+        Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
         if(responseJson.response.code == 1000){
 
@@ -316,7 +319,7 @@ export class MyProfile extends React.Component {
                                     {(this.state.user_image == null || this.state.user_image == '') ? 
                                         <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
                                         :
-                                        <Image style={{width:'100%',height:'100%'}}   source={{uri: this.state.user_image}} />
+                                        <ImageLoad style={{width:'100%',height:'100%'}}   source={{uri: this.state.user_image}} />
                                     }
                                   
                                         <NB.View style={{alignItems:'center',justifyContent:'center',marginTop:-33,}} >
@@ -466,4 +469,17 @@ export class MyProfile extends React.Component {
     );
   }
 }
+
+const style={
+    backgroundColor: "#000000",
+    width: 400,
+    height: Platform.OS === ("ios") ? 50 : 135,
+    color: "#ffffff",
+    fontSize: 15,
+    lineHeight: 2,
+    lines: 1,
+    borderRadius: 15,
+    fontWeight: "bold",
+    yOffset: 40
+};
 {/* End Register */}

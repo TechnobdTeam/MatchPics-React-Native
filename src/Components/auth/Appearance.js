@@ -3,7 +3,7 @@ import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,Touchabl
 import * as NB from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // NativeBase
-import {Text, Toast} from 'native-base';
+import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -11,6 +11,7 @@ import Slider from "react-native-slider";
 import sliderData from "../Slider/Data.js";
 import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-toast-native';
 {/*Register */}
 
 var appearance_length = 0;
@@ -41,8 +42,7 @@ export class Appearance extends React.Component {
        dialog_title: '',
        show_list_for: '',
        progressVisible: false,
-       
-
+       changed : false
 
     };
 
@@ -233,7 +233,7 @@ export class Appearance extends React.Component {
       this.setState({user_drinking : name})
    }
 
-   this.setState({dialogVisible: false})
+   this.setState({changed: false, dialogVisible: false})
   }
 
 
@@ -270,10 +270,12 @@ export class Appearance extends React.Component {
 
            this.setState({progressVisible: false})
 
-           Toast.show({
-             text: responseJson.response.message,
-             textStyle: { color: "yellow" },
-           })
+         //   Toast.show({
+         //     text: responseJson.response.message,
+         //     textStyle: { color: "yellow" },
+         //   })
+
+           Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
    
            if(responseJson.response.code == 1000){
 
@@ -288,7 +290,8 @@ export class Appearance extends React.Component {
                   user_eye_color: ConstValues.user_info_data.eye_color,
                   user_spend_time: ConstValues.user_info_data.spend_time,
                   user_smoking: ConstValues.user_info_data.smoking,
-                  user_drinking: ConstValues.user_info_data.drinking})
+                  user_drinking: ConstValues.user_info_data.drinking,
+                  changed: true})
            }
            else if(responseJson.response.code == 4001){
                //session expired, need to navigate login screen
@@ -447,8 +450,6 @@ export class Appearance extends React.Component {
                                              </NB.ListItem>
                                           </NB.List> */}
 
-
-
                                     
                                     </NB.View> 
                                     
@@ -456,7 +457,12 @@ export class Appearance extends React.Component {
                                        <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"30%",}} >
                                        <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                        onPress = {() => this.updateProfile()}>
-                                             <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize: width * 0.037,}}  /> 
+                                             <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular'}}>save</NB.Text>
+                                             {this.state.changed ? 
+                                                <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}} /> 
+                                                : 
+                                                null
+                                             }
                                              
                                        </NB.Button> 
                                     </NB.Item>
@@ -539,3 +545,17 @@ const styles = StyleSheet.create({
    height: 44,
  }
 });
+
+
+const style={
+   backgroundColor: "#000000",
+   width: 400,
+   height: Platform.OS === ("ios") ? 50 : 135,
+   color: "#ffffff",
+   fontSize: 15,
+   lineHeight: 2,
+   lines: 1,
+   borderRadius: 15,
+   fontWeight: "bold",
+   yOffset: 40
+};
