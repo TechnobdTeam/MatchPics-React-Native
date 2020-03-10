@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, Platform, PermissionsAndroid} from 'react-native';
+import { View, Image, ImageBackground, Platform, PermissionsAndroid,TouchableOpacity,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 import DeviceInfo from "react-native-device-info";
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
@@ -273,20 +273,23 @@ export class Register extends React.Component {
       }
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
         <NB.Root>
         <Fragment>    
       <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
-        <NB.Container   style={HomeStyle.PageContainer}  >
-          <NB.View style={HomeStyle.SingupPageView} >
+        <NB.Container   style={HomeStyle.RegisterPageContainer}  >
+          <NB.View style={HomeStyle.RegisterPageView} >
                 <NB.CardItem style={{backgroundColor:'transparent'}} > 
                       
                     <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
                         <NB.Text style={HomeStyle.SingIn} > Sign Up   </NB.Text> 
                        
                     </NB.Left>
-                    <NB.Button iconRight transparent style={{marginTop:-20,}}>
-                        <NB.Icon onPress={() => this.props.navigation.navigate('Login')}   name="close" style={{fontSize:30,color:'#333333', }}  /> 
+                    <NB.Button iconRight transparent style={{marginTop:-20,marginRight:-18}}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                          <NB.Icon    name="close" style={{fontSize:30,color:'#333333', }}  /> 
+                         </TouchableOpacity> 
                     </NB.Button>
                     
                   </NB.CardItem>
@@ -295,35 +298,35 @@ export class Register extends React.Component {
                       <NB.Form>
                         
                          <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:18,paddingLeft:20}}>User</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Bold',}}>User</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item > 
-                                    <NB.Input  style={{paddingLeft:33,height:59}} placeholder='USER NAME'
+                                    <NB.Input  style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Regular',}}   placeholderTextColor="#696969"   placeholder='USER NAME'
                                         onChangeText ={(Value) => this.setState({user_name: Value})}
                                     /> 
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='EMAIL'
-                                        onChangeText={(value) => {this.validate(value),this.setState({email: value})}}
-                                    />
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Regular',}} placeholderTextColor="#696969" placeholder='EMAIL'
+                                        onChangeText={(value) => {this.validate(value),this.setState({email: value})}}></NB.Input>
+                                   
                                     <NB.Icon name='' style={{color: 'red'}}/>
                                 </NB.Item> 
 
                             </NB.View> 
                             <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:18,paddingLeft:20}}>Password</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Bold',}}>Password</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item  > 
-                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='TYPE PASSWORD'
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Regular',}} placeholderTextColor="#696969" placeholder='TYPE PASSWORD'
                                         onChangeText={(value) => this.setState({password: value})}
                                         secureTextEntry={true}
                                     /> 
                                     {/* <NB.Icon name='close-circle' /> */}
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:33,height:59}} placeholder='CONFIRM PASSWORD'
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Regular',}} placeholderTextColor="#696969" placeholder='CONFIRM PASSWORD'
                                         onChangeText={(value) => this.setState({re_password: value})}
                                         secureTextEntry={true}
                                     />
@@ -332,27 +335,41 @@ export class Register extends React.Component {
 
                             </NB.View> 
 
-                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:74,}}>
-                               <NB.Button style={{backgroundColor:'#a5a5a5',width:115,height:115,borderRadius:100,}} onPress={this.onPress}>
+                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"40%",}}>
+                          
+                               <NB.View style={{backgroundColor:'#e1e1e1',width:150,height:150,borderRadius:55,alignItems:"center",justifyContent:"center",overflow:"hidden",marginBottom:-8}}  >
                                
-                               {!this.state.addAvatarTextVisible ? 
-                                <Image style={{width:115,height:115,borderRadius:100,}} source={{uri: this.state.image_uri}} />
+                              
+                                
+                               
+                              
+                                {!this.state.addAvatarTextVisible ? 
+                                <Image style={{width:150,height:150,}} source={{uri: this.state.image_uri}} />
                                 
                                 : null }
 
                                {this.state.addAvatarTextVisible ? 
-                                <NB.Text
-                                    style={{textAlign:'center',fontSize:16,textTransform:'capitalize'}}>Add Avatar</NB.Text>
+                                  <Image style={{width:100,height:100,marginBottom:-48}} source={require('../Image/profile_img.png')} />
+ 
+                                : null } 
+
+                                </NB.View>
+                           
+                              
+                                    <Icon name="camera"  onPress={this.onPress}  style={{color:'#c6c6c6',fontSize:30,position:"absolute",}}  onPress={this.onPress} />
+                                   
+                               
+                                {/* <NB.View style={{flex:1,}}> 
+
+                                <Icon name="camera"  style={{color:'#c6c6c6',fontSize:25}}  onPress={this.onPress} />
+                                </NB.View> */}
                                 
-                                : null }
-                                 
-                                </NB.Button>
                             </NB.Item>
 
-                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:37,}} >
-                              <NB.Button  iconRight  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:60,paddingTop:0,}}
+                            <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,marginBottom:10,}} >
+                              <NB.Button  iconRight  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,justifyContent: 'center',alignItems:'center',height:60,paddingTop:5,paddingLeft:60,paddingRight:60,}}
                               onPress ={() => this.verifyUserRegistration()}>
-                                    <NB.Text style={{fontSize:18,color:'#ffffff',}}>SUBMIT </NB.Text>
+                                    <NB.Text style={{fontSize:16.92,color:'#ffffff',fontFamily:'OpenSans-Regular',}}>SUBMIT </NB.Text>
                                     {/* <NB.Icon style={{color:'#fff',fontSize:30,}} name='ios-arrow-round-forward' />  */}
                               </NB.Button> 
                            </NB.Item>
@@ -370,14 +387,40 @@ export class Register extends React.Component {
                     />
 
                     <Dialog
+                     dialogStyle={{
+                      borderRadius:7,
+                      width:300,
+                      marginLeft:"9%"
+                   }}
+                   titleStyle={{
+                    textAlign: 'center',
+
+                   }}
                       visible={this.state.imagePickOptionDialog}
-                      title="Select an option..."
+                        title="Uplode Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                      <NB.View>
+                  
+                  <NB.View style={{height:50,}}>
+                      
+                          <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
+                            <NB.View style={{width:80, alignItems: 'center',}}>
+                                <TouchableOpacity  onPress={this.onPressFromGallery}  > 
+                                <Icon    name={'images'}  style={{fontSize:30, color:"#e1e1e1" }}    />  
+                                </TouchableOpacity> 
+                            </NB.View>
+                            <NB.View style={{width:80, alignItems: 'center',}}>
+                               <TouchableOpacity onPress={this.onPressOpenCamera} > 
+                                <Icon    name={'camera'}  style={{fontSize:30, color:"#e1e1e1" }}   /> 
+                                </TouchableOpacity>  
+                            </NB.View>
+                        </NB.View> 
+                      </NB.View>
+
+                      {/* <NB.View>
                           <NB.Text style={{fontSize:20,color:'#000000', marginBottom: 10}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text>
                           <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View>
                           <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text>
-                      </NB.View>
+                      </NB.View> */}
                   </Dialog>
           
             </NB.View>

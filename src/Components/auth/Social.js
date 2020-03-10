@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,TouchableOpacity,Radio,} from 'react-native';
+import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,TouchableOpacity,Radio,Dimensions} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
@@ -243,6 +243,7 @@ export class Social extends React.Component {
    }
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
       <NB.Root>
        <Fragment>    
@@ -250,13 +251,15 @@ export class Social extends React.Component {
           <NB.Container   style={HomeStyle.EditprofileContainer}  >
             <NB.View style={HomeStyle.EditprofilePageView} >
                   <NB.CardItem style={{backgroundColor:'transparent'}} > 
-                        
-                     <NB.Button onPress={() => this.props.navigation.navigate('MyProfile')} iconRight transparent style={{ }}>
-                      
-                          <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                  
+                     <NB.Button  iconRight transparent style={{ }}>
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')} > 
+                          <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.07,color:'#333333',  }}  /> 
+                          </TouchableOpacity>
                       </NB.Button>
+                    
                       <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
-                          <NB.Text style={{fontSize:40,color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
+                          <NB.Text style={{fontSize: width * 0.08,color:'#333333',alignItems:'center',justifyContent:'center',fontFamily:'OpenSans-Regular',}} > Edit Profile  </NB.Text> 
                          
                       </NB.Left>
                     
@@ -267,27 +270,27 @@ export class Social extends React.Component {
                         <NB.Form>
                           
                            <NB.Item style={{borderBottomWidth:0,}}>
-                                <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Discovery</NB.H3>
+                                <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.039,paddingLeft:15,fontFamily:'OpenSans-Semibold'}}>Discovery</NB.H3>
                            </NB.Item>
                               <NB.View style={{backgroundColor:'#fff',paddingLeft:0,marginLeft:-17,}} >
                                 
                                 <NB.List  >
                                     <NB.ListItem selected onPress = {() => this.showListFor('looking_for')}>
                                     <NB.Left>
-                                        <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>looking for</NB.Text>
+                                        <NB.Text style={{color:'#696969',textTransform:"uppercase",paddingLeft:30,fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>looking for</NB.Text>
                                     </NB.Left>
-                                    <NB.Right style={{flex:1,}}>
-                                       <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center",}}>{this.state.looking_for} <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /></NB.Text> 
+                                    <NB.Right style={{flex:1}} >
+                                       <NB.Text style={{color:'#696969',alignItems:"center",justifyContent:"center", fontFamily:'OpenSans-Regular',fontSize: width * 0.039,paddingRight:15,}}>{this.state.looking_for} <Icon name="chevron-right"  style={{color:'#c6c6c6', fontSize: width * 0.039}}  /></NB.Text> 
                                     </NB.Right>
                                     </NB.ListItem>
                                  </NB.List> 
                                  <NB.List  >
                                     <NB.ListItem selected style={{borderBottomWidth:0,}}>
                                     <NB.Left>
-                                        <NB.Text style={{color:'#696969',paddingLeft:17,textTransform:"uppercase",paddingLeft:30,}}>Age range</NB.Text>
+                                        <NB.Text style={{color:'#696969',textTransform:"uppercase",paddingLeft:30,fontFamily:'OpenSans-Regular',fontSize: width * 0.039}}>Age range</NB.Text>
                                     </NB.Left>
                                     <NB.Right>
-                                  <NB.Text style={{color:'#696969',fontSize:17,alignItems:"center",justifyContent:"center"}}>{this.state.user_min_age}-{this.state.user_max_age}</NB.Text> 
+                                  <NB.Text style={{color:'#696969',fontSize: width * 0.039,alignItems:"center",justifyContent:"center",fontFamily:'OpenSans-Regular',paddingRight:15,}}>{this.state.user_min_age} - {this.state.user_max_age}</NB.Text> 
                                     </NB.Right> 
                                     </NB.ListItem>
                                       <View style={{paddingLeft:45,paddingRight:0,marginTop:-7,marginBottom:5,flex:1}}> 
@@ -306,7 +309,7 @@ export class Social extends React.Component {
               <MultiSlider
               
                   values={[ this.state.valueMin,this.state.valueMax]}
-                      sliderLength={320}
+                      sliderLength={307}
                       onValuesChange={values => this.handleChange(values)}
                       min={this.range_min_age}
                       max={this.range_max_age}
@@ -315,7 +318,7 @@ export class Social extends React.Component {
                       snapped
                       selectedStyle={{backgroundColor:"#f74a61"}}
                       unselectedStyle={{backgroundColor:"#9e2681"}} 
-                      trackStyle={{ height: 5,borderRadius:3 }}
+                      trackStyle={{ height: 4,borderRadius:3 }}
                       pressedMarkerStyle={{ width: 30,height:30}}
                       // disabledMarkerStyle={{width: 48,height:48}}
                       markerStyle={{
@@ -366,7 +369,7 @@ export class Social extends React.Component {
 
 
                             <NB.Item style={{borderBottomWidth:0,}}>
-                                <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>About Me</NB.H3>
+                                <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize: width * 0.039,paddingLeft:15,fontFamily:'OpenSans-Semibold'}}>About Me</NB.H3>
                            </NB.Item>
                            <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                                 {/* <NB.Item  > 
@@ -375,7 +378,7 @@ export class Social extends React.Component {
                                 </NB.Item>
                                 */}
 
-                               <NB.Textarea style={{paddingLeft:31,borderColor:"#fff"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  
+                               <NB.Textarea style={{paddingLeft:31,borderColor:"#fff",fontSize: width * 0.039,color:"#696969"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  
                                  value = {this.state.about_me}
                                  onChangeText={(text) => {this.setState({changed: false, about_me: text}) }}
                                />
@@ -385,11 +388,11 @@ export class Social extends React.Component {
 
 
                               <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
-                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
+                                <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                 onPress = {() => this.updateProfile()}>
-                                      <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text>
+                                      <NB.Text style={{color:'#ffffff',fontFamily:'OpenSans-Regular',fontSize: width * 0.037,}}>save</NB.Text>
                                       {this.state.changed ? 
-                                        <Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                        <Icon name="check"  style={{color:'#fff',fontSize: width * 0.037,}}  /> 
                                         :
                                         null
                                       }
@@ -413,18 +416,16 @@ export class Social extends React.Component {
 
 
 
-          <ConfirmDialog
-        // title="Confirmation!ss"
-       
+          <Dialog
+         
+            dialogStyle={{
+                borderRadius:7,
+                
+            }}
             message={this.confirmMessage}
             visible={this.state.looking}
             onTouchOutside={() => this.setState({looking: false})}
-            dialogStyle={{ 
-                borderRadius:5,
-                
-            }
-
-            }
+            
             >
               <View>  
             
@@ -450,7 +451,7 @@ export class Social extends React.Component {
                 
               </View>
 
-            </ConfirmDialog>
+            </Dialog>
 
             <ProgressDialog
                   visible={this.state.progressVisible}
@@ -459,6 +460,10 @@ export class Social extends React.Component {
               />
 
               <Dialog
+                dialogStyle={{
+                  borderRadius:7,
+                  
+              }}
                     visible={this.state.dialogVisible}
                     title={this.state.dialog_title}
                     onTouchOutside={() => this.setState({dialogVisible: false})} >
@@ -511,6 +516,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+    borderBottomColor:"#e1e1e1",borderBottomWidth:1,
   },
 
 

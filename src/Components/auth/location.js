@@ -255,6 +255,7 @@ updateProfile(){
 
   render() {
     const { country, region } = this.state;    
+    const {width, height} = Dimensions.get('window');
 
     return (
       <NB.Root>
@@ -264,12 +265,13 @@ updateProfile(){
             <NB.View style={HomeStyle.EditprofilePageView} >
                   <NB.CardItem style={{backgroundColor:'transparent'}} > 
                         
-                     <NB.Button onPress={() => this.props.navigation.navigate('MyProfile')} iconRight transparent style={{ }}>
-                      
-                          <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                     <NB.Button  iconRight transparent style={{ }}>
+                     <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')}> 
+                     <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.07,color:'#333333',  }}  /> 
+                      </TouchableOpacity>    
                       </NB.Button>
                       <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
-                          <NB.Text style={{fontSize:40,color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
+                          <NB.Text style={{fontSize: width * 0.08,fontFamily:'OpenSans-Regular',color:'#333333',alignItems:'center',justifyContent:'center'}} > Edit Profile  </NB.Text> 
                          
                       </NB.Left>
                     
@@ -279,21 +281,21 @@ updateProfile(){
                     <View style={{flex: 1, }}>
                         <View style={{flex: 3,}} > 
                         <NB.Item style={{borderBottomWidth:0,}}>
-                                <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize:17,fontWeight:'bold',paddingLeft:15,}}>Location</NB.H3>
+                                <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.039,paddingLeft:15,fontFamily:'OpenSans-Semibold'}}>Location</NB.H3>
                            </NB.Item> 
                                 <NB.View style={{backgroundColor:'#fff', }} > 
                                 <TouchableOpacity onPress={() => this.setLocationMarker()} >
                                     <NB.CardItem   > 
                                         <NB.Body>
-                            <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,}}>My current location</NB.Text>
+                                            <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>My current location</NB.Text>
                                                 {(this.state.user_location == undefined || this.state.user_location == '') ? 
-                                                  <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>Set Location</NB.Text>
+                                                  <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>Set Location</NB.Text>
                                                   :
-                                                  <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,}}>{this.state.user_location}</NB.Text>
+                                                  <NB.Text  style={{color:'#696969',textTransform:"uppercase",paddingLeft:3,fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>{this.state.user_location}</NB.Text>
                                                 }
                                             </NB.Body>  
-                                        <View>
-                                            <Icon name="chevron-right"  style={{color:'#c6c6c6',paddingRight:25,fontSize:17,}}  /> 
+                                        <View >
+                                            <Icon name="chevron-right"  style={{color:'#c6c6c6',fontSize: width * 0.039,paddingRight:15,}}  /> 
                                         </View>
                                 </NB.CardItem>   
                                 </TouchableOpacity>
@@ -352,15 +354,14 @@ updateProfile(){
                       }
                         <View style={{flex: 3, backgroundColor: '#f3f3f3',alignItems:"center",justifyContent:"flex-end",marginBottom:15,}} >
 
-                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
+                                    <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                        <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text>
+                                        <NB.Text style={{fontSize:12.77,color:'#ffffff',fontFamily:"OpenSans-Regular",fontSize: width * 0.037,}}>save</NB.Text>
                                         {this.state.location_address == this.state.user_location ? 
-                                          <Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                          <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}}  /> 
                                           :
                                           null
                                         }
-                                        
                                     </NB.Button>  
                         </View>
                     </View> 

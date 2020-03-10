@@ -6,10 +6,11 @@ const HomeStyle = RC.StyleSheet.create({
  
  
     SingIn:{
-      fontSize:40,
+      fontSize:30,
       color:'#333333',
       alignItems:'center',
-      justifyContent:'center'
+      justifyContent:'center',
+      fontFamily:'OpenSans-Regular'
       
     },
 
@@ -21,6 +22,14 @@ const HomeStyle = RC.StyleSheet.create({
        
     },
 
+    RegisterPageContainer:{
+      backgroundColor:'transparent',
+      paddingLeft:20,
+      paddingRight:20,
+      paddingTop:10,
+      paddingBottom:30,
+      
+    },
    UplodeprofileContainer:{
       backgroundColor:'transparent',
       paddingLeft:10,
@@ -105,6 +114,14 @@ const HomeStyle = RC.StyleSheet.create({
       
     },
     
+    RegisterPageView:{
+      backgroundColor:'#f3f3f3',
+      flex:1,
+      borderRadius:10,
+      marginTop:5,
+
+    },
+    
     SingupPageView:{
       backgroundColor:'#f3f3f3',
       height:'95%',
@@ -154,11 +171,15 @@ UserProfileCard:{
   borderRadius:7, 
   overflow:'hidden',
   marginBottom:10, 
-  shadowColor: '#ebeef1',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.8,
-  shadowRadius: 7,
-  elevation: 1, 
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+  elevation: 2,
+   
    
 },
 Peporttag:{

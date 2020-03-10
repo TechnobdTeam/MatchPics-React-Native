@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground} from 'react-native';
+import { View, Image, ImageBackground,StatusBar,Dimensions,TouchableOpacity} from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import * as NB from 'native-base';
 // NativeBase
@@ -95,10 +95,11 @@ export class ForgotPassword extends React.Component {
   }
 
   render() {
+    const {width, height} = Dimensions.get('window');
     return (
         <Root>
         <Fragment>   
-      
+        <StatusBar barStyle="light-content" backgroundColor="#e74e92" />
          <ImageBackground source={require('../Image/background_images.jpg') } style={{width: '100%', height: '100%', }}   > 
           <NB.Container  style={HomeStyle.PageContainerLogin}  >
             
@@ -107,16 +108,17 @@ export class ForgotPassword extends React.Component {
 
             <NB.CardItem style={{backgroundColor:'transparent'}} > 
 
-                <NB.Button onPress={() => this.props.navigation.navigate('Login')} iconRight transparent style={{ }}>
-                      
-                      <Icon name="long-arrow-alt-left"  style={{fontSize:30,color:'#333333',  }}  /> 
+                <NB.Button  iconRight transparent >
+                   <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')} >  
+                      <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.06,color:'#333333',  }}  /> 
+                      </TouchableOpacity>
                   </NB.Button>
 
                       
                     <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
 
                     
-                          <NB.Text style={{   fontSize:30, color:'#333333',  alignItems:'center', justifyContent:'center'}} >Forgot Password   </NB.Text> 
+                          <NB.Text style={{   fontSize: width * 0.05,fontFamily:'OpenSans-Regular',color:'#333333',  alignItems:'center', justifyContent:'center',fontFamily:'OpenSans-Regular',}} >Forgot Password   </NB.Text> 
                          
                       </NB.Left>
          
@@ -130,7 +132,7 @@ export class ForgotPassword extends React.Component {
                        
                          <NB.Form >
                             <NB.Item  style={{marginTop:20}} >
-                              <NB.Input   placeholder='Write your email...'
+                              <NB.Input  style={{fontFamily:'OpenSans-Regular',fontSize: width * 0.037,color:"#696969"}} placeholder='Write your email...'
                               onChangeText={(value) => this.setState({user_email: value})}
                               /> 
                             </NB.Item> 
@@ -139,7 +141,7 @@ export class ForgotPassword extends React.Component {
                             
                             <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:30,}} >
                                 <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,width:'80%',justifyContent: 'center',alignItems:'center',height:59,}} onPress={() => this.forgotPassword()}>
-                                      <NB.Text style={{fontSize:18,color:'#ffffff',}}>SUBMIT</NB.Text>
+                                      <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Regular',}}>SUBMIT</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
                               

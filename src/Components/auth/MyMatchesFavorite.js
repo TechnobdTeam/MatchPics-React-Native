@@ -156,6 +156,7 @@ export class MyMatchesFavorite extends React.Component {
 
     render() {
         const { statusBarPaddingTop } = this.state;
+        const {width, height} = Dimensions.get('window');
 
         return (
 
@@ -165,19 +166,24 @@ export class MyMatchesFavorite extends React.Component {
              <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
                       <NB.Header  transparent>
                       <NB.Left>
-                        <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+                        <NB.Button transparent  >
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} >
+                        <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                        </TouchableOpacity>
                         </NB.Button>
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>My Matches </NB.Text>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                          <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My Matches</NB.Text>
                           </NB.Segment>
                       </NB.Body>
                       <NB.Right>
                         <NB.Button transparent>
-                        <Icon name={'bell'}  onPress={() => this.props.navigation.navigate('Notification')}  style={{fontSize:24,color:'#fff', }} solid />   
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  >
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                        <Icon name={'bell'}   style={{fontSize: width * 0.05,color:'#fff',width:21, }} solid />   
+                        </TouchableOpacity>
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
@@ -198,7 +204,7 @@ export class MyMatchesFavorite extends React.Component {
                                 
                                     </View>
                                     <View  >
-                                            <NB.Text  style={{color:"#1c1721",fontSize:13,fontWeight:"bold",}}>{item.match_date}</NB.Text>
+                                            <NB.Text  style={{color:"#1c1721",fontSize: width * 0.032,fontFamily:'OpenSans-Semibold'}}>{item.match_date}</NB.Text>
                                             <View style={{flex: 1, flexDirection: 'row',marginTop:7, }} >
 
                                             {item.match_result.map((item2,j) => {
@@ -253,11 +259,21 @@ export class MyMatchesFavorite extends React.Component {
 
                 </NB.Container> 
             </ImageBackground>
-            <ProgressDialog
+            <Dialog
+               dialogStyle={{
+                backgroundColor:"transparent",
+                elevation: 0,
+                
+                
+             }}
                 visible={this.state.progressVisible}
-                title="Loading data"
-                message="Please, wait..."
-            />
+                // title="Loading data"
+                 message="Please, wait..."
+            >
+
+                <NB.Spinner color='#fff' />
+
+            </Dialog>
             </Fragment>    
         );
     }

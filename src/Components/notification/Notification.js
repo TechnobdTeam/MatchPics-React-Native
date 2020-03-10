@@ -129,6 +129,7 @@ notificationArray = []
     }
 
     renderItem =({ item, index }) => {
+         const {width, height} = Dimensions.get('window');
       return (
         <View    style={styles.rowFront}>
         <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:84,}}>
@@ -144,15 +145,14 @@ notificationArray = []
             <View  style={{width:"100%"}}>
             <View style={{flex:1,flexDirection: 'row',justifyContent:"space-between",paddingTop:10}}>
               
-            <TouchableOpacity onPress={() =>this.props.navigation.navigate('UserProfile',{
+               <TouchableOpacity onPress={() =>this.props.navigation.navigate('UserProfile',{
                                         id: item.user_id, from: "Notification"
                                     })}>
-                  <Text style={{color:'#e74e92',fontSize:12,fontWeight:"bold",}}>{item.name} </Text>             
-            </TouchableOpacity>
-
-              <Text style={{color:'#1c1721',fontSize:11,fontWeight:"bold",}}>{item.create_date}  </Text> 
+                <Text    style={{color:'#e74e92',fontSize: width * 0.032,fontFamily:'OpenSans-Semibold',}}>{item.name} </Text>             
+                </TouchableOpacity> 
+               <Text style={{color:'#1c1721',fontSize: width * 0.027,fontFamily:'OpenSans-Semibold',}}>{item.create_date}  </Text> 
             </View> 
-            <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10}}>{item.notification}  </Text> 
+            <Text  numberOfLines={2}  style={{color:'#1c1721',textAlign:'left',fontSize:14,marginBottom:4,paddingBottom:10,fontFamily:'OpenSans-Regular',}}>{item.notification}  </Text> 
   
               
             </View>
@@ -170,6 +170,7 @@ notificationArray = []
     // }
 
     render() {
+      const {width, height} = Dimensions.get('window');
       return ( 
       <View style={{flex: 1, paddingTop:0}}>
 
@@ -179,13 +180,13 @@ notificationArray = []
       <NB.Header  transparent>
         <NB.Left>
           <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-          <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
+          <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
           </NB.Button>
         </NB.Left>
 
         <NB.Body  >
         <NB.Segment style={{backgroundColor:'transparent'}}>
-            <NB.Text style={{color:'#fff',fontSize:23,}}>Notifications </NB.Text>
+            <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Notifications </NB.Text>
             </NB.Segment>
         </NB.Body>
         <NB.Right>
@@ -195,7 +196,7 @@ notificationArray = []
         </NB.Right>
       </NB.Header>
 
-
+    <View style={{flex:1,backgroundColor:"#fff"}}> 
       <FlatList
             data={this.state.notificationData}
             onEndReached={this.onEndReached.bind(this)}
@@ -205,7 +206,7 @@ notificationArray = []
             keyExtractor={item => item.id}
           />
 
-
+  </View>
       </NB.Container>
 
             
@@ -312,7 +313,7 @@ switchContainer: {
 },
 switch: {
   alignItems: 'center',
-  borderColor: 'black',
+  borderColor: '#CDCD',
   paddingVertical: 10,
   width: Dimensions.get('window').width / 4,
   
@@ -330,9 +331,8 @@ backLeftBtn:{
  alignItems:'center',
  top:0,
  bottom:0,
-  position: 'absolute',
-  
-  width: 98, 
+ position: 'absolute',
+ width: 98, 
    
 },
 

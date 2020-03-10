@@ -209,32 +209,61 @@ export class AppSearch extends React.Component {
 
     render() {
         const { statusBarPaddingTop } = this.state;
-
+        const {width, height} = Dimensions.get('window');
         return (
           <Fragment>   
             <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
  
              <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
-                      <NB.Header  transparent>
-                      <NB.Left>
-                        <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                        <Icon name="bars"  style={{fontSize:24,color:'#fff', }}  /> 
-                        </NB.Button>
-                      </NB.Left>
 
-                      <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent'}}>
-                          <NB.Text style={{color:'#fff',fontSize:23,}}>Search       </NB.Text>
-                          </NB.Segment>
-                      </NB.Body>
-                      <NB.Right>
-                        <NB.Button transparent>
-                        <Icon name={'bell'}  style={{fontSize:24,color:'#fff', }} solid />   
-                        </NB.Button>
-                      </NB.Right>
-                    </NB.Header> 
+             {this.state.visible == false ?
+              <NB.Header  transparent>
+                <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:10,paddingLeft:10,paddingRight:10,height:50}}>
+                    <NB.Item style={{borderBottomWidth:0,}} >
+                                                    
+                    <Icon name="search"  style={{fontSize: width * 0.05,color:'#e74e92', }}  />
+                    <NB.Input  style={{height:25,padding:0,}} placeholder='Type Here...'
+                        onChangeText={(value) => {this.searchMyMatches(value)}}
+                    />   
+                    <NB.Icon  onPress={() => this.AppSearchView()}    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
+                    </NB.Item> 
+                    </View>
+                </NB.Header>           
+                    :
+                    <NB.Header  transparent>
+                    <NB.Left>
+                      <NB.Button  transparent >
+                      <TouchableOpacity  onPress={() => this.props.navigation.navigate('Menu')} > 
+                         <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                      </TouchableOpacity>
+                      </NB.Button>
+                    </NB.Left>
 
-       
+                    <NB.Body  >
+                    <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                        <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Search</NB.Text>
+                        </NB.Segment>
+                    </NB.Body>
+                    <NB.Right>
+                    <NB.Button transparent>
+                      <TouchableOpacity onPress= {() => this.AppSearchView()} >
+                          <Icon name={'search'}  style={{fontSize: width * 0.05,color:'#fff', }} solid />   
+                      </TouchableOpacity> 
+                      </NB.Button>
+
+
+
+                      <NB.Button transparent>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} > 
+                      <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                        <Icon name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid />  
+                      </TouchableOpacity>  
+                      </NB.Button>
+                    </NB.Right>
+                  </NB.Header> 
+
+  }
+                    {/*        
                     <View  style={styles.rowFrontTop}>
                         <View style={{ width:'80%', }}>
 
@@ -262,7 +291,7 @@ export class AppSearch extends React.Component {
                               
                           </View> 
                               
-                        </View> 
+                        </View>  */}
                     
                 
                         {this.state.matchData != '' ?
