@@ -2,7 +2,7 @@ import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, FlatList,AppRegistry, StyleSheet,TouchableOpacity,Radio,} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
-import {Text, Toast} from 'native-base';
+import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
@@ -12,6 +12,7 @@ import sliderData from "../Slider/Data.js";
 import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import Toast from 'react-native-toast-native';
 
 
 const roundTo = require('round-to');
@@ -55,7 +56,8 @@ export class Social extends React.Component {
       data: [],
        dialog_title: '',
        show_list_for: '',
-       progressVisible: false
+       progressVisible: false,
+       changed: false
     };
 
   }
@@ -154,7 +156,7 @@ export class Social extends React.Component {
     this.changed_min_age = parseInt(ageArray[0])
     this.changed_max_age = parseInt(ageArray[1])
 
-    this.setState({user_min_age:  ageArray[0], user_max_age: ageArray[1]})
+    this.setState({changed: false, user_min_age:  ageArray[0], user_max_age: ageArray[1]})
 
   }
 
@@ -186,10 +188,12 @@ export class Social extends React.Component {
 
             this.setState({progressVisible: false})
 
-            Toast.show({
-              text: responseJson.response.message,
-              textStyle: { color: "yellow" },
-            })
+            // Toast.show({
+            //   text: responseJson.response.message,
+            //   textStyle: { color: "yellow" },
+            // })
+
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
     
             if(responseJson.response.code == 1000){
 
@@ -202,7 +206,8 @@ export class Social extends React.Component {
                     looking_for: ConstValues.user_info_data.looking_for,
                     user_min_age: ConstValues.user_info_data.min_age,
                     user_max_age: ConstValues.user_info_data.max_age,
-                    about_me: ConstValues.user_info_data.bio
+                    about_me: ConstValues.user_info_data.bio,
+                    changed: true
                   })
             }
             else if(responseJson.response.code == 4001){
@@ -231,7 +236,7 @@ export class Social extends React.Component {
     if(this.state.show_list_for == 'looking_for'){
  
        this.looking_for_id = id
-       this.setState({looking_for: name})
+       this.setState({changed: false, looking_for: name})
     }
  
     this.setState({dialogVisible: false})
@@ -372,7 +377,7 @@ export class Social extends React.Component {
 
                                <NB.Textarea style={{paddingLeft:31,borderColor:"#fff"}} bordered placeholderTextColor="#696969"  rowSpan={7} bordered placeholder="TYPE ABOUT ME..."  
                                  value = {this.state.about_me}
-                                 onChangeText={(text) => {this.setState({about_me: text}) }}
+                                 onChangeText={(text) => {this.setState({changed: false, about_me: text}) }}
                                />
                                 
 
@@ -382,7 +387,13 @@ export class Social extends React.Component {
                               <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
                                 <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                 onPress = {() => this.updateProfile()}>
-                                      <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                      <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text>
+                                      {this.state.changed ? 
+                                        <Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                        :
+                                        null
+                                      }
+                                     
                                 </NB.Button> 
                                 </NB.View> 
 
@@ -504,3 +515,16 @@ const styles = StyleSheet.create({
 
 
 });
+
+const style={
+  backgroundColor: "#000000",
+  width: 400,
+  height: Platform.OS === ("ios") ? 50 : 135,
+  color: "#ffffff",
+  fontSize: 15,
+  lineHeight: 2,
+  lines: 1,
+  borderRadius: 15,
+  fontWeight: "bold",
+  yOffset: 40
+};

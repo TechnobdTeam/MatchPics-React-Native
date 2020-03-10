@@ -6,12 +6,13 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { MaterialDialog } from 'react-native-material-dialog';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // NativeBase
-import {Text, Toast, Root} from 'native-base';
+import {Text, Root} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues'
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+import Toast from 'react-native-toast-native';
 
 {/*Login  */}
 
@@ -55,10 +56,11 @@ export class Login extends React.Component {
             this.storeData(ConstValues.user_name, responseJson.response.data.name);
 
             // alert(responseJson.response.message)
-            Toast.show({
-              text: responseJson.response.message,
-              textStyle: { color: "green" },
-            })
+            // Toast.show({
+            //   text: responseJson.response.message,
+            //   textStyle: { color: "green" },
+            // })
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
             // this.timeoutHandle = setTimeout(()=>{
 
@@ -74,11 +76,12 @@ export class Login extends React.Component {
             
 
           } catch (error) {
-             Toast.show({
-                text: error,
-                textStyle: { color: "yellow" },
-                buttonText: "Okay"
-              })
+            //  Toast.show({
+            //     text: error,
+            //     textStyle: { color: "yellow" },
+            //     buttonText: "Okay"
+            //   })
+              Toast.show(error, Toast.LONG, Toast.BOTTOM,style);
              
             // alert(error)
             // Error saving data
@@ -88,11 +91,7 @@ export class Login extends React.Component {
           this.storeData(ConstValues.access_token, '');
           this.storeData(ConstValues.user_logged_in, false);
           this.storeData(ConstValues.fb_login, false);
-          Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-            buttonText: "Okay"
-          })
+          Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
             // alert(responseJson.response.message)
         }
         
@@ -304,12 +303,14 @@ export class Login extends React.Component {
             this.storeData(ConstValues.user_password, this.state.password);
 
             // alert(responseJson.response.message)
-            Toast.show({
-              text: responseJson.response.message,
-              textStyle: { color: "green" },
-            })
+            // Toast.show({
+            //   text: responseJson.response.message,
+            //   textStyle: { color: "green" },
+            // })
 
-            // this.timeoutHandle = setTimeout(()=>{
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
+
+            this.timeoutHandle = setTimeout(()=>{
 
               this.props.navigation.navigate('UploadImage')
 
@@ -320,14 +321,15 @@ export class Login extends React.Component {
         
               this.props.navigation.dispatch(resetAction);
 
-            
+            });
 
           } catch (error) {
-             Toast.show({
-                text: error,
-                textStyle: { color: "yellow" },
-                buttonText: "Okay"
-              })
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
+            //  Toast.show({
+            //     text: error,
+            //     textStyle: { color: "yellow" },
+            //     buttonText: "Okay"
+            //   })
              
             // alert(error)
             // Error saving data
@@ -335,11 +337,7 @@ export class Login extends React.Component {
         }
         else{
           this.storeData(ConstValues.user_logged_in, false);
-          Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-            buttonText: "Okay"
-          })
+          Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
             // alert(responseJson.response.message)
         }
         
@@ -488,8 +486,8 @@ export class Login extends React.Component {
                          
                       <ProgressDialog
                         visible={this.state.progressVisible}
-                        title="Verifying"
-                        message="Please, wait..."
+                        title="Signing in"
+                        message="Please wait..."
                     />
             
               </NB.View>
@@ -503,4 +501,17 @@ export class Login extends React.Component {
       );
     }
   }
+
+  const style={
+    backgroundColor: "#000000",
+    width: 400,
+    height: Platform.OS === ("ios") ? 50 : 135,
+    color: "#ffffff",
+    fontSize: 15,
+    lineHeight: 2,
+    lines: 1,
+    borderRadius: 15,
+    fontWeight: "bold",
+    yOffset: 40
+};
   {/* End Login */}

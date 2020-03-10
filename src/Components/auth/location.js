@@ -2,7 +2,7 @@ import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground,PermissionsAndroid, Platform, StyleSheet,TouchableOpacity, Dimensions,Alert} from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
-import {Text, Toast} from 'native-base';
+import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,6 +13,7 @@ import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialo
 import ConstValues from '../../constants/ConstValues'
 import AsyncStorage from '@react-native-community/async-storage';
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+import Toast from 'react-native-toast-native';
 
 import Geolocation from '@react-native-community/geolocation';
 
@@ -24,10 +25,10 @@ import MapView, { Marker, ProviderPropType ,AnimatedRegion} from 'react-native-m
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-var LATITUDE = 23.78825;
-var LONGITUDE = 96.4324;
-var CHANGED_LATITUDE = 23.78825;
-var CHANGED_LONGITUDE = 96.4324;
+var LATITUDE = '';
+var LONGITUDE = '';
+var CHANGED_LATITUDE = '';
+var CHANGED_LONGITUDE = '';
 const LATITUDE_DELTA = 0.0922;
 var LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -46,6 +47,7 @@ export class location  extends React.Component {
       progressVisible: false,
       ready: true,
       location_address:'',
+      changed: false
     };
   }
 
@@ -77,7 +79,7 @@ export class location  extends React.Component {
 
         console.log(info)
 
-        if(LATITUDE == "" || LATITUDE == ""){
+        if(LATITUDE == '' || LATITUDE == ''){
 
           LATITUDE =  info.coords.latitude;
           LONGITUDE = info.coords.longitude
@@ -85,6 +87,9 @@ export class location  extends React.Component {
           CHANGED_LATITUDE =  info.coords.latitude;
           CHANGED_LONGITUDE = info.coords.longitude
         }
+
+        console.log("location_lat: " + LATITUDE)
+        console.log("location_lon: " + LONGITUDE)
         
         LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -143,12 +148,16 @@ export class location  extends React.Component {
       console.log("user_lat: " + ConstValues.user_info_data.user_lat)
       console.log("user_lon: " + ConstValues.user_info_data.user_lon)
 
-      LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
-      LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
+      if(ConstValues.user_info_data.user_lon != ''){
 
-      CHANGED_LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
-      CHANGED_LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
-
+        LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
+        LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
+  
+        CHANGED_LATITUDE = parseFloat(ConstValues.user_info_data.user_lat)
+        CHANGED_LONGITUDE = parseFloat(ConstValues.user_info_data.user_lon)
+  
+      }
+      
       this.setLocationMarker()
 
   }
@@ -215,10 +224,12 @@ updateProfile(){
 
           this.setState({progressVisible: false})
 
-          Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-          })
+          // Toast.show({
+          //   text: responseJson.response.message,
+          //   textStyle: { color: "yellow" },
+          // })
+
+          Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
   
           if(responseJson.response.code == 1000){
 
@@ -229,7 +240,7 @@ updateProfile(){
               LATITUDE = CHANGED_LATITUDE
               LONGITUDE = CHANGED_LONGITUDE
 
-              this.setState({user_location: ConstValues.user_info_data.address,
+              this.setState({changed: true, user_location: ConstValues.user_info_data.address,
                 location_address: ConstValues.user_info_data.address})
           }
           else if(responseJson.response.code == 4001){
@@ -294,7 +305,7 @@ updateProfile(){
 
                 <View style={styles.container}>
 
-                
+                {LATITUDE != '' && LONGITUDE != '' ? 
                 <MapView
                       provider={this.props.provider}
                       ref={ map => { this.map = map }}
@@ -309,11 +320,8 @@ updateProfile(){
                         latitudeDelta: LATITUDE_DELTA,
                         longitudeDelta: LONGITUDE_DELTA,
                       }}
-                      
                       >
-                        
-
-                { this.state.location_loaded ? 
+                       { this.state.location_loaded ? 
                               <MapView.Marker
                                   draggable = {true}
                                   onDragEnd={(e) => this.markerDrop(e)}
@@ -322,7 +330,12 @@ updateProfile(){
                                   description={"description"}
                               /> : null }
                                
-                </MapView>
+                        </MapView>
+                      :
+                      null
+                }
+                
+                        
                     
                 </View>
                        </View>
@@ -341,7 +354,13 @@ updateProfile(){
 
                                     <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'70%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                        <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text><Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                        <NB.Text style={{fontSize:17,color:'#ffffff',}}>save</NB.Text>
+                                        {this.state.location_address == this.state.user_location ? 
+                                          <Icon name="check"  style={{color:'#fff',fontSize:17}}  /> 
+                                          :
+                                          null
+                                        }
+                                        
                                     </NB.Button>  
                         </View>
                     </View> 
@@ -446,3 +465,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 });
+const style={
+  backgroundColor: "#000000",
+  width: 400,
+  height: Platform.OS === ("ios") ? 50 : 135,
+  color: "#ffffff",
+  fontSize: 15,
+  lineHeight: 2,
+  lines: 1,
+  borderRadius: 15,
+  fontWeight: "bold",
+  yOffset: 40
+};

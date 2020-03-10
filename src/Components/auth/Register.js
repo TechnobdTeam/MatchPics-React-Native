@@ -5,13 +5,14 @@ import DeviceInfo from "react-native-device-info";
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-picker';
 // NativeBase
-import {Text, Toast} from 'native-base';
+import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import { Value } from 'react-native-reanimated'; 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-toast-native';
 {/*Register */}
 
 const options = {
@@ -43,7 +44,8 @@ export class Register extends React.Component {
             addAvatarTextVisible: true,
             image_uri: '',
             image_type: '',
-            image_name: ''
+            image_name: '',
+            email_valid: true
           };
     }
 
@@ -128,18 +130,28 @@ export class Register extends React.Component {
 
         if((this.state.user_name == "" ) || (this.state.email == "") || (this.state.password == "") || (this.state.re_password == "")){
 
-            Toast.show({
-                text: "Please put all info and try again!",
-                textStyle: { color: "red" },
-                buttonText: "Okay"
-              })
+            // Toast.show({
+            //     text: "Please put all info and try again!",
+            //     textStyle: { color: "red" },
+            //     buttonText: "Okay"
+            //   })
+              Toast.show("Please put all info and try again!", Toast.LONG, Toast.BOTTOM,style);
+        }
+        else if(!this.state.email_valid){
+            // Toast.show({
+            //     text: "Please put a valid email and try again!",
+            //     textStyle: { color: "red" },
+            //     buttonText: "Okay"
+            //   })
+              Toast.show("Please put a valid email and try again!", Toast.LONG, Toast.BOTTOM,style);
         }
         else if(this.state.password != this.state.re_password){
-            Toast.show({
-                text: "Please put same password in both fields.",
-                textStyle: { color: "red" },
-                buttonText: "Okay"
-              })
+            // Toast.show({
+            //     text: "Please put same password in both fields.",
+            //     textStyle: { color: "red" },
+            //     buttonText: "Okay"
+            //   })
+              Toast.show("Please put same password in both fields.", Toast.LONG, Toast.BOTTOM,style);
         }
         else{
             //calling api to complete user registration process
@@ -173,10 +185,12 @@ export class Register extends React.Component {
                 this.setState({progressVisible: false});
 
                 if(responseJson.response.code == 1000){
-                    Toast.show({
-                        text: responseJson.response.message,
-                        textStyle: { color: "yellow" }              
-                    })
+                    // Toast.show({
+                    //     text: responseJson.response.message,
+                    //     textStyle: { color: "yellow" }              
+                    // })
+
+                    Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
                     this.timeoutHandle = setTimeout(()=>{
 
@@ -185,11 +199,12 @@ export class Register extends React.Component {
                 }
                 else{
                     this.storeData(ConstValues.user_logged_in, false);
-                    Toast.show({
-                    text: responseJson.response.message,
-                    textStyle: { color: "yellow" },
-                    buttonText: "Okay"
-          })
+        //             Toast.show({
+        //             text: responseJson.response.message,
+        //             textStyle: { color: "yellow" },
+        //             buttonText: "Okay"
+        //   })
+                 Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
                 }
             })
         }
@@ -202,6 +217,59 @@ export class Register extends React.Component {
           // saving error
           console.log("saving_error: " + e.message);
         }
+      }
+
+      validate = (text) => {
+        console.log(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(text) === false) {
+          console.log("Email is Not Correct");
+          this.setState({ email_valid: false })
+        }
+        else {
+            this.setState({ email_valid: true })
+            console.log("Email is Correct");
+
+            this.checkEmailValidity(text)
+        }
+      }
+
+      checkEmailValidity(text){
+          //api call to check user already exists with email address or not
+
+          var formData = new FormData();
+            formData.append('api_key', ConstValues.api_key);
+            formData.append('email', text);
+
+            fetch(ConstValues.base_url + 'verifyEmail',{
+                method: 'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: formData
+            }).then((response) => response.json())
+            .then((responseJson) =>{
+
+                console.log(responseJson.response.code);
+                console.log(responseJson.response.message);
+
+
+                if(responseJson.response.code != 1000){
+
+                    this.setState({ email_valid: false })
+                    // Toast.show({
+                    //     text: responseJson.response.message,
+                    //     textStyle: { color: "yellow" },
+                    //     buttonText: "Okay"
+                    //     })
+                    Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
+                    
+                }
+                else{
+                    this.setState({ email_valid: true })
+                }
+            })
       }
 
   render() {
@@ -237,9 +305,9 @@ export class Register extends React.Component {
                                 </NB.Item>
                                 <NB.Item >
                                     <NB.Input style={{paddingLeft:33,height:59}} placeholder='EMAIL'
-                                        onChangeText={(value) => this.setState({email: value})}
+                                        onChangeText={(value) => {this.validate(value),this.setState({email: value})}}
                                     />
-                                    {/* <NB.Icon name='close-circle' /> */}
+                                    <NB.Icon name='' style={{color: 'red'}}/>
                                 </NB.Item> 
 
                             </NB.View> 
@@ -297,8 +365,8 @@ export class Register extends React.Component {
 
                   <ProgressDialog
                         visible={this.state.progressVisible}
-                        title="Verifying"
-                        message="Please, wait..."
+                        title="Signing up"
+                        message="Please wait..."
                     />
 
                     <Dialog
@@ -322,4 +390,17 @@ export class Register extends React.Component {
     );
   }
 }
+
+const style={
+    backgroundColor: "#000000",
+    width: 400,
+    height: Platform.OS === ("ios") ? 50 : 135,
+    color: "#ffffff",
+    fontSize: 15,
+    lineHeight: 2,
+    lines: 1,
+    borderRadius: 15,
+    fontWeight: "bold",
+    yOffset: 40
+};
 {/* End Register */}
