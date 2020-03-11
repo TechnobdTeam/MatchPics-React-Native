@@ -10,6 +10,8 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
+import * as Animatable from 'react-native-animatable';
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 {/*Register */}
@@ -36,6 +38,7 @@ export class UserProfile extends React.Component {
       reportText: '',
       note: '',
       columns: 2, 
+      userinfovisible: true,
     };
 
     AsyncStorage.getItem(ConstValues.user_email, (error, result) =>{
@@ -244,6 +247,9 @@ export class UserProfile extends React.Component {
     })
   }
 
+  userinfo = () => {
+    this.setState({ userinfovisible: !this.state.userinfovisible })
+   }
 
   render() {  
       const {width, height} = Dimensions.get('window');
@@ -257,14 +263,14 @@ export class UserProfile extends React.Component {
       
         <ImageBackground style={{width: '100%', height: '100%',zIndex:-1}}   >  
 
-         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:10}}>
+         {/* <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:10}}>
 
          <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
                                 
                                 <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
                                 
                                 </NB.Button>
-         </NB.View>
+         </NB.View> */}
         
                        
                        
@@ -290,10 +296,16 @@ export class UserProfile extends React.Component {
                         </NB.Header>    */}
  
 
-        <ScrollView   style={{zIndex:-1}}  >
-               
-                <View style={{height:530}} > 
-                    <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
+        {/* <ScrollView   style={{zIndex:-1}}  > */}
+
+
+        <Animatable.View duration={1100}   style={{flex: 1,backgroundColor: 'steelblue'}}>
+        <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:5,zIndex:999}}>
+           <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
+              <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
+            </NB.Button>
+        </NB.View>
+                        <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
                             
                             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
                                 
@@ -309,8 +321,9 @@ export class UserProfile extends React.Component {
                                                 </NB.Body>
                                             </NB.Left>
                                             <NB.Right>
-                                        
-                                            <Icon  name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
+                                           <TouchableOpacity onPress= {() => this.userinfo()}> 
+                                               <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
+                                            </TouchableOpacity>
                                             </NB.Right>
                                         </NB.ListItem>
                                                 </NB.View>
@@ -319,14 +332,38 @@ export class UserProfile extends React.Component {
                                         </ImageBackground> 
                                     </View>
                             </View>
-            
+                        </ImageBackground> 
+
+         
+        </Animatable.View>
+   
+    {this.state.userinfovisible == false ?
+ 
+    <Animatable.View duration={1100} animation="slideInUp"  direction="alternate" style={{ height:250}} >  
+    <ScrollView> 
+       <NB.View   style={HomeStyle.PageContainerAbout}  >  
+        <NB.View style={{padding:20,}}>
+                    <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#6c6c6c",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
+                        <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
+                        {this.state.profileData.bio} 
+                    </NB.Text>   
+        </NB.View>  
 
 
+     </NB.View> 
+     </ScrollView>
+</Animatable.View>
+ 
+:
+  null
+ }
 
-                         </ImageBackground> 
-                    </View>
+               
+                {/* <View style={{height:530}} > 
+                 
+                    </View> */}
 
-
+{/* 
                     <View style={{ flex: 1,}} >   
                         <NB.View   style={HomeStyle.PageContainerAbout}  >  
                             <NB.View style={{padding:20,}}>
@@ -337,10 +374,11 @@ export class UserProfile extends React.Component {
                             </NB.View>  
                          </NB.View> 
                     </View>
-                
+
+                 */}
               
     
-                </ScrollView>
+                {/* </ScrollView> */}
 
                     <NB.Footer style={{height:72}} >
                         <NB.FooterTab style={{backgroundColor:'#fff',}}>
@@ -396,6 +434,34 @@ export class UserProfile extends React.Component {
             </ImageBackground> 
         </View>
         :
+
+        // <NB.View style={{flex:1,}}> 
+        //     <ShimmerPlaceHolder  style={{height:430,width:"100%"}} autoRun={true} />
+        //     <NB.View style={{paddingLeft:20,paddingRight:20}}> 
+        //         <ShimmerPlaceHolder style={{marginTop:5,width:"50%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:5,width:"50%",}} autoRun={true} />
+        //     </NB.View>
+        //     <NB.View style={{paddingLeft:20,paddingRight:20}}> 
+        //       <ShimmerPlaceHolder style={{marginTop:10,width:"20%"}} autoRun={true} />
+
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //         <ShimmerPlaceHolder style={{marginTop:10,width:"100%",}} autoRun={true} />
+        //  </NB.View>
+        // </NB.View>
+
+    
+
         <Dialog
         dialogStyle={{
             backgroundColor:"transparent",
@@ -408,6 +474,7 @@ export class UserProfile extends React.Component {
             // title="Getting details"
             // message="Please, wait..."
         >
+            
  <NB.Spinner color='#fff' />
             </Dialog>
         }

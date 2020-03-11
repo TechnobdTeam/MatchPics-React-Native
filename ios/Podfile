@@ -60,6 +60,8 @@ target 'reactnavigation' do
 
   pod 'RNToastNative', :path => '../node_modules/react-native-toast-native'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'reactnavigationTests' do
     inherit! :search_paths
     # Pods for testing
