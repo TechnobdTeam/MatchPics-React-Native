@@ -397,7 +397,7 @@ export class Register extends React.Component {
 
                    }}
                       visible={this.state.imagePickOptionDialog}
-                        title="Choices Photo"
+                      title="Choose Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
                   
                      <NB.View style={{height:120,}}>

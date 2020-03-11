@@ -249,6 +249,7 @@ export class UserProfile extends React.Component {
 
   userinfo = () => {
     this.setState({ userinfovisible: !this.state.userinfovisible })
+    
    }
 
   render() {  
@@ -299,7 +300,7 @@ export class UserProfile extends React.Component {
         {/* <ScrollView   style={{zIndex:-1}}  > */}
 
 
-        <Animatable.View duration={1100}   style={{flex: 1,backgroundColor: 'steelblue'}}>
+        <Animatable.View    style={{flex: 1, }}>
         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:5,zIndex:999}}>
            <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
               <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 

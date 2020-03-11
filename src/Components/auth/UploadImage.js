@@ -396,7 +396,7 @@ export class UploadImage extends React.Component {
   
                      }}
                       visible={this.state.imagePickOptionDialog}
-                      title="Choices Photo"
+                      title="Choose Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
 
             <NB.View style={{height:120,}}>
