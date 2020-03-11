@@ -1,5 +1,5 @@
 import React,  { Fragment, Component } from 'react';
-import {Button, View, Image, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView } from 'react-native';
+import {Animated, View, StyleSheet, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView, } from 'react-native';
 import * as NB from 'native-base';
 import {Toast} from 'native-base';
 // NativeBase
@@ -38,7 +38,9 @@ export class UserProfile extends React.Component {
       reportText: '',
       note: '',
       columns: 2, 
+      
       userinfovisible: true,
+
     };
 
     AsyncStorage.getItem(ConstValues.user_email, (error, result) =>{
@@ -252,8 +254,11 @@ export class UserProfile extends React.Component {
     
    }
 
+
+
   render() {  
       const {width, height} = Dimensions.get('window');
+    
     return (
 
 
@@ -300,7 +305,7 @@ export class UserProfile extends React.Component {
         {/* <ScrollView   style={{zIndex:-1}}  > */}
 
 
-        <Animatable.View    style={{flex: 1, }}>
+        <Animatable.View  style={{flex: 1, }}>
         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:5,zIndex:999}}>
            <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
               <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
@@ -340,8 +345,8 @@ export class UserProfile extends React.Component {
    
     {this.state.userinfovisible == false ?
  
-    <Animatable.View duration={1100} animation="slideInUp"  direction="alternate" style={{ height:250}} >  
-    <ScrollView> 
+    <Animatable.View animation="slideInUp" direction="alternate" style={{height:250}}  >  
+    <ScrollView > 
        <NB.View   style={HomeStyle.PageContainerAbout}  >  
         <NB.View style={{padding:20,}}>
                     <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#6c6c6c",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
