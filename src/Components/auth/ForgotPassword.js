@@ -6,7 +6,7 @@ import * as NB from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Text, Toast, Root} from 'native-base';
+import {Text, Root} from 'native-base';
 import ConstValues from '../../constants/ConstValues'
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 {/*Register */}
@@ -29,11 +29,12 @@ export class ForgotPassword extends React.Component {
   forgotPassword(){
 
     if(this.state.user_email == ''){
-      Toast.show({
-        text: "Please write your email and try again!",
-        textStyle: { color: "yellow" },
-        buttonText: "Okay"
-      })
+      // Toast.show({
+      //   text: "Please write your email and try again!",
+      //   textStyle: { color: "yellow" },
+      //   buttonText: "Okay"
+      // })
+      Toast.show("Please write your email and try again!", Toast.LONG, Toast.BOTTOM,style);
     }
     else{
       this.setState({ progressVisible: true });
@@ -63,12 +64,13 @@ export class ForgotPassword extends React.Component {
           this.setState({close_screen: true})
         }
         else{
-          Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-            buttonText: "Okay"
-          })
+          // Toast.show({
+          //   text: responseJson.response.message,
+          //   textStyle: { color: "yellow" },
+          //   buttonText: "Okay"
+          // })
             // alert(responseJson.response.message)
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
         }
         this.setState({progressVisible: false, messageDialogVisible: true});
         
@@ -189,4 +191,17 @@ export class ForgotPassword extends React.Component {
     );
   }
 }
+
+const style={
+  backgroundColor: "#000000",
+  width: 400,
+  height: Platform.OS === ("ios") ? 50 : 135,
+  color: "#ffffff",
+  fontSize: 15,
+  lineHeight: 2,
+  lines: 1,
+  borderRadius: 15,
+  fontWeight: "bold",
+  yOffset: 40
+};
 {/* End Register */}

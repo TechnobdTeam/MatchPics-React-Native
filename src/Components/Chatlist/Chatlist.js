@@ -11,6 +11,7 @@ import ConstValues from '../../constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import Toast from 'react-native-toast-native';
+import ImageLoad from 'react-native-image-placeholder';
 
 var Data = []
 
@@ -462,7 +463,7 @@ onSwipeValueChange = swipeData => {
                             <View    style={styles.rowFront}>
                               <View style={{flex:1,flexDirection: 'row',paddingLeft:70,paddingRight:70,height:90,}}>
                                  <View style={{justifyContent:"flex-start",alignItems:'center',paddingRight:20,paddingTop:10,marginLeft:-10}}>
-                                    <Image source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
+                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{ width: 75, height: 75, borderRadius: 37.5 }} borderRadius={45.0} source={{uri: data.item.url}} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
                                  </View>
                                   
                                   <View style={{width:"100%"}}>

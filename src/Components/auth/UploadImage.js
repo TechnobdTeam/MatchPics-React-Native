@@ -1,10 +1,11 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, PermissionsAndroid,AppRegistry, StyleSheet,StatusBar,TouchableOpacity,Dimensions} from 'react-native';
 import * as NB from 'native-base';
-import {Toast, Root} from 'native-base';
+import {Root} from 'native-base';
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationEvents} from 'react-navigation';
+import Toast from 'react-native-toast-native';
 
 // NativeBase
 import {Text} from 'native-base';
@@ -75,6 +76,12 @@ export class UploadImage extends React.Component {
 //   componentDidMount(){
 //     console.log("called-------------------------------------")
 // }
+
+  componentDidMount(){
+
+    StatusBar.setBarStyle( 'light-content',true)
+    StatusBar.setBackgroundColor("#e74e92")
+  }
 
   resetValue(){
     console.log("reset value-------------------------------------")
@@ -240,10 +247,12 @@ export class UploadImage extends React.Component {
 
     if((this.state.change_photo_id == undefined) || (this.state.change_photo_id == '')){
 
-      Toast.show({
-        text: "Please select an image and try again!",
-        textStyle: { color: "yellow" },
-      });
+      // Toast.show({
+      //   text: "Please select an image and try again!",
+      //   textStyle: { color: "yellow" },
+      // });
+
+      Toast.show("Please select an image and try again!", Toast.LONG, Toast.BOTTOM,style);
     }
     else{
 
@@ -269,9 +278,10 @@ export class UploadImage extends React.Component {
     return (
     
       <Root>
-      
         <Fragment> 
-        <StatusBar translucent={false} barStyle="light-content" backgroundColor="#e74e92" />
+
+        <StatusBar translucent = {true} barStyle="light-content" backgroundColor="#e76995" ></StatusBar>
+        
        {/* <NB.Container   style={HomeStyle.UplodeprofileContainer}  > */}
 
        <NavigationEvents    onDidFocus={() => 
@@ -479,3 +489,16 @@ const styles = StyleSheet.create({
 
 
 });
+
+const style={
+  backgroundColor: "#000000",
+  width: 400,
+  height: Platform.OS === ("ios") ? 50 : 135,
+  color: "#ffffff",
+  fontSize: 15,
+  lineHeight: 2,
+  lines: 1,
+  borderRadius: 15,
+  fontWeight: "bold",
+  yOffset: 40
+};

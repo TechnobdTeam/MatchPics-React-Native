@@ -68,6 +68,7 @@ export class MyMatches extends React.Component {
             columns: 2, 
             matchData: '',
             progressVisible: true ,
+            progressVisibleBottom: false ,
             onEndReachedCalledDuringMomentum : false,
             statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
         }
@@ -158,6 +159,7 @@ export class MyMatches extends React.Component {
                     matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
                     onEndReachedCalledDuringMomentum: false,
                     progressVisible: false,
+                    progressVisibleBottom: false
                   })
         
                   this.pageNum = this.pageNum + 1;
@@ -179,7 +181,7 @@ export class MyMatches extends React.Component {
    
                this.setState(
                {
-               progressVisible : true ,
+               progressVisibleBottom : true ,
                onEndReachedCalledDuringMomentum: false
                },
                () => {
@@ -331,7 +333,11 @@ export class MyMatches extends React.Component {
 <NB.Spinner color='#fff' />
                 </Dialog>
        
-                 
+                {this.state.progressVisibleBottom ? 
+                        <NB.Spinner color='#fff'  />
+                        :
+                        null
+                        }
 
                 </NB.Container> 
             </ImageBackground>

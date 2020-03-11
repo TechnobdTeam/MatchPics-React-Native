@@ -15,6 +15,7 @@ import * as NB from 'native-base';
 import MasonryList from "react-native-masonry-list";
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 // import MasonryList from "./src";
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import testData from "../../../data";
@@ -75,8 +76,10 @@ export class AppSearch extends React.Component {
         columns: 2, 
         matchData: '',
         searach_vissible : true,
+        progressVisible: false,
+        progressVisibleBottom: false ,
         onEndReachedCalledDuringMomentum: false,
-         
+        showing_message: 'Type name to search...',
         statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
     }
 
@@ -97,7 +100,7 @@ export class AppSearch extends React.Component {
 
    componentDidMount(){
 
-    this.pageNum = 1
+    this.pageNum = 0
 
     this.setState({photo_id: '', match_type: ''})
 
@@ -122,18 +125,32 @@ export class AppSearch extends React.Component {
 
     var query = '';
 
-    
-
-    if(text != undefined){
-
-        query = text
-        this.prevText = text
+    if(text == ''){
+        console.log("initial state")
+        this.prevText = ''
         this.pageNum = 1
-    }
-    
-    console.log("search with " + query);
+        this.setState({
+            matchData: '',
+            onEndReachedCalledDuringMomentum: false,
+            progressVisible: false,
+            progressVisibleBottom: false ,
+            showing_message: 'Type name to search...'
 
-    var formData = new FormData();
+          })
+    }
+    else{
+
+        if(text != undefined){
+
+            this.prevText = text
+            this.pageNum = 1
+        }
+
+        query = this.prevText
+    
+        console.log("search with " + query);
+
+        var formData = new FormData();
         formData.append('api_key', ConstValues.api_key);
         formData.append('name', query);
 
@@ -159,22 +176,32 @@ export class AppSearch extends React.Component {
                 console.log("getSearchMyMatches: undefined data");
 
                 if(this.pageNum == 1){
-                    this.setState({matchData: ''})
+                    this.setState({showing_message: 'No data found!', matchData: ''})
                 }
                
                 this.setState({onEndReachedCalledDuringMomentum: false})
             }
             else{
+
+                console.log("data length: " + responseJson.response.data.length)
+
+                if(responseJson.response.data.length == 0){
+                    this.setState({showing_message: 'No data found!'})
+                }
+
                 this.setState({
                     matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
                     onEndReachedCalledDuringMomentum: false,
                     progressVisible: false,
+                    progressVisibleBottom: false ,
+
                   })
         
                   this.pageNum = this.pageNum + 1;
             }
 
         })
+    }
    }
 
    onEndReached = ({ distanceFromEnd }) => {
@@ -186,11 +213,11 @@ export class AppSearch extends React.Component {
            this.onEndReachedCalledDuringMomentum = true;
            console.log("bottom reached:......................."+  this.state.matchData.length +" ")
 
-           if( this.state.matchData.length % 4 === 0){
+           if( this.state.matchData.length % 3 === 0){
 
            this.setState(
            {
-           progressVisible : true ,
+            progressVisibleBottom : true ,
            onEndReachedCalledDuringMomentum: false
            },
            () => {
@@ -223,7 +250,7 @@ export class AppSearch extends React.Component {
                                                     
                     <Icon name="search"  style={{fontSize: width * 0.05,color:'#e74e92', }}  />
                     <NB.Input  style={{height:25,padding:0,}} placeholder='Type Here...'
-                        onChangeText={(value) => {this.searchMyMatches(value)}}
+                        onChangeText={(value) => {this.setState({progressVisible: true}), this.searchMyMatches(value)}}
                     />   
                     <NB.Icon  onPress={() => this.AppSearchView()}    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
                     </NB.Item> 
@@ -367,8 +394,30 @@ export class AppSearch extends React.Component {
                 }}
             />
             :
-            <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>Type keyword to search... </NB.Text>
+            <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>{this.state.showing_message} </NB.Text>
             }
+
+            <Dialog
+                        visible={this.state.progressVisible}
+                        // title="Loading data"
+                        // message="Please, wait..."
+                        dialogStyle={{
+                            backgroundColor:"transparent",
+                            elevation: 0,
+                            
+                            
+                         }}
+                    >
+
+                        <NB.Spinner color='#fff' />
+
+                    </Dialog>
+
+            {this.state.progressVisibleBottom ? 
+                        <NB.Spinner color='#fff'  />
+                        :
+                        null
+                        }
                 </NB.Container> 
             </ImageBackground>
             </Fragment>    
