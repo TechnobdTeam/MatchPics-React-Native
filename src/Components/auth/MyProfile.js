@@ -286,7 +286,7 @@ export class MyProfile extends React.Component {
             <ImageBackground source={require('../Image/profile_bg.png') } style={{width: '100%', height: '100%', paddingRight:0,marginRight:0,backgroundColor:'#f4f4f4'}}   > 
                     
                     <NB.Container   style={HomeStyle.MyprofileContainer}  >
-                        <NB.Header  transparent>
+                        <NB.Header  transparent >
                             <NB.Left>
                                 <NB.Button  transparent>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} > 
@@ -296,7 +296,7 @@ export class MyProfile extends React.Component {
                             </NB.Left>
     
                             <NB.Body  >
-                            <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                            <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignItems:"center",justifyContent:"center"}}>
                                 <NB.Text style={{color:'#fff',fontSize: width * 0.05, fontFamily:'OpenSans-Regular'}} >My Profile</NB.Text>
                                 </NB.Segment>
                             </NB.Body>
