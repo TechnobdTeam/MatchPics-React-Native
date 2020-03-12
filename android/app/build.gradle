@@ -184,6 +184,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-exit-app')
+    implementation project(':@react-native-community_netinfo')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-toast-native')
     implementation project(':react-native-background-timer')

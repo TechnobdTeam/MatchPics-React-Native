@@ -1,7 +1,10 @@
 import React,  { Fragment, Component } from 'react';
-import { View, Image, ImageBackground,StatusBar} from 'react-native';
+import { View, Image, ImageBackground,StatusBar, Platform} from 'react-native';
+import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
+import NetInfo from "@react-native-community/netinfo";
 import { StackActions, NavigationActions } from 'react-navigation';
 import * as NB from 'native-base';
+import RNExitApp from 'react-native-exit-app';
 // NativeBase
 import { Button, Text } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -18,7 +21,8 @@ export class Splash extends React.Component {
         resetAction: '',
         user_email: '',
         user_password: '',
-        access_token: ''
+        access_token: '',
+        dialogVisible: false
       };
     }
 
@@ -33,6 +37,38 @@ export class Splash extends React.Component {
     }
 
   componentDidMount(){
+
+    NetInfo.fetch().then(state => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+
+      if(state.isConnected){
+        this.openApp()
+        // this.setState({dialogVisible: true})
+      }
+      else{
+        Alert.alert("Check your internet connectivity and try again!!");
+      }
+    });
+
+    // if (Platform.OS === "android") {
+    //   NetInfo.isConnected.fetch().then(isConnected => {
+    //     if (isConnected) {
+    //       this.openApp()
+    //     } else {
+    //       Alert.alert("Check your internet connectivity and try again!!");
+    //     }
+    //   });
+    // } else {
+    //   // For iOS devices
+    //   // NetInfo.isConnected.addEventListener(
+    //   //   "connectionChange",
+    //   //   this.handleFirstConnectivityChange
+    //   // );
+    // }
+  }
+
+  openApp(){
 
     AsyncStorage.getItem(ConstValues.user_logged_in , (error, result) => {
 
@@ -312,7 +348,8 @@ export class Splash extends React.Component {
 
     render() {
       return (  
-        <Fragment >    
+        <NB.Root>
+         <Fragment >    
            <StatusBar translucent = {true} barStyle="light-content" backgroundColor="#e76995" />
             <ImageBackground source={require('../Image/splash.jpg') } style={{width: '100%', height: '100%', justifyContent: 'center', alignItems:'center',}}   > 
             <Button light style={{marginTop:10}}
@@ -323,6 +360,19 @@ export class Splash extends React.Component {
                   <Image  source={require('../Image/logo.png')}  style={{ bottom:140, position:'absolute'}}    />   
             </ImageBackground> 
         </Fragment>  
+
+        <ConfirmDialog
+          title="No connectivity"
+          message="Check your internet connectivity and try again!"
+          visible={this.state.dialogVisible}
+          onTouchOutside={() => this.setState({dialogVisible: false})}
+          positiveButton={{
+              title: "Ok",
+              onPress: () => RNExitApp.exitApp()
+          }}
+         
+      />
+        </NB.Root>
       );
     }
   }
