@@ -406,10 +406,29 @@ export class UploadImage extends React.Component {
   
                      }}
                       visible={this.state.imagePickOptionDialog}
-                      title="Uplode Photo"
+                      title="Choose Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
-                      <NB.View style={{height:50,}}>
-                      {/* <NB.Text style={{fontSize:20,color:'#333333', marginBottom: 10,fontFamily:'OpenSans-Regular'}}  onPress={this.onPressFromGallery}> Select from Gallery </NB.Text> */}
+
+            <NB.View style={{height:120,}}>
+                      
+                      <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
+
+                       <NB.Button style={{width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressOpenCamera} >
+                         <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} >  <Icon    name={'camera'}  style={{fontSize: width * 0.04, color:"#000" }}   />  Capture Photo</NB.Text>
+                      </NB.Button>
+        
+                            
+                      <NB.Button style={{marginTop:15,width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressFromGallery} >
+                          <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} > <Icon    name={'image'}  style={{fontSize: width * 0.04, color:"#000" }}    />  Browse  Gallery</NB.Text>
+                       </NB.Button>
+                            
+                        
+                    </NB.View> 
+                  </NB.View>
+
+
+                      {/* <NB.View style={{height:50,}}>
+                     
                       <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                             <NB.View style={{width:80, alignItems: 'center',}}>
                                 <TouchableOpacity onPress={this.onPressFromGallery}  > 
@@ -423,14 +442,8 @@ export class UploadImage extends React.Component {
                             </NB.View>
                         </NB.View>
                        
-
-                     
-
-
-                         
-                          {/* <NB.View style={{borderBottomWidth: 1, borderBottomColor:'#9a9a9a'}}></NB.View> */}
-                          {/* <NB.Text style={{fontSize:20,color:'#000000', marginTop: 10}} onPress={this.onPressOpenCamera}> Open Camera </NB.Text> */}
-                      </NB.View>
+ 
+                      </NB.View> */}
                   </Dialog>
 
                   <ProgressDialog

@@ -505,8 +505,8 @@ export class Login extends React.Component {
 
   const style={
     backgroundColor: "#000000",
-    width: 400,
-    height: Platform.OS === ("ios") ? 50 : 135,
+    width: 430,
+    height: Platform.OS === ("ios") ? 50 : 90,
     color: "#ffffff",
     fontSize: 15,
     lineHeight: 2,
