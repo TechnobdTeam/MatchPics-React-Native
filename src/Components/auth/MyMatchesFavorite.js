@@ -8,6 +8,7 @@ import {
     Text,
     TouchableWithoutFeedback,
     Image,
+    FlatList,
     ImageBackground,
     TouchableOpacity,
 } from "react-native";
@@ -26,6 +27,15 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
 
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    console.log("layout_value: " + layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom)
+
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
 const styles = StyleSheet.create({
    
     masonryHeader: {
@@ -37,10 +47,6 @@ const styles = StyleSheet.create({
      
          
     },
-
-   
-   
- 
 });
 
 function isIPhoneX() {
@@ -55,6 +61,8 @@ function isIPhoneX() {
 }
 
 export class MyMatchesFavorite extends React.Component {
+
+    pageNum = 0
  
     constructor(props) {
         super(props);
@@ -67,6 +75,8 @@ export class MyMatchesFavorite extends React.Component {
             columns: 2, 
             matchData: '',
             progressVisible: true ,
+            progressVisibleBottom: false,
+            onEndReachedCalledDuringMomentum : false,
             statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
         }
     }
@@ -118,11 +128,14 @@ export class MyMatchesFavorite extends React.Component {
             console.log("user_photo_id: " + this.state.photo_id);
         }
 
+        this.pageNum = this.pageNum + 1;
+
 
         var formData = new FormData();
         formData.append('api_key', ConstValues.api_key);
         formData.append('user_name', this.state.email);
         formData.append('password', this.state.password);
+        formData.append('pageNum', this.pageNum);
 
         if(this.state.photo_id != ''){
 
@@ -145,14 +158,105 @@ export class MyMatchesFavorite extends React.Component {
 
             console.log("getMyMatchesList: " + responseJson.response.message);
 
-            this.setState({matchData: responseJson.response.data, progressVisible: false})
+            this.setState({progressVisibleBottom: false, matchData:  this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data], progressVisible: false})
 
+            
             if(responseJson.response.data == undefined){
                 console.log("getMyMatchesList: undefined data");
             }
 
         })
     }
+
+    onEndReached = ({ distanceFromEnd }) => {
+        console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.matchData.length)
+   
+   
+             // if(!this.onEndReachedCalledDuringMomentum ){
+               this.onEndReachedCalledDuringMomentum = true;
+               console.log("bottom reached:......................."+  this.state.matchData.length +" ")
+   
+               if( this.state.matchData.length % 4 === 0){
+   
+               this.setState(
+               {
+               progressVisibleBottom : true ,
+               onEndReachedCalledDuringMomentum: false
+               },
+               () => {
+                 console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ))
+   
+   
+               this.getMatchList()
+               }
+               );
+   
+               // }
+               
+               
+             }
+       }
+
+    renderItem =({ item, index }) => {
+        const {width, height} = Dimensions.get('window');
+        console.log("items: " + item.match_date)
+        var total_match = item.total_match
+        return (
+            <NB.View style={{marginTop:-2, backgroundColor: 'transparent'}}>
+                    <NB.Card   style={{marginTop:-2, backgroundColor: 'red'}}>
+                        <NB.CardItem   >
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{marginRight:15,marginLeft:-12,}}>
+                        <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:80, height: 80,borderRadius: 50,}} borderRadius={50.5}  source={{uri: item.match_photo}} style={{ width:80, height: 80, borderRadius: 50, }} />
+                    
+                        </View>
+                        <View  >
+                                <NB.Text  style={{color:"#1c1721",fontSize: width * 0.032,fontFamily:'OpenSans-Semibold'}}>{item.match_date}</NB.Text>
+                                <View style={{flex: 1, flexDirection: 'row',marginTop:7, }} >
+
+                                {item.match_result.map((item2,j) => {
+                                    console.log("inside loop: " + j);
+                                    total_match = total_match - 1;
+                                    return <NB.View  key = {index +j}>
+                                    {j != 5 ? 
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile',{
+                                            id: item2.profile_id, from: "MyMatchesFavorite"
+                                        })} > 
+                                        <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:45, height: 45,borderRadius: 50}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
+                                        </TouchableOpacity>
+                                        :
+                                        <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches' ,{
+                                            photo_id: item.photo_id,
+                                            match_id: item.match_type_id
+                                        })} > 
+                                        <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:45, height: 45,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
+                                        {total_match > 1 ? 
+                                           
+                                                <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
+                                           
+                                            :
+                                            null
+                                        }
+                                        </TouchableOpacity>
+                                        </View>
+                                    }
+                                    </NB.View>
+                            
+                                })
+                                }
+
+                            </View>
+                        </View>
+                    </View>
+                        </NB.CardItem>
+                    </NB.Card>
+
+                 
+            
+            </NB.View> 
+        );
+   }
 
     render() {
         const { statusBarPaddingTop } = this.state;
@@ -189,77 +293,34 @@ export class MyMatchesFavorite extends React.Component {
                     </NB.Header> 
   
                  
-                    <NB.Content padder>
+                    {/* <NB.Content padder> */}
 
-                    {this.state.matchData != '' ? 
-                        this.state.matchData.map((item,i) => {
-                            var total_match = item.total_match + 1;
-                            console.log("total_match: " + total_match);
-                        return  <NB.View key={i}>
-                                <NB.Card   style={{marginTop:-2,}}>
-                                    <NB.CardItem   >
-                                    <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <View style={{marginRight:15,marginLeft:-12,}}>
-                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:80, height: 80,borderRadius: 50,}} borderRadius={50.5}  source={{uri: item.match_photo}} style={{ width:80, height: 80, borderRadius: 50, }} />
-                                
-                                    </View>
-                                    <View  >
-                                            <NB.Text  style={{color:"#1c1721",fontSize: width * 0.032,fontFamily:'OpenSans-Semibold'}}>{item.match_date}</NB.Text>
-                                            <View style={{flex: 1, flexDirection: 'row',marginTop:7, }} >
+                  
 
-                                            {item.match_result.map((item2,j) => {
-                                                console.log("inside loop: " + j);
-                                                total_match = total_match - 1;
-                                                return <NB.View  key = {i +j}>
-                                                {j != 5 ? 
-                                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile',{
-                                                        id: item2.profile_id, from: "MyMatchesFavorite"
-                                                    })} > 
-                                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') } placeholderStyle={{width:45, height: 45,borderRadius: 50}} borderRadius={45.0} source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50 ,marginLeft:1,marginRight:1,}} />
-                                                    </TouchableOpacity>
-                                                    :
-                                                    <View style={{borderRadius:50,marginLeft:2.5,marginRight:2.5,zIndex:9999}} >
-                                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyMatches' ,{
-                                                        photo_id: item.photo_id,
-                                                        match_id: item.match_type_id
-                                                    })} > 
-                                                    <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:45, height: 45,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
-                                                    {total_match > 1 ? 
-                                                       
-                                                            <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
-                                                       
-                                                        :
-                                                        null
-                                                    }
-                                                    </TouchableOpacity>
-                                                    </View>
-                                                }
-                                                </NB.View>
-                                        
-                                            })
-                                            }
+                    <FlatList
+                        data={this.state.matchData}
+                        onEndReached={this.onEndReached.bind(this)}
+                        onEndReachedThreshold={0.5}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item, index) => String(index)}
+                    />
 
-                                        </View>
-                                    </View>
-                                </View>
-                                    </NB.CardItem>
-                                </NB.Card>
+                    {/* </NB.Content>  */}
+                    {this.state.progressVisible ? 
+                    <NB.View style={{flex: 1}}>
+                    <NB.Spinner color='#fff' />
+                    </NB.View>
+                : 
+                null}
 
-                             
-                        
-                        </NB.View> 
-                        
-                        })
-                        :
-                    null
-                   } 
-                    
-                    </NB.Content> 
-
-
+                {this.state.progressVisibleBottom ? 
+                    <NB.Spinner color='#fff' />
+                : 
+                null}
                 </NB.Container> 
+                
             </ImageBackground>
-            <Dialog
+            {/* <Dialog
                dialogStyle={{
                 backgroundColor:"transparent",
                 elevation: 0,
@@ -273,7 +334,8 @@ export class MyMatchesFavorite extends React.Component {
 
                 <NB.Spinner color='#fff' />
 
-            </Dialog>
+            </Dialog> */}
+
             </Fragment>    
         );
     }

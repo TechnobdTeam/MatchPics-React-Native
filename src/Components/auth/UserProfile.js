@@ -1,7 +1,6 @@
 import React,  { Fragment, Component } from 'react';
 import {Animated, View, StyleSheet, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView, } from 'react-native';
 import * as NB from 'native-base';
-import {Toast} from 'native-base';
 // NativeBase
 import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
@@ -10,6 +9,7 @@ import HomeStyle from '../LayoutsStytle/HomeStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
+import Toast from 'react-native-toast-native';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import * as Animatable from 'react-native-animatable';
 
@@ -197,10 +197,12 @@ export class UserProfile extends React.Component {
             console.log(this.performAction + ": " + responseJson.response.message)
             console.log(this.performAction + ": " + responseJson.response.code)
 
-            Toast.show({
-                text: responseJson.response.message,
-                textStyle: { color: "yellow" },
-              });
+            // Toast.show({
+            //     text: responseJson.response.message,
+            //     textStyle: { color: "yellow" },
+            //   });
+
+            Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
             if(responseJson.response.code == 1000){
 
@@ -239,10 +241,12 @@ export class UserProfile extends React.Component {
         console.log("addReportUser: " + responseJson.response.message)
         console.log("addReportUser: " + responseJson.response.code)
 
-        Toast.show({
-            text: responseJson.response.message,
-            textStyle: { color: "yellow" },
-          });
+        // Toast.show({
+        //     text: responseJson.response.message,
+        //     textStyle: { color: "yellow" },
+        //   });
+
+        Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
         this.setState({progressVisible: false})
         
@@ -597,6 +601,19 @@ export class UserProfile extends React.Component {
   }
  
 }
+
+const style={
+    backgroundColor: "#000000",
+    width: 400,
+    height: Platform.OS === ("ios") ? 50 : 135,
+    color: "#ffffff",
+    fontSize: 15,
+    lineHeight: 2,
+    lines: 1,
+    borderRadius: 15,
+    fontWeight: "bold",
+    yOffset: 40
+};
 {/* End Register */}
 
  

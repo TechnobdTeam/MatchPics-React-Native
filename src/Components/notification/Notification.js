@@ -23,6 +23,7 @@ notificationArray = []
     this.state = {
       search: '',
       progressVisible: true,
+      progressVisibleBottom: false,
       token: '',
       onEndReachedCalledDuringMomentum : false,
     };
@@ -78,6 +79,7 @@ notificationArray = []
             notificationData: this.pageNum === 1 ? responseJson.response.data : [...this.state.notificationData, ...responseJson.response.data],
             onEndReachedCalledDuringMomentum: false,
             progressVisible: false,
+            progressVisibleBottom: false,
           })
 
           this.pageNum = this.pageNum + 1;
@@ -111,7 +113,7 @@ notificationArray = []
 
             this.setState(
             {
-            progressVisible : true ,
+            progressVisibleBottom : true ,
             onEndReachedCalledDuringMomentum: false
             },
             () => {
@@ -202,11 +204,33 @@ notificationArray = []
             onEndReached={this.onEndReached.bind(this)}
             onEndReachedThreshold={0.5}
             renderItem={this.renderItem}
-            keyExtractor={({id}, index) => id}
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) => String(index)}
           />
 
   </View>
+
+                   <Dialog
+                        visible={this.state.progressVisible}
+                        // title="Loading data"
+                        // message="Please, wait..."
+                        dialogStyle={{
+                            backgroundColor:"transparent",
+                            elevation: 0,
+                            
+                            
+                         }}
+                    >
+
+                        <NB.Spinner color='#fff' />
+
+                    </Dialog>
+
+       {this.state.progressVisibleBottom ? 
+                        <NB.Spinner color='#fff'  />
+                        :
+                        null
+                        }
+
       </NB.Container>
 
             
