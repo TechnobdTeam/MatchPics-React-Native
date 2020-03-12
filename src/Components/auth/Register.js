@@ -400,7 +400,7 @@ export class Register extends React.Component {
                       title="Choose Photo"
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
                   
-                     <NB.View style={{height:120,}}>
+                     <NB.View style={{height:125,}}>
                       
                           <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
 
@@ -409,8 +409,8 @@ export class Register extends React.Component {
                           </NB.Button>
             
                                 
-                          <NB.Button style={{marginTop:15,width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressFromGallery} >
-                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} > <Icon    name={'image'}  style={{fontSize: width * 0.04, color:"#000" }}    />  Browse  Gallery</NB.Text>
+                          <NB.Button style={{marginTop:20,width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressFromGallery} >
+                              <NB.Text  style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} > <Icon  solid  name={'image'}  style={{fontSize: width * 0.04, color:"#000" }}    />  Browse  Gallery</NB.Text>
                            </NB.Button>
                                 
                             

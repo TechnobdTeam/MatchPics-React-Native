@@ -245,14 +245,16 @@ export class AppSearch extends React.Component {
 
              {this.state.visible == false ?
               <NB.Header  transparent>
-                <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:10,paddingLeft:10,paddingRight:10,height:50}}>
+                <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:7.5,paddingLeft:10,paddingRight:10,height:45,marginTop:3,}}>
                     <NB.Item style={{borderBottomWidth:0,}} >
                                                     
                     <Icon name="search"  style={{fontSize: width * 0.05,color:'#e74e92', }}  />
                     <NB.Input  style={{height:25,padding:0,}} placeholder='Type Here...'
                         onChangeText={(value) => {this.setState({progressVisible: true}), this.searchMyMatches(value)}}
                     />   
-                    <NB.Icon  onPress={() => this.AppSearchView()}    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
+                    <TouchableOpacity  onPress={() => this.AppSearchView()}  >
+                    <NB.Icon    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
+                    </TouchableOpacity>
                     </NB.Item> 
                     </View>
                 </NB.Header>           
@@ -267,7 +269,7 @@ export class AppSearch extends React.Component {
                     </NB.Left>
 
                     <NB.Body  >
-                    <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                    <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignContent:"center",justifyContent:"center"}}>
                         <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Search</NB.Text>
                         </NB.Segment>
                     </NB.Body>

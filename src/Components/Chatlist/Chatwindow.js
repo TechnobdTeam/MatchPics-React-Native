@@ -491,7 +491,7 @@ export class Chatwindow extends React.Component {
                 
                       </NB.Left>
                       <NB.Body  >
-                          <NB.Segment style={{width:"100%",backgroundColor:'transparent'}}>
+                          <NB.Segment style={{width:"100%",backgroundColor:'transparent',alignItems:"center",justifyContent:"center"}}>
                            <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}> {this.state.user_name}   </NB.Text>
                           </NB.Segment>
                        </NB.Body>

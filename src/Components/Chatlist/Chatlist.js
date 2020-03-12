@@ -313,7 +313,7 @@ onSwipeValueChange = swipeData => {
                       
                   {this.state.searach_vissible == false ?
                  <NB.Header  transparent style={{paddingLeft:0,paddingRight:0, }}>
-                    <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:10,paddingLeft:10,paddingRight:10,height:50}}> 
+                    <View style={{flex:1,backgroundColor:'#fff',borderRadius:3,paddingTop:7.5,paddingLeft:10,paddingRight:10,height:45,marginTop:3,}}> 
                       <NB.Item style={{borderBottomWidth:0,}} > 
                           <Icon name="search"  style={{fontSize: width * 0.05,color:'#e74e92', }}  />
                           <NB.Input  style={{height:20,padding:0,}} placeholder='Type Here...'
@@ -322,8 +322,9 @@ onSwipeValueChange = swipeData => {
                           } }
                           value={this.state.search_text}
                           />  
-                          <NB.Icon  onPress={() => this.searchViewClicked()}    name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
-
+                          <TouchableOpacity onPress={() => this.searchViewClicked()}  > 
+                          <NB.Icon     name="close" style={{fontSize: width * 0.07,color:'#e74e92', }}  />
+                          </TouchableOpacity>
                       </NB.Item>
                 </View>
                 </NB.Header>
@@ -337,7 +338,7 @@ onSwipeValueChange = swipeData => {
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignItems:"center",justifyContent:"center"}}>
                           <NB.Text style={{color:'#fff',fontSize:23,fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Messages</NB.Text>
                           </NB.Segment>
                       </NB.Body>
@@ -569,8 +570,10 @@ onSwipeValueChange = swipeData => {
                     />
                 )
               : 
-              <NB.Text style={{flex: 1, color:'#9a9a9a',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No message found! </NB.Text>
-              }
+             <View style={{flex:1,height:300,alignContent:"center",justifyContent:"center"}}> 
+              <NB.Text style={{ color:'#9a9a9a',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No message found! </NB.Text>
+              </View>
+          }
 
                 
                   </NB.Content> 
@@ -821,7 +824,7 @@ onSwipeValueChange = swipeData => {
       backgroundColor:'transparent',
       paddingLeft:10,
       paddingRight:10,
-      paddingTop:13,
+      paddingTop:0,
       paddingBottom:15,
   
     },
