@@ -218,7 +218,7 @@ export class MyMatches extends React.Component {
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignItems:"center",justifyContent:"center"}}>
                           <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My Matches</NB.Text>
                           </NB.Segment>
                       </NB.Body>
@@ -318,10 +318,22 @@ export class MyMatches extends React.Component {
             <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
             }
            
-            <Dialog
+
+           {this.state.progressVisible ? 
+                    <NB.View style={{flex: 1,}}>
+                    <NB.Spinner color='#fff' />
+                    </NB.View>
+                : 
+                null}
+
+
+
+            {/* <Dialog
                 visible={this.state.progressVisible}
                 // title="Loading data"
                 // message="Please, wait..."
+
+               
                 dialogStyle={{
                     backgroundColor:"transparent",
                     elevation: 0,
@@ -331,7 +343,8 @@ export class MyMatches extends React.Component {
             >
 
 <NB.Spinner color='#fff' />
-                </Dialog>
+                </Dialog> */}
+              
        
                 {this.state.progressVisibleBottom ? 
                         <NB.Spinner color='#fff'  />

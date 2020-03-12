@@ -187,7 +187,7 @@ notificationArray = []
         </NB.Left>
 
         <NB.Body  >
-        <NB.Segment style={{backgroundColor:'transparent'}}>
+        <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignContent:"center",justifyContent:"center"}}>
             <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>Notifications </NB.Text>
             </NB.Segment>
         </NB.Body>
@@ -253,7 +253,7 @@ notificationArray = []
       backgroundColor:'transparent',
       paddingLeft:10,
       paddingRight:10,
-      paddingTop:13,
+      paddingTop:0,
       paddingBottom:15,
   
     },

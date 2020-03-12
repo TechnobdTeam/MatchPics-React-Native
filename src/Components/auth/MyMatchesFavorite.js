@@ -278,7 +278,7 @@ export class MyMatchesFavorite extends React.Component {
                       </NB.Left>
 
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                      <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignItems:"center",justifyContent:"center"}}>
                           <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My Matches</NB.Text>
                           </NB.Segment>
                       </NB.Body>

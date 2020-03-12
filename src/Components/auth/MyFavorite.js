@@ -191,9 +191,8 @@ export class MyFavorite extends React.Component {
                          </TouchableOpacity>
                         </NB.Button>
                       </NB.Left>
-
                       <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent', width:"100%"}}>
+                      <NB.Segment style={{backgroundColor:'transparent', width:"100%",alignContent:"center",justifyContent:"center"}}>
                           <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My favourites</NB.Text>
                           </NB.Segment>
                       </NB.Body>
@@ -291,7 +290,7 @@ export class MyFavorite extends React.Component {
                     <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
                     }
                    
-                    <Dialog
+                    {/* <Dialog
                         visible={this.state.progressVisible}
                         // title="Loading data"
                         // message="Please, wait..."
@@ -305,7 +304,16 @@ export class MyFavorite extends React.Component {
 
                         <NB.Spinner color='#fff' />
 
-                    </Dialog>
+                    </Dialog> */}
+
+{this.state.progressVisible ? 
+                    <NB.View style={{flex: 1}}>
+                    <NB.Spinner color='#fff' />
+                    </NB.View>
+                : 
+                null}
+
+
 
  {this.state.progressVisibleBottom ? 
                         <NB.Spinner color='#fff'  />

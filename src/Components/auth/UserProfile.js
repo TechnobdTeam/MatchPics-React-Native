@@ -470,17 +470,19 @@ export class UserProfile extends React.Component {
         //  </NB.View>
         // </NB.View>
 
-    
+     
 
         <Dialog
-        dialogStyle={{
-            backgroundColor:"transparent",
-            elevation: 0, 
-            
-         }}
+            dialogStyle={{
+                backgroundColor:"transparent",
+                elevation: 0, 
+                
+            }}
             visible={this.state.progressVisible}
 
-           
+            overlayStyle={{
+                backgroundColor:"#e74e92"
+            }}
             // title="Getting details"
             // message="Please, wait..."
         >
@@ -488,6 +490,10 @@ export class UserProfile extends React.Component {
  <NB.Spinner color='#fff' />
             </Dialog>
         }
+
+ 
+
+
         <ConfirmDialog
          dialogStyle={{ 
             borderRadius:7,

@@ -286,7 +286,7 @@ export class MyProfile extends React.Component {
             <ImageBackground source={require('../Image/profile_bg.png') } style={{width: '100%', height: '100%', paddingRight:0,marginRight:0,backgroundColor:'#f4f4f4'}}   > 
                     
                     <NB.Container   style={HomeStyle.MyprofileContainer}  >
-                        <NB.Header  transparent>
+                        <NB.Header  transparent >
                             <NB.Left>
                                 <NB.Button  transparent>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} > 
@@ -296,7 +296,7 @@ export class MyProfile extends React.Component {
                             </NB.Left>
     
                             <NB.Body  >
-                            <NB.Segment style={{backgroundColor:'transparent',width:"100%"}}>
+                            <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignItems:"center",justifyContent:"center"}}>
                                 <NB.Text style={{color:'#fff',fontSize: width * 0.05, fontFamily:'OpenSans-Regular'}} >My Profile</NB.Text>
                                 </NB.Segment>
                             </NB.Body>
@@ -430,17 +430,17 @@ export class MyProfile extends React.Component {
                                     onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
 
 
-                  <NB.View style={{height:120,}}>
+                  <NB.View style={{height:125,}}>
                       
                       <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
 
-                       <NB.Button style={{width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressOpenCamera} >
+                       <NB.Button style={{width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center",shadowColor: "#000",}} onPress={this.onPressOpenCamera} >
                          <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} >  <Icon    name={'camera'}  style={{fontSize: width * 0.04, color:"#000" }}   />  Capture Photo</NB.Text>
                       </NB.Button>
         
                             
-                      <NB.Button style={{marginTop:15,width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressFromGallery} >
-                          <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} > <Icon    name={'image'}  style={{fontSize: width * 0.04, color:"#000" }}    />  Browse  Gallery</NB.Text>
+                      <NB.Button style={{marginTop:20,width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressFromGallery} >
+                          <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} > <Icon  solid  name={'image'}  style={{fontSize: width * 0.04, color:"#000" }}    />  Browse  Gallery</NB.Text>
                        </NB.Button>
                             
                         
