@@ -401,8 +401,20 @@ export class Register extends React.Component {
                       onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
                   
                      <NB.View style={{height:125,}}>
+
+                     <NB.Button  onPress={this.onPressOpenCamera} iconLeft style={{width:225,backgroundColor:"#d0d0d0",paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}}>
+                              <NB.Icon name='camera'  style={{fontSize: width * 0.07, color:"#000", }} />
+                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  >Capture Photo</NB.Text>
+                            </NB.Button>
+
+                            <NB.Button onPress={this.onPressFromGallery} iconLeft style={{width:225,backgroundColor:"#d0d0d0",marginTop:20,paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}} >
+                              <NB.Icon name='image'  style={{fontSize: width * 0.07, color:"#000", }} />
+                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  > Browse  Gallery</NB.Text>
+                          </NB.Button>
+
+
                       
-                          <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
+                          {/* <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
 
                            <NB.Button style={{width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center"}} onPress={this.onPressOpenCamera} >
                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} >  <Icon    name={'camera'}  style={{fontSize: width * 0.04, color:"#000" }}   />  Capture Photo</NB.Text>
@@ -414,7 +426,7 @@ export class Register extends React.Component {
                            </NB.Button>
                                 
                             
-                        </NB.View> 
+                        </NB.View>  */}
                       </NB.View>
 
                       {/* <NB.View>

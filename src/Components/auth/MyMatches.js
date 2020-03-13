@@ -225,7 +225,7 @@ export class MyMatches extends React.Component {
                       <NB.Right>
                         <NB.Button transparent>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  >
-                        <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />>
                           <Icon name={'bell'}   style={{fontSize: width * 0.05,color:'#fff', width:21}} solid />   
                         </TouchableOpacity>
                         </NB.Button>
@@ -347,7 +347,7 @@ export class MyMatches extends React.Component {
               
        
                 {this.state.progressVisibleBottom ? 
-                        <NB.Spinner color='#fff'  />
+                    <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center'}} color='#fff'  />
                         :
                         null
                         }

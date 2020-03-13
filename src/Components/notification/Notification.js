@@ -235,7 +235,7 @@ notificationArray = []
                     </Dialog> */}
 
        {this.state.progressVisibleBottom ? 
-                        <NB.Spinner color='#fff'  />
+                     <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center'}} color='#cdcdcd'  />
                         :
                         null
                         }
