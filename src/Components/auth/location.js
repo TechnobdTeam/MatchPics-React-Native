@@ -18,6 +18,7 @@ import Toast from 'react-native-toast-native';
 import Geolocation from '@react-native-community/geolocation';
 
 import MapView, { Marker, ProviderPropType ,AnimatedRegion} from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 
 // import flagPinkImg from './marker_icon.png';
@@ -111,10 +112,11 @@ export class location  extends React.Component {
             .then((responseJson) => {
 
               this.setState({
-                location_address: responseJson.results[0].formatted_address
+                location_address: responseJson.results[2].formatted_address
               })
 
-              console.log(responseJson.results[0].formatted_address)
+              console.log(responseJson.results[5])
+              console.log(responseJson.results[5].formatted_address)
 
             // alert('error')
             // alert('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
@@ -123,6 +125,37 @@ export class location  extends React.Component {
       } );
 
   }
+
+  moveLocation() {
+
+    this.setState({
+      location_loaded: true,
+      ready: true,
+     })
+
+     //Animation camera in mapview
+     this.map.animateToRegion({
+      latitude: CHANGED_LATITUDE,
+      longitude: CHANGED_LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    }, 500);
+
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + CHANGED_LATITUDE + ',' + CHANGED_LONGITUDE + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+    .then((response) => response.json())
+        .then((responseJson) => {
+
+          this.setState({
+            location_address: responseJson.results[5].formatted_address
+          })
+
+          console.log(responseJson.results[5].formatted_address)
+
+        // alert('error')
+        // alert('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
+    })
+
+}
 
   onMapReady = (e) => {
     if(!this.state.ready) {
@@ -194,6 +227,28 @@ export class location  extends React.Component {
                 location_address: responseJson.results[0].formatted_address
               })
         })
+
+}
+
+markerDropSelect(lat, lng){
+  //get values of marker
+  // let lat = event.lat();
+  // let lng = event.lng();
+  //insert values to forms
+
+  console.log("lat_lon: " + lng)
+
+  CHANGED_LATITUDE = lat
+  CHANGED_LONGITUDE = lng
+
+  fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + lat + ',' + lng + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+      .then((response) => response.json())
+          .then((responseJson) => {
+
+            this.setState({
+              location_address: responseJson.results[0].formatted_address
+            })
+      })
 
 }
 
@@ -313,6 +368,7 @@ updateProfile(){
                       ref={ map => { this.map = map }}
                       onMapReady={this.onMapReady}
                       showsMyLocationButton={true}
+                      visible={false}
                       minZoomLevel={16}
                       maxZoomLevel={17}
                       style={styles.map}
@@ -327,7 +383,7 @@ updateProfile(){
                               <MapView.Marker
                                   draggable = {true}
                                   onDragEnd={(e) => this.markerDrop(e)}
-                                  coordinate={{latitude: LATITUDE, longitude: LONGITUDE}}
+                                  coordinate={{latitude: CHANGED_LATITUDE, longitude: CHANGED_LONGITUDE}}
                                   title={"title"}
                                   description={"description"}
                               /> : null }
@@ -337,7 +393,62 @@ updateProfile(){
                       null
                 }
                 
-                        
+                <View style={{flex: 1, width: '100%'}}>
+                  <GooglePlacesAutocomplete
+                      placeholder='Search'
+                      minLength={2} // minimum length of text to search
+                      autoFocus={true}
+                      fetchDetails={true}
+                      onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                        console.log(data);
+                        console.log(details);
+                        console.log("selected_lat: " + details.geometry.location.lat)
+                        console.log("selected_lat: " + details.geometry.location.lng)
+                        CHANGED_LATITUDE = details.geometry.location.lat
+                        CHANGED_LONGITUDE = details.geometry.location.lng
+                        this.moveLocation()
+                      }}
+                      getDefaultValue={() => {
+                        return ''; // text input default value
+                      }}
+                      query={{
+                        // available options: https://developers.google.com/places/web-service/autocomplete
+                        key: 'AIzaSyBgnt-53VE5xXbvzq_fnnR-KF_luEZeZ50',
+                        language: 'en', // language of the results
+                        types: '(cities)', // default: 'geocode'
+                      }}
+                      styles={{
+                        description: {
+                          fontWeight: 'bold',
+                        },
+                        predefinedPlacesDescription: {
+                          color: '#1faadb',
+                        },
+                      }}
+
+                      currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+                      currentLocationLabel="Current location"
+                      nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                      GoogleReverseGeocodingQuery={{
+                        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                      }}
+                      // GooglePlacesSearchQuery={{
+                      //   // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                      //   rankby: 'distance',
+                      //   types: 'food',
+                      // }}
+                      GooglePlacesDetailsQuery={{
+                          // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
+                          fields: 'geometry'
+                      }}
+
+                      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+
+                      // predefinedPlaces={[homePlace, workPlace]}
+
+                      predefinedPlacesAlwaysVisible={true}
+                    />
+                      </View>
                     
                 </View>
                        </View>
