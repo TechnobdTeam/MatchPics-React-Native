@@ -48,7 +48,8 @@ export class location  extends React.Component {
       progressVisible: false,
       ready: true,
       location_address:'',
-      changed: false
+      changed: false,
+      showSearch: false
     };
   }
 
@@ -191,6 +192,8 @@ export class location  extends React.Component {
   
       }
       
+      this.setState({showSearch: false})
+
       this.setLocationMarker()
 
   }
@@ -339,7 +342,11 @@ updateProfile(){
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.039,paddingLeft:15,fontFamily:'OpenSans-Semibold'}}>Location</NB.H3>
                            </NB.Item> 
                                 <NB.View style={{backgroundColor:'#fff', }} > 
-                                <TouchableOpacity onPress={() => this.setLocationMarker()} >
+
+
+                              
+
+                                <TouchableOpacity onPress={() => {this.setState({showSearch: true})}} >
                                     <NB.CardItem   > 
                                         <NB.Body>
                                             <NB.Text  style={{color:'#333333',textTransform:"uppercase",paddingLeft:3,fontFamily:'OpenSans-Regular',fontSize: width * 0.032,}}>My current location</NB.Text>
@@ -358,7 +365,7 @@ updateProfile(){
   
                 
                         </View>
-                  <View style={{flex: 8,}} > 
+                  <View style={{flex: 10,}} > 
 
                 <View style={styles.container}>
 
@@ -393,7 +400,11 @@ updateProfile(){
                       null
                 }
                 
-                <View style={{flex: 1, width: '100%'}}>
+                {this.state.showSearch ? 
+                  <View style={{flex: 1, width: '100%'}}>
+
+                  <Icon onPress={() => {this.setState({showSearch: false})}} name="times"  style={{fontSize: width * 0.05,color:'#6a6a6a',  position: "absolute", zIndex: 999, marginTop:11, right: 15}}  /> 
+
                   <GooglePlacesAutocomplete
                       placeholder='Search'
                       minLength={2} // minimum length of text to search
@@ -406,6 +417,7 @@ updateProfile(){
                         console.log("selected_lat: " + details.geometry.location.lng)
                         CHANGED_LATITUDE = details.geometry.location.lat
                         CHANGED_LONGITUDE = details.geometry.location.lng
+                        this.setState({showSearch: false})
                         this.moveLocation()
                       }}
                       getDefaultValue={() => {
@@ -421,13 +433,16 @@ updateProfile(){
                         description: {
                           fontWeight: 'bold',
                         },
+                        container:{
+                          backgroundColor:'rgba(255, 255, 255, 0.6) }}'
+                        },
+                        
                         predefinedPlacesDescription: {
                           color: '#1faadb',
                         },
                       }}
-
-                      currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-                      currentLocationLabel="Current location"
+                      // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+                      // currentLocationLabel="Current location"
                       nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                       GoogleReverseGeocodingQuery={{
                         // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
@@ -449,7 +464,10 @@ updateProfile(){
                       predefinedPlacesAlwaysVisible={true}
                     />
                       </View>
-                    
+                      :
+                      null
+                }
+
                 </View>
                        </View>
 
