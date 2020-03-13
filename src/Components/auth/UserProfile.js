@@ -337,7 +337,27 @@ export class UserProfile extends React.Component {
                                             </NB.Right>
                                         </NB.ListItem>
                                                 </NB.View>
-                                        
+                                                {this.state.userinfovisible == false ?
+ 
+                                                        <Animatable.View animation="slideInUp" direction="alternate" style={{height:250}}  >  
+                                                        <ScrollView > 
+                                                            <NB.View   style={HomeStyle.PageContainerAbout}  >  
+                                                            <NB.View style={{padding:20,}}>
+                                                                        <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
+                                                                            <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
+                                                                            {this.state.profileData.bio} 
+                                                                        </NB.Text>   
+                                                            </NB.View>  
+
+
+                                                        </NB.View> 
+                                                        </ScrollView>
+                                                        </Animatable.View>
+
+                                                        :
+                                                        null
+                                                        }
+                                                                                                
                                             
                                         </ImageBackground> 
                                     </View>
@@ -347,26 +367,7 @@ export class UserProfile extends React.Component {
          
         </Animatable.View>
    
-    {this.state.userinfovisible == false ?
- 
-    <Animatable.View animation="slideInUp" direction="alternate" style={{height:250}}  >  
-    <ScrollView > 
-       <NB.View   style={HomeStyle.PageContainerAbout}  >  
-        <NB.View style={{padding:20,}}>
-                    <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#6c6c6c",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                        <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
-                        {this.state.profileData.bio} 
-                    </NB.Text>   
-        </NB.View>  
-
-
-     </NB.View> 
-     </ScrollView>
-</Animatable.View>
- 
-:
-  null
- }
+  
 
                
                 {/* <View style={{height:530}} > 
