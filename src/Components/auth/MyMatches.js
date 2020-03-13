@@ -10,6 +10,7 @@ import {
     Image,
     ImageBackground,
     TouchableOpacity,
+    ScrollView,
      
 } from "react-native";
 import * as NB from 'native-base';
@@ -24,6 +25,19 @@ import ConstValues from '../../constants/ConstValues';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
+
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 30;
+    console.log("layoutMeasurement.height: " + layoutMeasurement.height)
+    console.log("contentOffset.y: " + contentOffset.y)
+    console.log("contentSize.height: " + contentSize.height)
+    var condition = layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+    console.log("bottom_reach: " + condition)
+
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
 
 const styles = StyleSheet.create({
    
@@ -62,6 +76,7 @@ export class MyMatches extends React.Component {
         this.state = {
             photo_id: '',
             match_type: '',
+            call_api: false,
             email: '',
             password: '',
             token: '',
@@ -159,7 +174,8 @@ export class MyMatches extends React.Component {
                     matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
                     onEndReachedCalledDuringMomentum: false,
                     progressVisible: false,
-                    progressVisibleBottom: false
+                    progressVisibleBottom: false,
+                    call_api: false
                   })
         
                   this.pageNum = this.pageNum + 1;
@@ -207,7 +223,7 @@ export class MyMatches extends React.Component {
           <Fragment>   
             <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
  
-             <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
+             <NB.Container   style={HomeStyle.PageContainerMyMatches}>
                       <NB.Header  transparent>
                       <NB.Left>
                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
@@ -225,7 +241,7 @@ export class MyMatches extends React.Component {
                       <NB.Right>
                         <NB.Button transparent>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  >
-                        <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />>
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
                           <Icon name={'bell'}   style={{fontSize: width * 0.05,color:'#fff', width:21}} solid />   
                         </TouchableOpacity>
                         </NB.Button>
@@ -233,13 +249,26 @@ export class MyMatches extends React.Component {
                     </NB.Header> 
 
  
-                    
-                
+                <ScrollView
+                    onScroll={({nativeEvent}) => {
+                    if (isCloseToBottom(nativeEvent)) {
+                        // enableSomeButton();
+                        if(!this.state.call_api){
+                            this.setState({progressVisibleBottom: true, call_api: true})
+                            
+                            this.timeoutHandle = setTimeout(()=>{
+                                this.getMatchList()
+                            }, 200)
+                        }
+                        
+                    }
+                    }}
+                    scrollEventThrottle={400}>
                 {this.state.matchData != undefined ?
                 
                 <MasonryList
-                onEndReached={this.onEndReached.bind(this)}
-                onEndReachedThreshold={0.5}
+                // onEndReached={this.onEndReached.bind(this)}
+                // onEndReachedThreshold={0.5}
                 spacing="2"
                 
                 backgroundColor="transparent"
@@ -317,8 +346,15 @@ export class MyMatches extends React.Component {
             :
             <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
             }
-           
 
+            {this.state.progressVisibleBottom ? 
+                    <NB.Spinner  color='#fff'  />
+                        :
+                        null
+                        }
+
+                </ScrollView>
+                
            {this.state.progressVisible ? 
                     <NB.View style={{flex: 1,}}>
                     <NB.Spinner color='#fff' />
@@ -344,13 +380,6 @@ export class MyMatches extends React.Component {
 
 <NB.Spinner color='#fff' />
                 </Dialog> */}
-              
-       
-                {this.state.progressVisibleBottom ? 
-                    <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center'}} color='#fff'  />
-                        :
-                        null
-                        }
 
                 </NB.Container> 
             </ImageBackground>

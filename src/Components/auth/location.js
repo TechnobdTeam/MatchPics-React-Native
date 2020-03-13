@@ -427,7 +427,7 @@ updateProfile(){
                       }}
                       query={{
                         // available options: https://developers.google.com/places/web-service/autocomplete
-                        key: 'AIzaSyBgnt-53VE5xXbvzq_fnnR-KF_luEZeZ50',
+                        key: 'API_KEY',
                         language: 'en', // language of the results
                         types: '(cities)', // default: 'geocode'
                       }}

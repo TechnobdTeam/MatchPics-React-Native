@@ -79,7 +79,7 @@ const HomeStyle = RC.StyleSheet.create({
       paddingRight:5,
       paddingTop:0,
       marginLeft:-5,
-      marginRight:-5
+      marginRight:-5,
     },
 
     PageContainerAbout:{

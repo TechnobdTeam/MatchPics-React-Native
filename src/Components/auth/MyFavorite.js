@@ -2,7 +2,7 @@ import React,  { Fragment, Component } from 'react';
 import {
     Platform,
     Dimensions,
-    Linking,
+    ScrollView,
     StyleSheet,
     View,
     Text,
@@ -23,6 +23,21 @@ import ConstValues from '../../constants/ConstValues';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
+
+
+
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 30;
+    console.log("layoutMeasurement.height: " + layoutMeasurement.height)
+    console.log("contentOffset.y: " + contentOffset.y)
+    console.log("contentSize.height: " + contentSize.height)
+    var condition = layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+    console.log("bottom_reach: " + condition)
+
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
 
 const styles = StyleSheet.create({
    
@@ -69,6 +84,7 @@ export class MyFavorite extends React.Component {
           progressVisibleBottom: false ,
           favData: '',
           columns: 2, 
+          call_api: false,
           onEndReachedCalledDuringMomentum : false,
           statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
         };
@@ -133,7 +149,8 @@ export class MyFavorite extends React.Component {
                     favData: this.pageNum === 1 ? responseJson.response.data : [...this.state.favData, ...responseJson.response.data],
                     onEndReachedCalledDuringMomentum: false,
                     progressVisible: false,
-                    progressVisibleBottom: false
+                    progressVisibleBottom: false,
+                    call_api: false
                   })
         
                   this.pageNum = this.pageNum + 1;
@@ -183,117 +200,147 @@ export class MyFavorite extends React.Component {
             <ImageBackground source={require('../Image/background_uplode_images.jpg') } style={{width: '100%', height: '100%', }}   >
  
              <NB.Container   style={HomeStyle.PageContainerMyMatches}  >
-                      <NB.Header  transparent>
-                      <NB.Left>
-                        <NB.Button transparent  >
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')}>
-                         <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
-                         </TouchableOpacity>
-                        </NB.Button>
-                      </NB.Left>
-                      <NB.Body  >
-                      <NB.Segment style={{backgroundColor:'transparent', width:"100%",alignContent:"center",justifyContent:"center"}}>
-                          <NB.Text style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Regular'}}>My favourites</NB.Text>
-                          </NB.Segment>
-                      </NB.Body>
-                      <NB.Right>
-                        <NB.Button transparent> 
-                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >
-                         <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
-                           <Icon name={'bell'}    style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid />   
-                         </TouchableOpacity>
-                        </NB.Button>
-                      </NB.Right>
-                    </NB.Header> 
+             <NB.Header   transparent>
+              <NB.Left>
+            
+                <NB.Button transparent  >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')}>
+                   <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
+                </TouchableOpacity>
+                </NB.Button>
+              
+              </NB.Left>
 
-                 <View style={{flex:1}}>
+              <NB.Body  >
+              <NB.Segment style={{backgroundColor:'transparent',width:"100%",alignContent:"center",alignItems:"center"}}>
+                  <NB.Text style={{color:'#fff',fontSize: width * 0.05, fontFamily:'OpenSans-Regular'}}>My Favorite </NB.Text>
+                  </NB.Segment>
+              </NB.Body>
+              <NB.Right>
+                <NB.Button  transparent  >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >  
+                    <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />   
+                    <Icon    name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }}  light />   
+                 </TouchableOpacity>
+                </NB.Button>
+              </NB.Right>
+            </NB.Header> 
+  
 
-                 {this.state.favData != undefined ?
+                    <ScrollView
+                    onScroll={({nativeEvent}) => {
+                    if (isCloseToBottom(nativeEvent)) {
+                        // enableSomeButton();
+                        if(!this.state.call_api){
+                            this.setState({progressVisibleBottom: true, call_api: true})
+                            
+                            this.timeoutHandle = setTimeout(()=>{
+                                this.getMyFavoriteList()
+                            }, 200)
+                        }
+                        
+                    }
+                    }}
+                    scrollEventThrottle={400}>
+                        
+                        {this.state.favData != undefined ?
                
               
-                <MasonryList
-                spacing="2"
-                onEndReached={this.onEndReached.bind(this)}
-                onEndReachedThreshold={0.5}
-                backgroundColor="transparent"
-                imageContainerStyle={{
-                borderRadius: 5, 
+               <MasonryList
+               spacing="2"
+            //    onEndReached={this.onEndReached.bind(this)}
+            //    onEndReachedThreshold={0.5}
+               backgroundColor="transparent"
+               imageContainerStyle={{
+               borderRadius: 5, 
+              
                
-                
-                }}
+               }}
 
-                // images={testData}
-                images = {this.state.favData}
-                columns={this.state.columns}
-                // sorted={true}
-                renderIndividualHeader={(data) => {
-                    return (
-                        <TouchableWithoutFeedback  
-                            
-                            onPress={() => this.props.navigation.navigate('UserProfile',{
-                                id: data.user_id, from: "MyFavorite"
-                            })}
-                            onPressIn={() => console.log("profile_id: " + data.user_id)}
-                            // onPress={() => Linking.openURL("#")} 
-                            >
-                        
+               // images={testData}
+               images = {this.state.favData}
+               columns={this.state.columns}
+               // sorted={true}
+               renderIndividualHeader={(data) => {
+                   return (
+                       <TouchableWithoutFeedback  
+                           
+                           onPress={() => this.props.navigation.navigate('UserProfile',{
+                               id: data.user_id, from: "MyFavorite"
+                           })}
+                           onPressIn={() => console.log("profile_id: " + data.user_id)}
+                           // onPress={() => Linking.openURL("#")} 
+                           >
+                       
 
+                   
+                           <View style={[styles.masonryHeader, {
+                               width: data.masonryDimensions.width,
+                               margin: data.masonryDimensions.gutter / 2,
+                           
+
+                           }]}>
+
+                           
+                           
+                           
+                               <View style={{flex: 1, }}>
+                                   
+                                   <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
+                                   {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                   
+                                   <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
+                               </View>
+                                   
+                                   
+                               
+                                   <View style={{ flex: 1, }} >
+                                   <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
+                                   <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
+                                       
+
+                                       <View style={{width:"80%",flexDirection:"column-reverse",}}>
+                                           
+                                           <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
+                                           <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
+                                       </View>
+
+                                       <View style={{width:"20%", flexDirection:"column-reverse",}}>
+                                       <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
+                                       </View> 
+
+                                   </View>
+                                   </ImageBackground>
+                                   </View>
+
+                               </View>
+
+                               
+                           </View>
+                       
+
+
+                       </TouchableWithoutFeedback>
+                   );
+               }}
+           />
+
+
+           :
+           <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
+           }
+
+{this.state.progressVisibleBottom ?  
+                         <NB.Spinner  color='#fff'  />      
+                  
                     
-                            <View style={[styles.masonryHeader, {
-                                width: data.masonryDimensions.width,
-                                margin: data.masonryDimensions.gutter / 2,
-                            
+                    :
+                    null
+                    }
 
-                            }]}>
+                   
 
-                            
-                            
-                            
-                                <View style={{flex: 1, }}>
-                                    
-                                    <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                    {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
-                                    
-                                    <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
-                                </View>
-                                    
-                                    
-                                
-                                    <View style={{ flex: 1, }} >
-                                    <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
-                                    <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
-                                        
-
-                                        <View style={{width:"80%",flexDirection:"column-reverse",}}>
-                                            
-                                            <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
-                                            <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
-                                        </View>
-
-                                        <View style={{width:"20%", flexDirection:"column-reverse",}}>
-                                        <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
-                                        </View> 
-
-                                    </View>
-                                    </ImageBackground>
-                                    </View>
-
-                                </View>
-
-                                
-                            </View>
-                        
-
-
-                        </TouchableWithoutFeedback>
-                    );
-                }}
-            />
-
- 
-            :
-            <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
-            }
+                    </ScrollView>
            
             {/* <Dialog
                 visible={this.state.progressVisible}
@@ -317,19 +364,6 @@ export class MyFavorite extends React.Component {
             </NB.View>
         : 
         null} 
-
-
-{this.state.progressVisibleBottom ?  
-                         <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center',}} color='#fff'  />      
-                  
-                    
-                    :
-                    null
-                    }
-
-             </View>
-                   
-
 
                 </NB.Container> 
 
