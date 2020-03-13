@@ -211,7 +211,7 @@ export class MyMatches extends React.Component {
                       <NB.Header  transparent>
                       <NB.Left>
                         <NB.Button transparent onPress={() => this.props.navigation.navigate('Menu')} >
-                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >  
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Menu')} >  
                             <Icon name="bars"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
                         </TouchableOpacity> 
                         </NB.Button>

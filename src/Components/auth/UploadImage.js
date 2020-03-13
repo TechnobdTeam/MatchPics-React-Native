@@ -93,6 +93,9 @@ export class UploadImage extends React.Component {
 
     console.log("getting match types");
 
+    StatusBar.setBarStyle( 'light-content',true)
+    StatusBar.setBackgroundColor("#e74e92")
+
     var formData = new FormData();
     formData.append('api_key', ConstValues.api_key);
 
@@ -280,7 +283,8 @@ export class UploadImage extends React.Component {
       <Root>
         <Fragment> 
 
-        <StatusBar translucent = {true} barStyle="light-content" backgroundColor="#e76995" ></StatusBar>
+
+        {/* <StatusBar translucent = {true} barStyle="light-content" backgroundColor="#e76995" ></StatusBar> */}
         
        {/* <NB.Container   style={HomeStyle.UplodeprofileContainer}  > */}
 
@@ -505,13 +509,15 @@ const styles = StyleSheet.create({
 
 const style={
   backgroundColor: "#000000",
-  width: 400,
-  height: Platform.OS === ("ios") ? 50 : 135,
+  paddingLeft: 50,
+  paddingRight: 50,
+  paddingBottom: 10,
+  paddingTop: 15,
+  height: 120,
+  marginBottom: 50,
   color: "#ffffff",
   fontSize: 15,
-  lineHeight: 2,
   lines: 1,
   borderRadius: 15,
   fontWeight: "bold",
-  yOffset: 40
 };

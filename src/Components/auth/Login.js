@@ -505,14 +505,16 @@ export class Login extends React.Component {
 
   const style={
     backgroundColor: "#000000",
-    width: 430,
-    height: Platform.OS === ("ios") ? 50 : 90,
+    paddingLeft: 50,
+    paddingRight: 50,
+    paddingBottom: 10,
+    paddingTop: 15,
+    height: 120,
+    marginBottom: 50,
     color: "#ffffff",
     fontSize: 15,
-    lineHeight: 2,
     lines: 1,
     borderRadius: 15,
     fontWeight: "bold",
-    yOffset: 40
-};
+  };
   {/* End Login */}

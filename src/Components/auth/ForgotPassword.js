@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Text, Root} from 'native-base';
 import ConstValues from '../../constants/ConstValues'
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
+import Toast from 'react-native-toast-native';
 {/*Register */}
 export class ForgotPassword extends React.Component {
 
@@ -77,7 +78,7 @@ export class ForgotPassword extends React.Component {
         //alert(responseJson.response.code)
       })
       .catch((error) =>{
-        this.storeData(ConstValues.user_logged_in, false);
+        // this.storeData(ConstValues.user_logged_in, false);
         alert("exeptionforgotPassword: " + error)
         
       })
@@ -158,8 +159,8 @@ export class ForgotPassword extends React.Component {
 
               <ProgressDialog
                         visible={this.state.progressVisible}
-                        title="Verifying"
-                        message="Please, wait..."
+                        title="Please wait..."
+                        message="Verifying and sendding instruction"
                     />
 
               <Dialog
@@ -192,16 +193,20 @@ export class ForgotPassword extends React.Component {
   }
 }
 
+const {width, height} = Dimensions.get('window');
+
 const style={
   backgroundColor: "#000000",
-  width: 400,
-  height: Platform.OS === ("ios") ? 50 : 135,
+  paddingLeft: 50,
+  paddingRight: 50,
+  paddingBottom: 10,
+  paddingTop: 15,
+  height: 120,
+  marginBottom: 50,
   color: "#ffffff",
   fontSize: 15,
-  lineHeight: 2,
   lines: 1,
   borderRadius: 15,
   fontWeight: "bold",
-  yOffset: 40
 };
 {/* End Register */}
