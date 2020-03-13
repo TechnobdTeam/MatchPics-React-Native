@@ -308,7 +308,7 @@ export class MyMatchesFavorite extends React.Component {
                     {/* </NB.Content>  */}
                     {this.state.progressVisible ? 
                     <NB.View style={{flex: 1}}>
-                    <NB.Spinner color='#fff' />
+                        <NB.Spinner color='#fff' />
                     </NB.View>
                 : 
                 null}

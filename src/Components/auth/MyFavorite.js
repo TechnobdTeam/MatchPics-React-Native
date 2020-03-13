@@ -209,7 +209,8 @@ export class MyFavorite extends React.Component {
                  <View style={{flex:1}}>
 
                  {this.state.favData != undefined ?
-                
+               
+              
                 <MasonryList
                 spacing="2"
                 onEndReached={this.onEndReached.bind(this)}
@@ -289,7 +290,7 @@ export class MyFavorite extends React.Component {
                 }}
             />
 
-            
+ 
             :
             <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
             }
@@ -318,10 +319,9 @@ export class MyFavorite extends React.Component {
         null} 
 
 
-                     {this.state.progressVisibleBottom ? 
-                    //  <View style={{flex:1,backgroundColor:"green",}}>
+{this.state.progressVisibleBottom ?  
                          <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center',}} color='#fff'  />      
-                    // </View> 
+                  
                     
                     :
                     null

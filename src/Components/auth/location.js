@@ -335,9 +335,11 @@ updateProfile(){
 
                     <View style={{flex: 1, }}>
                         <View style={{flex: 3,}} > 
-                        <NB.Item style={{borderBottomWidth:0,}}>
+                          <NB.Item style={{borderBottomWidth:0,}}>
                                 <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.039,paddingLeft:15,fontFamily:'OpenSans-Semibold'}}>Location</NB.H3>
                            </NB.Item> 
+						   
+						   
                                 <NB.View style={{backgroundColor:'#fff', }} > 
                                 <TouchableOpacity onPress={() => this.setLocationMarker()} >
                                     <NB.CardItem   > 
