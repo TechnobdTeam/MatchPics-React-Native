@@ -499,7 +499,7 @@ export class Chatwindow extends React.Component {
                       <NB.Right>
                          <NB.Button transparent>
                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  > 
-                         <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                         <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
                          <Icon name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid /> 
                          </TouchableOpacity>
                         </NB.Button>

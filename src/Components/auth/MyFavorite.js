@@ -199,131 +199,143 @@ export class MyFavorite extends React.Component {
                       <NB.Right>
                         <NB.Button transparent> 
                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >
-                         <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                         <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
                            <Icon name={'bell'}    style={{fontSize: width * 0.05,color:'#fff',width:21 }} solid />   
                          </TouchableOpacity>
                         </NB.Button>
                       </NB.Right>
                     </NB.Header> 
 
+                 <View style={{flex:1}}>
+
+                 {this.state.favData != undefined ?
+               
+              
+                <MasonryList
+                spacing="2"
+                onEndReached={this.onEndReached.bind(this)}
+                onEndReachedThreshold={0.5}
+                backgroundColor="transparent"
+                imageContainerStyle={{
+                borderRadius: 5, 
+               
                 
-                    {this.state.favData != undefined ?
-                
-                        <MasonryList
-                        spacing="2"
-                        onEndReached={this.onEndReached.bind(this)}
-                        onEndReachedThreshold={0.5}
-                        backgroundColor="transparent"
-                        imageContainerStyle={{
-                        borderRadius: 5, 
+                }}
+
+                // images={testData}
+                images = {this.state.favData}
+                columns={this.state.columns}
+                // sorted={true}
+                renderIndividualHeader={(data) => {
+                    return (
+                        <TouchableWithoutFeedback  
+                            
+                            onPress={() => this.props.navigation.navigate('UserProfile',{
+                                id: data.user_id, from: "MyFavorite"
+                            })}
+                            onPressIn={() => console.log("profile_id: " + data.user_id)}
+                            // onPress={() => Linking.openURL("#")} 
+                            >
                         
-                        }}
 
-                        // images={testData}
-                        images = {this.state.favData}
-                        columns={this.state.columns}
-                        // sorted={true}
-                        renderIndividualHeader={(data) => {
-                            return (
-                                <TouchableWithoutFeedback  
-                                    
-                                    onPress={() => this.props.navigation.navigate('UserProfile',{
-                                        id: data.user_id, from: "MyFavorite"
-                                    })}
-                                    onPressIn={() => console.log("profile_id: " + data.user_id)}
-                                    // onPress={() => Linking.openURL("#")} 
-                                    >
-                                
+                    
+                            <View style={[styles.masonryHeader, {
+                                width: data.masonryDimensions.width,
+                                margin: data.masonryDimensions.gutter / 2,
+                            
+
+                            }]}>
 
                             
-                                    <View style={[styles.masonryHeader, {
-                                        width: data.masonryDimensions.width,
-                                        margin: data.masonryDimensions.gutter / 2,
+                            
+                            
+                                <View style={{flex: 1, }}>
                                     
-
-                                    }]}>
-
+                                    <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
+                                    {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
+                                    
+                                    <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
+                                </View>
                                     
                                     
-                                    
-                                        <View style={{flex: 1, }}>
-                                            
-                                            <View style={{ flex: 1,paddingTop:7,paddingRight:5,alignItems:"flex-end" }} >
-                                            {/* <Icon name={'heart'}  style={{fontSize:24,color:'#e41b5b',textAlign:'right', }} solid />   */}
-                                            
-                                            <Image style={{textAlign:'right'}} source={require('../Image/heart.png')} />
-                                        </View>
-                                            
-                                            
+                                
+                                    <View style={{ flex: 1, }} >
+                                    <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
+                                    <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
                                         
-                                            <View style={{ flex: 1, }} >
-                                            <ImageBackground source={require('../Image/matches.png') } style={{width: '100%', height: '100%',  }}  imageStyle={{ borderRadius: 5 }}   >
-                                            <View style={{flex: 1, flexDirection: 'row',paddingBottom:10,padding:8,}}>
-                                                
 
-                                                <View style={{width:"80%",flexDirection:"column-reverse",}}>
-                                                    
-                                                    <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
-                                                    <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
-                                                </View>
-
-                                                <View style={{width:"20%", flexDirection:"column-reverse",}}>
-                                                <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
-                                                </View> 
-
-                                            </View>
-                                            </ImageBackground>
-                                            </View>
-
+                                        <View style={{width:"80%",flexDirection:"column-reverse",}}>
+                                            
+                                            <Text style={{color:"#fff",fontSize: width * 0.027,}} >{data.gender}, {data.age} </Text> 
+                                            <Text style={{color:"#fff",fontSize: width * 0.032,}}>{data.name}</Text>  
                                         </View>
 
-                                        
+                                        <View style={{width:"20%", flexDirection:"column-reverse",}}>
+                                        <Icon name={'user-circle'}  style={{fontSize: width * 0.052,color:'#fff', textAlign:"right"}} solid />  
+                                        </View> 
+
                                     </View>
+                                    </ImageBackground>
+                                    </View>
+
+                                </View>
+
                                 
+                            </View>
+                        
 
 
-                                </TouchableWithoutFeedback>
-                            );
-                        }}
-                    />
-                    :
-                    <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
-                    }
-                   
-                    {/* <Dialog
-                        visible={this.state.progressVisible}
-                        // title="Loading data"
-                        // message="Please, wait..."
-                        dialogStyle={{
-                            backgroundColor:"transparent",
-                            elevation: 0,
-                            
-                            
-                         }}
-                    >
+                        </TouchableWithoutFeedback>
+                    );
+                }}
+            />
 
-                        <NB.Spinner color='#fff' />
+ 
+            :
+            <NB.Text visible={!this.state.progressVisible} style={{flex: 1, color:'#eaeaea',fontSize:20, textAlign: 'center', textAlignVertical: 'center'}}>No data found! </NB.Text>
+            }
+           
+            {/* <Dialog
+                visible={this.state.progressVisible}
+                // title="Loading data"
+                // message="Please, wait..."
+                dialogStyle={{
+                    backgroundColor:"transparent",
+                    elevation: 0,
+                    
+                    
+                 }}
+            >
 
-                    </Dialog> */}
+                <NB.Spinner color='#fff' />
+
+            </Dialog> */}
 
 {this.state.progressVisible ? 
-                    <NB.View style={{flex: 1}}>
-                    <NB.Spinner color='#fff' />
-                    </NB.View>
-                : 
-                null}
+            <NB.View style={{flex: 1}}>
+            <NB.Spinner color='#fff' />
+            </NB.View>
+        : 
+        null} 
 
 
+{this.state.progressVisibleBottom ?  
+                         <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center',}} color='#fff'  />      
+                  
+                    
+                    :
+                    null
+                    }
 
- {this.state.progressVisibleBottom ? 
-                        <NB.Spinner color='#fff'  />
-                        :
-                        null
-                        }
-                       
-                        
+             </View>
+                   
+
 
                 </NB.Container> 
+
+                
+              
+                       
             </ImageBackground>
             </Fragment>    
         );

@@ -303,7 +303,7 @@ export class MyProfile extends React.Component {
                             <NB.Right>
                                 <NB.Button transparent>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} >   
-                                <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
+                                <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
                                 <Icon    name={'bell'}  style={{fontSize: width * 0.05,color:'#fff',width:21 }}  light />   
                                 </TouchableOpacity> 
                                 </NB.Button>
@@ -431,8 +431,21 @@ export class MyProfile extends React.Component {
 
 
                   <NB.View style={{height:125,}}>
+
+                  <NB.Button  onPress={this.onPressOpenCamera} iconLeft style={{width:225,backgroundColor:"#d0d0d0",paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}}>
+                              <NB.Icon name='camera'  style={{fontSize: width * 0.07, color:"#000", }} />
+                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  >Capture Photo</NB.Text>
+                            </NB.Button>
+
+                            <NB.Button onPress={this.onPressFromGallery} iconLeft style={{width:225,backgroundColor:"#d0d0d0",marginTop:20,paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}} >
+                              <NB.Icon name='image'  style={{fontSize: width * 0.07, color:"#000", }} />
+                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  > Browse  Gallery</NB.Text>
+                          </NB.Button>
+
+
+
                       
-                      <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
+                      {/* <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
 
                        <NB.Button style={{width:220,backgroundColor:"#d0d0d0",alignContent:"center",justifyContent:"center",shadowColor: "#000",}} onPress={this.onPressOpenCamera} >
                          <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }} >  <Icon    name={'camera'}  style={{fontSize: width * 0.04, color:"#000" }}   />  Capture Photo</NB.Text>
@@ -444,7 +457,7 @@ export class MyProfile extends React.Component {
                        </NB.Button>
                             
                         
-                    </NB.View> 
+                    </NB.View>  */}
                   </NB.View>
 
 

@@ -513,11 +513,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
   },
   item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-    borderBottomColor:"#e1e1e1",borderBottomWidth:1,
+    paddingTop:9,
+    paddingBottom:10,
+    fontSize: 18, 
+    borderBottomColor:"#e1e1e1",
+    borderBottomWidth:1,
   },
+   item_last: {
+   paddingTop:10,
+   paddingBottom:10,
+   fontSize: 18,
+   height: 44,
+ }
 
 
 });

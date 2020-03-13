@@ -315,29 +315,78 @@ export class UserProfile extends React.Component {
               <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
             </NB.Button>
         </NB.View>
-                        <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      >
-                            
+                        {/* <ImageBackground source={{uri:this.state.profileData.photo} } style={{width: '100%', height: '100%',  }}      > */}
+                        <ImageBackground source={require('../Image/profile_single_images.jpg') } style={{width: '100%', height: '100%',  }}      >
                             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'stretch', }}>
                                 
                                     <View style={{flex: 3,}} > 
                                         <ImageBackground source={require('../Image/slingle_profile_images_shap.png') } style={{width: '100%', height: '100%',  }}     >
 
-                                        <NB.View style={{justifyContent:'flex-end', flex:1}}>
-                                        <NB.ListItem style={{borderBottomWidth:0,}}>
-                                            <NB.Left>
-                                            <NB.Body>
-                                                <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
-                                                <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
-                                                </NB.Body>
-                                            </NB.Left>
-                                            <NB.Right>
-                                           <TouchableOpacity onPress= {() => this.userinfo()}> 
-                                               <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
-                                            </TouchableOpacity>
-                                            </NB.Right>
-                                        </NB.ListItem>
-                                                </NB.View>
-                                        
+                                     
+                                     
+
+
+                                               
+
+                               
+                                    {this.state.userinfovisible == false ? 
+
+
+<Animatable.View animation="slideInUp" direction="alternate"  style={{justifyContent:'flex-end', flex:1}}>
+<NB.ListItem style={{borderBottomWidth:0,}}>
+    <NB.Left>
+    <NB.Body>
+        <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
+        <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
+        </NB.Body>
+    </NB.Left>
+    <NB.Right>
+<TouchableOpacity onPress= {() => this.userinfo()}> 
+    <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
+    </TouchableOpacity>
+    </NB.Right>
+</NB.ListItem>
+
+
+ 
+                                                       <NB.View style={{ backgroundColor:'rgba(255, 255, 255, 0.5) }}'}} >   
+                                                            <NB.View   style={HomeStyle.PageContainerAbout}  >  
+                                                            <NB.View style={{paddingLeft:23,}} >
+                                                                        <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
+                                                                        <ScrollView style={{paddingRight:20, height:300}} > 
+                                                                            <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
+                                                                            {this.state.profileData.bio} 
+                                                                            
+                                                                        </NB.Text> 
+                                                                        </ScrollView>
+
+                                                            </NB.View>  
+
+                                                            </NB.View>
+                                                        </NB.View> 
+                                                      
+                                                        </Animatable.View>
+
+                                                        :
+                                                        <View   style={{justifyContent:'flex-end', flex:1}}>
+                                                        <NB.ListItem style={{borderBottomWidth:0,}}>
+                                                            <NB.Left>
+                                                            <NB.Body>
+                                                                <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
+                                                                <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
+                                                                </NB.Body>
+                                                            </NB.Left>
+                                                            <NB.Right>
+                                                        <TouchableOpacity onPress= {() => this.userinfo()}> 
+                                                            <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
+                                                            </TouchableOpacity>
+                                                            </NB.Right>
+                                                        </NB.ListItem>
+                        
+                                                        
+                                                        </View>
+                                                        }
+                                                                                                
                                             
                                         </ImageBackground> 
                                     </View>
@@ -347,26 +396,7 @@ export class UserProfile extends React.Component {
          
         </Animatable.View>
    
-    {this.state.userinfovisible == false ?
- 
-    <Animatable.View animation="slideInUp" direction="alternate" style={{height:250}}  >  
-    <ScrollView > 
-       <NB.View   style={HomeStyle.PageContainerAbout}  >  
-        <NB.View style={{padding:20,}}>
-                    <NB.Text style={{fontSize: width * 0.05,marginBottom:10,color:"#6c6c6c",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                        <NB.Text style={{marginBottom:10,color:'#6c6c6c',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
-                        {this.state.profileData.bio} 
-                    </NB.Text>   
-        </NB.View>  
-
-
-     </NB.View> 
-     </ScrollView>
-</Animatable.View>
- 
-:
-  null
- }
+  
 
                
                 {/* <View style={{height:530}} > 
