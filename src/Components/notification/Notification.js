@@ -209,7 +209,16 @@ notificationArray = []
 
   </View>
 
-                   <Dialog
+
+  {this.state.progressVisible ? 
+                    <NB.View style={{flex: 1,backgroundColor:"#fff"}}>
+                    <NB.Spinner color='#cdcdcd' />
+                    </NB.View>
+                : 
+                null}
+
+
+                   {/* <Dialog
                         visible={this.state.progressVisible}
                         // title="Loading data"
                         // message="Please, wait..."
@@ -223,7 +232,7 @@ notificationArray = []
 
                         <NB.Spinner color='#fff' />
 
-                    </Dialog>
+                    </Dialog> */}
 
        {this.state.progressVisibleBottom ? 
                         <NB.Spinner color='#fff'  />
