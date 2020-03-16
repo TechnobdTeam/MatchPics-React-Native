@@ -25,6 +25,7 @@ import ConstValues from '../../constants/ConstValues';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
     const paddingToBottom = 30;
@@ -74,6 +75,7 @@ export class MyMatches extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resetAction: '',
             photo_id: '',
             match_type: '',
             call_api: false,
@@ -166,23 +168,59 @@ export class MyMatches extends React.Component {
 
             console.log("getMyMatches: " + responseJson.response.message);
 
-            if(responseJson.response.data == undefined){
-                console.log("myFavourites: undefined data");
+            if(responseJson.response.code == 4001){
+
+                //session expired, navigating to login screen
+
+                this.storeData(ConstValues.user_logged_in, false);
+
+                this.storeData(ConstValues.user_email, '');
+                this.storeData(ConstValues.user_id, '');
+                this.storeData(ConstValues.user_token, '');
+                this.storeData(ConstValues.customer_id, '');
+                this.storeData(ConstValues.user_name, '');
+            
+                this.props.navigation.navigate('Login');
+                this.updateRaouting();
+                this.props.navigation.dispatch(this.state.resetAction);
             }
             else{
-                this.setState({
-                    matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
-                    onEndReachedCalledDuringMomentum: false,
-                    progressVisible: false,
-                    progressVisibleBottom: false,
-                    call_api: false
-                  })
-        
-                  this.pageNum = this.pageNum + 1;
+                if(responseJson.response.data == undefined){
+                    console.log("myFavourites: undefined data");
+                }
+                else{
+                    this.setState({
+                        matchData: this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data],
+                        onEndReachedCalledDuringMomentum: false,
+                        progressVisible: false,
+                        progressVisibleBottom: false,
+                        call_api: false
+                      })
+            
+                      this.pageNum = this.pageNum + 1;
+                }
             }
-
         })
     }
+
+    updateRaouting(){
+
+        this.state.resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        });
+  
+        console.log("resetAction_value: " + this.state.resetAction);
+      }
+
+    storeData(key,value) {
+        try {
+          AsyncStorage.setItem(key, JSON.stringify(value))
+        } catch (e) {
+          // saving error
+          console.log("saving_error: " + e.message);
+        }
+      }
 
     onEndReached = ({ distanceFromEnd }) => {
         console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.matchData.length)

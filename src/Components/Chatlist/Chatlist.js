@@ -26,6 +26,7 @@ export class Chatlist extends React.Component {
     Data = ConstValues.message_data_list
 
     this.state = { 
+      resetAction: '',
       search_text:'',
       iloding:false,
       searach_vissible : true,
@@ -88,6 +89,25 @@ componentDidMount(){
 
 }
 
+updateRaouting(){
+
+    this.state.resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    });
+
+    console.log("resetAction_value: " + this.state.resetAction);
+  }
+
+storeData(key,value) {
+    try {
+      AsyncStorage.setItem(key, JSON.stringify(value))
+    } catch (e) {
+      // saving error
+      console.log("saving_error: " + e.message);
+    }
+  }
+
 getMessageList(){
 
     console.log("getting message list");
@@ -112,26 +132,45 @@ getMessageList(){
         //     textStyle: { color: "yellow" },
         //   })
 
-        if(responseJson.response.data == undefined){
-            console.log("getMessageList: undefined data");
-        }else{
-          
-        //   this.setState({messageData: responseJson.response.data})
+        if(responseJson.response.code == 4001){
 
-          data_original = responseJson.response.data
-          console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
+            //session expired, navigating to login screen
+    
+            this.storeData(ConstValues.user_logged_in, false);
+    
+            this.storeData(ConstValues.user_email, '');
+            this.storeData(ConstValues.user_id, '');
+            this.storeData(ConstValues.user_token, '');
+            this.storeData(ConstValues.customer_id, '');
+            this.storeData(ConstValues.user_name, '');
+        
+            this.props.navigation.navigate('Login');
+            this.updateRaouting();
+            this.props.navigation.dispatch(this.state.resetAction);
+        }
+        else{
 
-          this.setState({
-            messageData: this.pageNum === 1 ? responseJson.response.data : [...this.state.messageData, ...responseJson.response.data],
-            onEndReachedCalledDuringMomentum: false,
-            progressVisible: false,
-          })
-
-          this.timeoutHandle = setTimeout(()=>{
-            // this.swiperListInvalidate()
-
-          }, 1000)
-
+            if(responseJson.response.data == undefined){
+                console.log("getMessageList: undefined data");
+            }else{
+              
+            //   this.setState({messageData: responseJson.response.data})
+    
+              data_original = responseJson.response.data
+              console.log("getMessageList: " + responseJson.response.data.length +" ??? "+ data_original.length);
+    
+              this.setState({
+                messageData: this.pageNum === 1 ? responseJson.response.data : [...this.state.messageData, ...responseJson.response.data],
+                onEndReachedCalledDuringMomentum: false,
+                progressVisible: false,
+              })
+    
+              this.timeoutHandle = setTimeout(()=>{
+                // this.swiperListInvalidate()
+    
+              }, 1000)
+    
+            }
         }
 
     })

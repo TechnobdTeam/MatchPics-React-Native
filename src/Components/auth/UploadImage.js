@@ -34,6 +34,7 @@ export class UploadImage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+        resetAction: '',
         showToast: false,
         user_name: "",
         email: "",
@@ -234,13 +235,45 @@ export class UploadImage extends React.Component {
           this.setState({progressVisible: false});
       }
       else if(responseJson.response.code == 4001){
-        //session expired, need to navigate login screen
-      }
+
+        //session expired, navigating to login screen
+
+        this.storeData(ConstValues.user_logged_in, false);
+
+        this.storeData(ConstValues.user_email, '');
+        this.storeData(ConstValues.user_id, '');
+        this.storeData(ConstValues.user_token, '');
+        this.storeData(ConstValues.customer_id, '');
+        this.storeData(ConstValues.user_name, '');
+    
+        this.props.navigation.navigate('Login');
+        this.updateRaouting();
+        this.props.navigation.dispatch(this.state.resetAction);
+    }
       else{
          console.log("unable to save photo");
          
       }
   })
+  }
+
+  updateRaouting(){
+
+    this.state.resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    });
+
+    console.log("resetAction_value: " + this.state.resetAction);
+  }
+
+storeData(key,value) {
+    try {
+      AsyncStorage.setItem(key, JSON.stringify(value))
+    } catch (e) {
+      // saving error
+      console.log("saving_error: " + e.message);
+    }
   }
 
   gotoMyMatches(){

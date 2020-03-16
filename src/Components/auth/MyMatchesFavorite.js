@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 import ConstValues from '../../constants/ConstValues';
 import ImageLoad from 'react-native-image-placeholder';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -67,6 +68,7 @@ export class MyMatchesFavorite extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resetAction: '',
             photo_id: '',
             match_type: '',
             email: '',
@@ -156,17 +158,53 @@ export class MyMatchesFavorite extends React.Component {
         }).then((response) => response.json())
         .then((responseJson) =>{
 
-            console.log("getMyMatchesList: " + responseJson.response.message);
+            console.log("getMyMatchesList: " + responseJson.response.code);
 
-            this.setState({progressVisibleBottom: false, matchData:  this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data], progressVisible: false})
+            if(responseJson.response.code == 4001){
+
+                //session expired, navigating to login screen
+
+                this.storeData(ConstValues.user_logged_in, false);
+
+                this.storeData(ConstValues.user_email, '');
+                this.storeData(ConstValues.user_id, '');
+                this.storeData(ConstValues.user_token, '');
+                this.storeData(ConstValues.customer_id, '');
+                this.storeData(ConstValues.user_name, '');
+            
+                this.props.navigation.navigate('Login');
+                this.updateRaouting();
+                this.props.navigation.dispatch(this.state.resetAction);
+            }
+            else{
+                this.setState({progressVisibleBottom: false, matchData:  this.pageNum === 1 ? responseJson.response.data : [...this.state.matchData, ...responseJson.response.data], progressVisible: false})
 
             
-            if(responseJson.response.data == undefined){
-                console.log("getMyMatchesList: undefined data");
+                if(responseJson.response.data == undefined){
+                    console.log("getMyMatchesList: undefined data");
+                }
             }
-
         })
     }
+
+    updateRaouting(){
+
+        this.state.resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        });
+  
+        console.log("resetAction_value: " + this.state.resetAction);
+      }
+
+    storeData(key,value) {
+        try {
+          AsyncStorage.setItem(key, JSON.stringify(value))
+        } catch (e) {
+          // saving error
+          console.log("saving_error: " + e.message);
+        }
+      }
 
     onEndReached = ({ distanceFromEnd }) => {
         console.log("bottom reached:......................."+ (!this.onEndReachedCalledDuringMomentum ) + " ??? "+this.state.matchData.length)
@@ -199,7 +237,7 @@ export class MyMatchesFavorite extends React.Component {
 
     renderItem =({ item, index }) => {
         const {width, height} = Dimensions.get('window');
-        console.log("items: " + item.match_date)
+        // console.log("items: " + item.match_date)
         var total_match = item.total_match
         return (
             <NB.View style={{marginTop:-2, backgroundColor: 'transparent'}}>
@@ -215,7 +253,7 @@ export class MyMatchesFavorite extends React.Component {
                                 <View style={{flex: 1, flexDirection: 'row',marginTop:7, }} >
 
                                 {item.match_result.map((item2,j) => {
-                                    console.log("inside loop: " + j);
+                                    {/* console.log("inside loop: " + j); */}
                                     total_match = total_match - 1;
                                     return <NB.View  key = {index +j}>
                                     {j != 5 ? 
@@ -285,7 +323,7 @@ export class MyMatchesFavorite extends React.Component {
                       <NB.Right>
                         <NB.Button transparent>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}  >
-                        <Icon    name={'circle'}  style={{fontSize: width * 0.02,color:'#f70909', position:"absolute",zIndex:9,marginLeft:12,marginTop:-2}}   solid />
+                        <Icon    name={'circle'}  style={{fontSize: width * 0.03,color:'#f70909', position:"absolute",zIndex:9,marginLeft:8}}   solid />
                         <Icon name={'bell'}   style={{fontSize: width * 0.05,color:'#fff',width:21, }} solid />   
                         </TouchableOpacity>
                         </NB.Button>
@@ -308,13 +346,13 @@ export class MyMatchesFavorite extends React.Component {
                     {/* </NB.Content>  */}
                     {this.state.progressVisible ? 
                     <NB.View style={{flex: 1}}>
-                        <NB.Spinner color='#fff' />
+                    <NB.Spinner color='#fff' />
                     </NB.View>
                 : 
                 null}
 
                 {this.state.progressVisibleBottom ? 
-                  <NB.Spinner  style={{position: 'absolute',  left: 0, right: 0, bottom: 5, justifyContent: 'center', alignItems: 'center'}} color='#cdcd'  />
+                    <NB.Spinner color='#fff' />
                 : 
                 null}
                 </NB.Container> 
