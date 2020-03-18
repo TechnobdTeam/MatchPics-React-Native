@@ -378,10 +378,7 @@ export class UserProfile extends React.Component {
                                                         </NB.View>
                                                     </NB.View> 
                                                   
-                                                    </Animatable.View>
-                                        
-                                        
-                                        
+                                                    </Animatable.View> 
                                         
                                         :   
 
