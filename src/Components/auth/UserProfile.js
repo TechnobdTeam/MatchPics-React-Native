@@ -1,8 +1,8 @@
 import React,  { Fragment, Component } from 'react';
-import {Animated, View, StyleSheet, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView, } from 'react-native';
+import {Animated, Button,View, StyleSheet, ImageBackground,ScrollView,SafeAreaView ,TouchableOpacity, Dimensions, KeyboardAvoidingView, } from 'react-native';
 import * as NB from 'native-base';
 // NativeBase
- import {Text} from 'native-base';
+import {Text} from 'native-base';
 //import {CustomHeader} from '../CustomHeader'
 import { Dialog, ProgressDialog, ConfirmDialog } from 'react-native-simple-dialogs';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
@@ -12,36 +12,11 @@ import ConstValues from '../../constants/ConstValues';
 import Toast from 'react-native-toast-native';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import * as Animatable from 'react-native-animatable';
-import SlidingPanel from 'react-native-sliding-up-down-panels';
-const { width, height } = Dimensions.get('window');
+import BottomSheet from 'reanimated-bottom-sheet'
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 {/*Register */}
+const {width, height} = Dimensions.get('window');
 export class UserProfile extends React.Component {
- 
-      handleOpen = () => {
-          this.setState({
-            user_info_vissible: true,
-
-          })
-        Animated.timing(this.state.animation, {
-          toValue: 1,
-          duration: 900,
-          useNativeDriver: true,
-        }).start();
-      };
-
-
-      handleClose = () => {
-        this.setState({
-            user_info_vissible: false,
-
-          })
-        Animated.timing(this.state.animation, {
-          toValue: 0,
-          duration: 900,
-          useNativeDriver: true,
-        }).start();
-      };
 
  confirmMessage = 'Hello'
  performAction = ''
@@ -51,7 +26,6 @@ export class UserProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        animation: new Animated.Value(0),
       user_id: '',
       showToast: false,
       email: '',
@@ -66,7 +40,7 @@ export class UserProfile extends React.Component {
       note: '',
       columns: 2, 
       
-      handleClose: true,
+      userinfovisible: true,
 
     };
 
@@ -286,39 +260,66 @@ export class UserProfile extends React.Component {
    }
 
 
+   snapPoint = 2
+
+   renderInner = () => (
+    <NB.View style={{ backgroundColor:'rgba(255, 255, 255, 0.5) }}'}} >   
+    <NB.View   style={HomeStyle.PageContainerAbout}  >  
+    <NB.View style={{paddingLeft:23,}} >
+                <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
+                <ScrollView style={{paddingRight:20, height:300}} > 
+                    <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
+                    {this.state.profileData.bio} 
+                    
+                </NB.Text> 
+                </ScrollView>
+
+    </NB.View>  
+
+    </NB.View>
+</NB.View> 
+   )
+ 
+   renderHeader = () => ( 
+     <NB.ListItem style={{paddingLeft:0,borderBottomWidth:0,}}> 
+ 
+        <NB.Left>
+        <NB.Body>
+            <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
+            <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
+            </NB.Body>
+        </NB.Left>
+        <NB.Right>
+          <TouchableOpacity onPress={() => this.resizeDrawer()} > 
+        <Icon      name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
+        </TouchableOpacity>
+    </NB.Right> 
+      
+     </NB.ListItem>
+ 
+   )
+ 
+   bs = React.createRef()
+ 
+   resizeDrawer(){
+ 
+     if(this.snapPoint == 2){
+       this.snapPoint = 0
+     }
+     else{
+       this.snapPoint = 2
+     }
+ 
+     this.bs.current.snapTo(this.snapPoint)
+   }
+
+
+
+
+
 
   render() {  
       const {width, height} = Dimensions.get('window');
-      const screenHeight = Dimensions.get("window").height;
-
-      const backdrop = {
-        transform: [
-          {
-            translateY: this.state.animation.interpolate({
-              inputRange: [0, 0.01],
-              outputRange: [screenHeight, 0],
-              extrapolate: "clamp",
-            }),
-          },
-        ],
-        opacity: this.state.animation.interpolate({
-          inputRange: [0.01, 0.5],
-          outputRange: [0, 1],
-          extrapolate: "clamp",
-        }),
-      };
-  
-      const slideUp = {
-        transform: [
-          {
-            translateY: this.state.animation.interpolate({
-              inputRange: [0.01, 1],
-              outputRange: [0, -1 * screenHeight],
-             
-            }),
-          },
-        ],
-      };
     
     return (
 
@@ -326,9 +327,14 @@ export class UserProfile extends React.Component {
         <NB.Root>
             
         {!this.state.profileData == '' ?
-        <View style={{flex:1,}}>
+        <View>
       
-      
+        <ImageBackground style={{width: '100%', height: '100%',zIndex:-1}}   >  
+
+       
+
+
+        <Animatable.View  style={{flex: 1, }}>
         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:5,zIndex:999}}>
            <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
               <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
@@ -340,90 +346,18 @@ export class UserProfile extends React.Component {
                                 
                                     <View style={{flex: 3,}} > 
                                         <ImageBackground source={require('../Image/slingle_profile_images_shap.png') } style={{width: '100%', height: '100%',  }}     >
-               
-                                   
-                                        {this.state.user_info_vissible?   
-                                        
-                                        
-                                        <Animatable.View animation="slideInUp" direction="alternate"    style={{justifyContent:'flex-end', flex:1}}>
-                                        <NB.ListItem style={{borderBottomWidth:0,}}>
-                                            <NB.Left>
-                                            <NB.Body>
-                                                <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
-                                                <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
-                                                </NB.Body>
-                                            </NB.Left>
-                                            <NB.Right>
-                                        <TouchableOpacity onPress={this.handleClose}> 
-                                            <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
-                                            </TouchableOpacity>
-                                            </NB.Right>
-                                        </NB.ListItem>
 
+                                     
+                                     
 
-
-                                                   <NB.View style={{ backgroundColor:'rgba(255, 255, 255, 0.5) }}'}} >   
-                                                        <NB.View   style={HomeStyle.PageContainerAbout}  >  
-                                                        <NB.View style={{paddingLeft:23,}} >
-                                                                    <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                                                                    <ScrollView style={{paddingRight:20, height:300}} > 
-                                                                        <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
-                                                                        {this.state.profileData.bio} 
-                                                                        
-                                                                    </NB.Text> 
-                                                                    </ScrollView>
-
-                                                        </NB.View>  
-
-                                                        </NB.View>
-                                                    </NB.View> 
-                                                  
-                                                    </Animatable.View> 
-                                        
-                                        :   
-
-                                        <SlidingPanel
-                                                    headerLayoutHeight = {100} 
-                                                    headerLayout = { () =>
-                                                        <View style={styles.headerLayoutStyle}> 
-                                                            <View style={{flex:1,flexDirection:"row"}} >
-                                                               <View style={{width:"90%"}}>
-                                                                 
-                                                                    <NB.Text style={{color:'#fff',fontSize: width * 0.051,fontWeight:'bold'}}>{this.state.profileData.name}, <NB.Text style={{fontWeight:"400",color:'#fff',fontSize:22,}} >{this.state.profileData.gender.toUpperCase().charAt(0)} {this.state.profileData.age}  </NB.Text>  </NB.Text> 
-                                                                    <NB.Text style={{color:'#fff',fontSize: width * 0.043,}}><Icon name="location-arrow" solid style={{color:'#fff',fontSize: width * 0.037 }}  /> {this.state.profileData.address} </NB.Text>  
-                                                                    </View >
-                                                                    <View style={{alignItems:"center",justifyContent:"center"}} >
-                                                            <TouchableOpacity onPress={this.handleOpen} > 
-                                                                <Icon     name="info-circle" solid style={{color:'#fff',fontSize: width * 0.09 }}  />  
-                                                                </TouchableOpacity>
-                                                                    </View >
-                                                                </View >  
-                                                        </View>
-                                                    }
-                                                    slidingPanelLayout = { () =>
-                                                        <View style={styles.slidingPanelLayoutStyle}> 
-                                                               <NB.View style={{paddingLeft:23,}} >
-                                                                   <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                                                                      <ScrollView style={{paddingRight:20,}} > 
-            
-                                                                            <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
-                                                                                {this.state.profileData.bio}  </NB.Text> 
-                                                                     
-                                                                      </ScrollView>
-
-                                                                </NB.View>   
-                                         
-                                                              </View>  
-                                                    }
-                                                />
-
-                                                }
-
-
-             
-
-                                                   
-                                                                                                
+                                       
+        <BottomSheet
+          ref={this.bs}
+          snapPoints={['50%', 200, 118]}
+          renderContent={this.renderInner}
+          renderHeader={this.renderHeader}
+          initialSnap={this.snapPoint}
+        />                                                                     
                                             
                                         </ImageBackground> 
                                     </View>
@@ -431,7 +365,13 @@ export class UserProfile extends React.Component {
                         </ImageBackground> 
 
          
+        </Animatable.View>
+   
+  
 
+       
+    
+                {/* </ScrollView> */}
 
                     <NB.Footer style={{height:72}} >
                         <NB.FooterTab style={{backgroundColor:'#fff',}}>
@@ -480,7 +420,11 @@ export class UserProfile extends React.Component {
 
                         </NB.FooterTab>
                     </NB.Footer>
+
  
+
+            
+            </ImageBackground> 
         </View>
         :
  
@@ -639,45 +583,4 @@ const style={
   };
 {/* End Register */}
 
-const styles = StyleSheet.create({
-     
-  
-    cover: {
-    //   backgroundColor: "rgba(0,0,0,.5)",
-    },
-    sheet: {
-     
-      top: Dimensions.get("window").height,
-      left: 0,
-      right: 0,
-      height:0,
-      justifyContent: "flex-end",
-    },
-    
-    popup: {
-      backgroundColor:'rgba(255, 255, 255, 0.5) }}', 
-      height: 500,
-      
-    },
-
-
-    headerLayoutStyle: {
-        width, 
-        height: 90, 
-        paddingLeft:20,
-        paddingRight:20,
-       
-      },
-      slidingPanelLayoutStyle: {
-        width, 
-        height, 
-        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
-      
-        
-      },
-      
-
-
-
-
-  });
+ 

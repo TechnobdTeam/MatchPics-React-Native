@@ -58,6 +58,7 @@
     "react-native-shimmer-placeholder": "^1.0.35",
     "react-native-simple-dialogs": "^1.2.1",
     "react-native-slider": "^0.11.0",
+    "react-native-sliding-up-down-panels": "^1.0.0",
     "react-native-sticky-parallax-header": "0.0.59",
     "react-native-swipe-list-view": "^2.1.3",
     "react-native-toast-native": "^1.2.1",
@@ -67,6 +68,8 @@
     "react-navigation-drawer": "^2.3.3",
     "react-navigation-stack": "^2.0.16",
     "react-navigation-tabs": "^2.7.0",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.19",
+    "rn-bottom-drawer": "^1.4.3",
     "round-to": "^4.1.0"
   },
   "devDependencies": {
