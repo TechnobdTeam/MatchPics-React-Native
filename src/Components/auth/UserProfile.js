@@ -267,10 +267,9 @@ export class UserProfile extends React.Component {
     <NB.View   style={HomeStyle.PageContainerAbout}  >  
     <NB.View style={{paddingLeft:23,}} >
                 <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                <ScrollView style={{paddingRight:20,}} > 
+                <ScrollView style={{paddingRight:20, height: 430}} > 
                     <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
                     {this.state.profileData.bio} 
-                    
                 </NB.Text> 
                 </ScrollView>
 
