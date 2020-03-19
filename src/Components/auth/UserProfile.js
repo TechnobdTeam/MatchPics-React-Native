@@ -267,7 +267,7 @@ export class UserProfile extends React.Component {
     <NB.View   style={HomeStyle.PageContainerAbout}  >  
     <NB.View style={{paddingLeft:23,}} >
                 <NB.Text style={{paddingRight:20,paddingTop:10,fontSize: width * 0.05,marginBottom:10,color:"#fff",fontFamily:'OpenSans-Semibold'}}>About</NB.Text>  
-                <ScrollView style={{paddingRight:20, height:300}} > 
+                <ScrollView style={{paddingRight:20,}} > 
                     <NB.Text style={{marginBottom:10,color:'#fff',lineHeight:22,fontSize: width * 0.039,textAlign: 'justify',fontFamily:'OpenSans-Regular'}} >
                     {this.state.profileData.bio} 
                     
@@ -353,7 +353,7 @@ export class UserProfile extends React.Component {
                                        
         <BottomSheet
           ref={this.bs}
-          snapPoints={['50%', 200, 118]}
+          snapPoints={['65%', 200, 118]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={this.snapPoint}
