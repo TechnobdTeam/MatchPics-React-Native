@@ -1,7 +1,7 @@
 import React,  { Fragment, Component } from 'react';
 import { View, Image, ImageBackground, Platform, PermissionsAndroid,TouchableOpacity,Dimensions} from 'react-native';
 import * as NB from 'native-base';
-import Toast from 'native-base';
+import {Toast} from 'native-base';
 import DeviceInfo from "react-native-device-info";
 import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-picker';

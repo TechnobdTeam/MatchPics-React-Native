@@ -358,7 +358,7 @@ export class UserProfile extends React.Component {
                                        
         <BottomSheet
           ref={this.bs}
-          snapPoints={['65%', 200, 118]}
+          snapPoints={['65%', 200, 95]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={this.snapPoint}

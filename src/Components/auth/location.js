@@ -115,7 +115,7 @@ export class location  extends React.Component {
             longitudeDelta: LONGITUDE_DELTA,
           }, 500);
 
-        }, 1200)
+        }, 2500)
          
 
         fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + LATITUDE + ',' + LONGITUDE + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
@@ -403,8 +403,9 @@ updateProfile(){
                       onMapReady={this.onMapReady}
                       showsMyLocationButton={true}
                       visible={false}
-                      minZoomLevel={7}
-                      maxZoomLevel={10}
+                      minZoomLevel={2}
+                      maxZoomLevel={15}
+                      zoomControlEnabled={true}
                       style={styles.map}
                       initialRegion={{
                         latitude: CHANGED_LATITUDE,

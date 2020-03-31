@@ -2,6 +2,7 @@ const ConstValues = {
 
     // base_url: 'http://192.168.50.64/bizapp/matchpics/user/',
     base_url: 'https://dev-matchpics.technobdapis.com/user/',
+    base_url_settings: 'https://dev-matchpics.technobdapis.com/settings/',
     api_key: 'cp/W?^,([{,O_+T',
 
     user_logged_in: '@logged_in',

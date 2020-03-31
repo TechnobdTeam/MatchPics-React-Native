@@ -153,6 +153,8 @@ export class Chatwindow extends React.Component {
 
               if(responseJson.response.code == 1000){
 
+                this.renderInputToolbar()
+
                 this.setState(previousState => ({
                   messages: GiftedChat.append(previousState.messages, messages),
                 }))
@@ -290,7 +292,7 @@ export class Chatwindow extends React.Component {
       
       renderSend(props) {
         return (
-          <TouchableOpacity onPress={() => props.onSend({text: props.text})}>
+          <TouchableOpacity onPress={() => props.onSend({text: props.text}, true)}>
             <Text style={{ marginBottom:12}}><Icon name={'paper-plane'}  style={{fontSize:24,color:'#e74e92'}} solid />  </Text>
           </TouchableOpacity>
         );

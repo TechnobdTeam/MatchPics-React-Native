@@ -20,6 +20,7 @@ import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 're
 export class Login extends React.Component {
 
   access_token = '' 
+  user_login_token = ''
 
   loginWithFB(){
     console.log("api will be called for social login")
@@ -67,14 +68,20 @@ export class Login extends React.Component {
 
             // this.timeoutHandle = setTimeout(()=>{
 
-              this.props.navigation.navigate('UploadImage')
+              this.setState({progressVisible: true, user_login_token: responseJson.response.data.token})
 
-              var resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
-              });
+            this.timeoutHandle = setTimeout(()=>{
+              this.getAppSettings()
+            }, 1000)
+
+              // this.props.navigation.navigate('UploadImage')
+
+              // var resetAction = StackActions.reset({
+              //   index: 0,
+              //   actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+              // });
         
-              this.props.navigation.dispatch(resetAction);
+              // this.props.navigation.dispatch(resetAction);
 
             
 
@@ -223,6 +230,7 @@ export class Login extends React.Component {
       email: '',
       password: '',
       customer_id: '',
+      user_login_token :'',
       progressVisible: false 
     };
 
@@ -291,7 +299,7 @@ export class Login extends React.Component {
 
         this.setState({ progressVisible: false });
 
-        console.log('login responnse: ' + responseJson.response.message);
+        console.log('login responnse22: ' + responseJson.response.data.token);
 
         if(responseJson.response.code == 1000){
 
@@ -313,18 +321,11 @@ export class Login extends React.Component {
 
             // Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
 
+            this.setState({progressVisible: true, user_login_token: responseJson.response.data.token})
+
             this.timeoutHandle = setTimeout(()=>{
-
-              this.props.navigation.navigate('UploadImage')
-
-              var resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
-              });
-        
-              this.props.navigation.dispatch(resetAction);
-
-            }, 500);
+              this.getAppSettings()
+            }, 1000)
 
           } catch (error) {
             // Toast.show(responseJson.response.message, Toast.LONG, Toast.BOTTOM,style);
@@ -361,6 +362,105 @@ export class Login extends React.Component {
     }
 
     
+  }
+
+  getAppSettings(){
+
+    console.log("api will be called for getAppSettings")
+
+    console.log("getAppSettings_token: " + this.state.user_login_token)
+
+    var formData = new FormData();
+      formData.append('api_key', ConstValues.api_key);
+
+      fetch(ConstValues.base_url_settings + 'getGlobalSettings',{
+        method: 'POST',
+        headers:{
+          'Authorization': 'Bearer ' + this.state.user_login_token, 
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+
+      }).then((response) => response.json())
+      .then((responseJson) =>{
+
+        this.setState({progressVisible: false})
+
+        console.log('getGlobalSettings responnse: ' + responseJson.response.code);
+
+        if(responseJson.response.code == 1000){
+          
+          this.storeData(ConstValues.subscription_url, responseJson.response.data.subscription_url);
+          this.storeData(ConstValues.terms_url, responseJson.response.data.terms_conditions_url);
+
+          // this.openApp()
+
+          this.timeoutHandle = setTimeout(()=>{
+
+            this.props.navigation.navigate('UploadImage')
+
+            var resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+            });
+      
+            this.props.navigation.dispatch(resetAction);
+
+          }, 500);
+          
+        }
+        else if(responseJson.response.code == 4001){
+
+          this.storeData(ConstValues.user_logged_in, false);
+          this.storeData(ConstValues.fb_login, false);
+
+          this.storeData(ConstValues.user_email, '');
+          this.storeData(ConstValues.user_id, '');
+          this.storeData(ConstValues.user_token, '');
+          this.storeData(ConstValues.customer_id, '');
+          this.storeData(ConstValues.user_name, '');
+
+          this.timeoutHandle = setTimeout(()=>{
+
+            this.props.navigation.navigate('Login')
+
+            var resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'Login' })],
+            });
+      
+            this.props.navigation.dispatch(resetAction);
+
+          }, 500);
+
+        }
+        else{
+          this.storeData(ConstValues.subscription_url, '');
+          this.storeData(ConstValues.terms_url, '');
+
+
+          this.timeoutHandle = setTimeout(()=>{
+
+            this.props.navigation.navigate('UploadImage')
+
+            var resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+            });
+      
+            this.props.navigation.dispatch(resetAction);
+
+          }, 500);
+            // alert(responseJson.response.message)
+        }
+        
+        //alert(responseJson.response.code)
+      })
+      .catch((error) =>{
+        
+        
+      })
   }
 
   storeData(key,value) {

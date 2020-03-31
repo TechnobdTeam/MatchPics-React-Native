@@ -44,7 +44,8 @@ export class Splash extends React.Component {
 
       if(state.isConnected){
         
-        this.getAppSettings()
+        this.openApp()
+        
         // this.setState({dialogVisible: true})
       }
       else{
@@ -73,12 +74,15 @@ export class Splash extends React.Component {
 
     console.log("api will be called for getAppSettings")
 
-    var formData = new FormData();
-      // formData.append('api_key', ConstValues.api_key);
+    console.log("getAppSettings_token: " + this.state.token)
 
-      fetch(ConstValues.base_url + 'getAppSettings',{
+    var formData = new FormData();
+      formData.append('api_key', ConstValues.api_key);
+
+      fetch(ConstValues.base_url_settings + 'getGlobalSettings',{
         method: 'POST',
         headers:{
+          'Authorization': 'Bearer ' + this.state.token, 
           'Accept': 'application/json',
           'Content-Type': 'multipart/form-data',
         },
@@ -87,19 +91,41 @@ export class Splash extends React.Component {
       }).then((response) => response.json())
       .then((responseJson) =>{
 
-        console.log('getAppSettings responnse: ' + responseJson.response.message);
+        console.log('getGlobalSettings responnse: ' + responseJson.response.code);
 
         if(responseJson.response.code == 1000){
           
-          this.storeData(ConstValues.subscription_url, responseJson.response.data.email);
-          this.storeData(ConstValues.terms_url, responseJson.response.data.email);
+          this.storeData(ConstValues.subscription_url, responseJson.response.data.subscription_url);
+          this.storeData(ConstValues.terms_url, responseJson.response.data.terms_conditions_url);
 
-          this.openApp()
+          // this.openApp()
+
+          this.props.navigation.navigate('UploadImage');
+          this.setState({rouuting: 'UploadImage'});
+          this.updateRaouting();
+          this.props.navigation.dispatch(this.state.resetAction);
           
         }
+        else if(responseJson.response.code == 4001){
+
+          this.storeData(ConstValues.user_logged_in, false);
+          this.storeData(ConstValues.fb_login, false);
+
+          this.storeData(ConstValues.user_email, '');
+          this.storeData(ConstValues.user_id, '');
+          this.storeData(ConstValues.user_token, '');
+          this.storeData(ConstValues.customer_id, '');
+          this.storeData(ConstValues.user_name, '');
+      
+          this.props.navigation.navigate('Login');
+          this.setState({rouuting: 'Login'});
+          this.updateRaouting();
+          this.props.navigation.dispatch(this.state.resetAction);
+
+        }
         else{
-          this.storeData(ConstValues.subscription_url, 'https://www.google.com/');
-          this.storeData(ConstValues.terms_url, 'https://stackoverflow.com/');
+          this.storeData(ConstValues.subscription_url, '');
+          this.storeData(ConstValues.terms_url, '');
 
           this.openApp()
 
@@ -230,14 +256,20 @@ export class Splash extends React.Component {
 
             // this.timeoutHandle = setTimeout(()=>{
 
-              this.props.navigation.navigate('UploadImage')
+              this.setState({token: responseJson.response.data.token})
 
-              var resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
-              });
+              this.timeoutHandle = setTimeout(()=>{
+                this.getAppSettings()
+              }, 1000)
+
+              // this.props.navigation.navigate('UploadImage')
+
+              // var resetAction = StackActions.reset({
+              //   index: 0,
+              //   actions: [NavigationActions.navigate({ routeName: 'UploadImage' })],
+              // });
         
-              this.props.navigation.dispatch(resetAction);
+              // this.props.navigation.dispatch(resetAction);
 
             
 
@@ -303,6 +335,7 @@ export class Splash extends React.Component {
         if(responseJson.response.code == 1000){
 
           this.storeData(ConstValues.user_logged_in, true);
+          this.storeData(ConstValues.fb_login, false);
 
           try {
             this.storeData(ConstValues.user_email, responseJson.response.data.email);
@@ -313,15 +346,23 @@ export class Splash extends React.Component {
 
             // this.timeoutHandle = setTimeout(()=>{
 
-              this.props.navigation.navigate('UploadImage');
-              this.setState({rouuting: 'UploadImage'});
-              this.updateRaouting();
-              this.props.navigation.dispatch(this.state.resetAction);
+            this.setState({token: responseJson.response.data.token})
+
+
+            this.timeoutHandle = setTimeout(()=>{
+              this.getAppSettings()
+            }, 1000)
+
+              // this.props.navigation.navigate('UploadImage');
+              // this.setState({rouuting: 'UploadImage'});
+              // this.updateRaouting();
+              // this.props.navigation.dispatch(this.state.resetAction);
 
             
 
           } catch (error) {
             this.storeData(ConstValues.user_logged_in, false);
+            this.storeData(ConstValues.fb_login, false);
 
             this.storeData(ConstValues.user_email, '');
             this.storeData(ConstValues.user_id, '');
@@ -340,6 +381,7 @@ export class Splash extends React.Component {
         }
         else{
           this.storeData(ConstValues.user_logged_in, false);
+          this.storeData(ConstValues.fb_login, false);
 
           this.storeData(ConstValues.user_email, '');
           this.storeData(ConstValues.user_id, '');
@@ -358,6 +400,7 @@ export class Splash extends React.Component {
       })
       .catch((error) =>{
         this.storeData(ConstValues.user_logged_in, false);
+        this.storeData(ConstValues.fb_login, false);
 
         this.storeData(ConstValues.user_email, '');
         this.storeData(ConstValues.user_id, '');
