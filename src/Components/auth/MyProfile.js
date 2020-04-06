@@ -393,7 +393,7 @@ export class MyProfile extends React.Component {
                                          
                                     </NB.View>
         
-                                        <NB.View><NB.Text style={{color:'#94217e',fontSize: width * 0.037,fontFamily:'OpenSans-Bold',marginTop:15,}}>{this.state.name}</NB.Text></NB.View>
+                                        <NB.View><NB.Text style={{color:'#94217e',fontSize: width * 0.052,fontFamily:'OpenSans-Bold',marginTop:15,}}>{this.state.name}</NB.Text></NB.View>
                                 </NB.View>
                             {/* </TouchableOpacity> */}
     
@@ -402,8 +402,11 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
+
+                                                <View style={{width: width * 0.08, alignItems: 'center'}}>
+                                                  <Icon name={'user-circle'}  style={{color:'#fff',fontSize: width * 0.06,}}   />  
+                                                </View>
                                                     
-                                                    <Icon name={'user-circle'}  style={{color:'#fff',fontSize: width * 0.06,}}   />   
                                                     <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Bold'}} >Profile</NB.Text>
                                                 </NB.Left>
     
@@ -422,9 +425,11 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
-                                                
-                                                    <Icon name={'dice'}  style={{color:'#fff',fontSize: width * 0.06,}}   />   
-                                                    <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Bold'}} >Social</NB.Text>
+
+                                                  <View style={{width: width * 0.08, alignItems: 'center'}}>
+                                                  <Icon name={'dice'}  style={{color:'#fff',fontSize: width * 0.06,}}   />   
+                                                  </View>                                                   
+                                                   <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Bold'}} >Social</NB.Text>
                                                 </NB.Left>
     
                                                 <NB.Right>
@@ -442,7 +447,10 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
-                                                <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize: width * 0.06,}}   />  
+                                                <View style={{width: width * 0.08, alignItems: 'center'}}>
+                                                <Icon name={'map-marker-alt'}  style={{color:'#fff',fontSize: width * 0.06,}}   /> 
+                                                </View>
+                                                 
                                                     <NB.Text   style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Bold'}} >Location</NB.Text>
                                                 </NB.Left>
     
@@ -461,7 +469,11 @@ export class MyProfile extends React.Component {
     
                                             <NB.CardItem style={HomeStyle.UserProfileImages}  >
                                                 <NB.Left style={{}}>
-                                                <Icon name={'male'}  style={{color:'#fff',fontSize: width * 0.06,}}   />  
+                                                <View style={{width: width * 0.08, alignItems: 'center'}}>
+                                                <Icon name={'male'}  style={{color:'#fff',fontSize: width * 0.06,alignItems: 'center'}}   /> 
+                                                </View>
+                                                
+                                                 
                                                     <NB.Text  style={{color:'#fff',fontSize: width * 0.05,fontFamily:'OpenSans-Bold'}} >Appearance</NB.Text>
                                                 </NB.Left>
     

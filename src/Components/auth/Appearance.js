@@ -456,13 +456,8 @@ export class Appearance extends React.Component {
                                        <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:"30%",}} >
                                        <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                        onPress = {() => this.updateProfile()}>
-                                             <NB.Text style={{fontSize: width * 0.037,color:'#ffffff',fontFamily:'OpenSans-Bold'}}>save</NB.Text>
-                                             {this.state.changed ? 
-                                                <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}} /> 
-                                                : 
-                                                null
-                                             }
-                                             
+                                             <NB.Text style={{fontSize: width * 0.045,color:'#ffffff',fontFamily:'OpenSans-Bold'}}>save</NB.Text>
+                                             <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}} /> 
                                        </NB.Button> 
                                     </NB.Item>
 

@@ -2,15 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
 	<key>CFBundleURLTypes</key>
 	<array>
-	<dict>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>fb249456316050246</string>
-		</array>
-	</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb249456316050246</string>
+			</array>
+		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>249456316050246</string>
@@ -18,12 +17,11 @@
 	<string>{your-app-name}</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-	<string>fbapi</string>
-	<string>fb-messenger-share-api</string>
-	<string>fbauth2</string>
-	<string>fbshareextension</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -60,7 +58,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>MatchPics needs to use your location to set it in your profile</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -75,14 +73,34 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>MatchPics needs bluetooth permission for better user experience.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>MatchPics needs to use your location to set it in your profile and find best result.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>MatchPics needs Siri access for better user experience</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>MatchPics needs speech recognition access for better user experience</string>
+	<key>NSMotionUsageDescription</key>
+	<string>MatchPics needs your motion access for better user experience</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>MatchPics needs music access for better user experience.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>MatchPics needs bluetooth permission for better user experience</string>
+	<key>NSContactsUsageDescription</key>
+	<string>MatchPics needs Contacts access for better user experience.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>MatchPics needs Calendar permission to set date of birth.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>MatchPics wants to access your camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>*your app name* would like to save photos from the app to your gallery</string>
+	<string>MatchPics would like to save photos from the app to your gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>*your app name* would like to access your photo gallery for uploading images to the app</string>
+	<string>MatchPics would like to access your photo gallery for uploading images to the app</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Light.ttf</string>
 		<string>OpenSans-Semibold.ttf</string>
 		<string>OpenSans-Bold.ttf</string>
 		<string>AntDesign.ttf</string>

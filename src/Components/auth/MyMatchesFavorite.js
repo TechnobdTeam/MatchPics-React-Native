@@ -271,7 +271,9 @@ export class MyMatchesFavorite extends React.Component {
                                         <ImageLoad placeholderSource={require('../Image/image_placeholder.png') }  placeholderStyle={{width:45, height: 45,borderRadius: 50, }} borderRadius={45.0} style={{zIndex:-1}}  source={{uri: item2.result_photo}} style={{ width:45, height: 45, borderRadius: 50, }} />
                                         {total_match > 1 ? 
                                            
-                                                <NB.Text style={{position:"absolute",fontSize:12,backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
+                                           <View style = {{position:"absolute",backgroundColor:"rgba(231, 78, 146, 0.6)", width:45, height: 45,borderRadius: 50}}>
+                                               <NB.Text style={{fontSize:12, width:45, height: 45, borderRadius: 50,color:"#fff",fontWeight:"700",paddingTop:13,textAlign:"center"}}>{"+" + total_match}</NB.Text>
+                                           </View>
                                            
                                             :
                                             null

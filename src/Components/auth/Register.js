@@ -355,7 +355,7 @@ export class Register extends React.Component {
           <NB.View style={HomeStyle.RegisterPageView} >
                 <NB.CardItem style={{backgroundColor:'transparent'}} > 
                       
-                    <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center'}}>
+                    <NB.Left style={{width:'100%',justifyContent: 'center', alignItems:'center', marginTop: 25}}>
                         <NB.Text style={HomeStyle.SingIn} > Sign Up   </NB.Text> 
                        
                     </NB.Left>
@@ -371,16 +371,16 @@ export class Register extends React.Component {
                       <NB.Form>
                         
                          <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Bold',}}>User</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Semibold',}}>User</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item > 
-                                    <NB.Input  style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Bold',}}   placeholderTextColor="#696969"   placeholder='USER NAME'
+                                    <NB.Input  style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light',}}   placeholderTextColor="#696969"   placeholder='USER NAME'
                                         onChangeText ={(Value) => this.setState({user_name: Value})}
                                     /> 
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Bold',}} placeholderTextColor="#696969" placeholder='EMAIL'
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light',}} placeholderTextColor="#696969" placeholder='EMAIL'
                                         onChangeText={(value) => {this.validate(value),this.setState({email: value})}}></NB.Input>
                                    
                                     <NB.Icon name='' style={{color: 'red'}}/>
@@ -388,18 +388,18 @@ export class Register extends React.Component {
 
                             </NB.View> 
                             <NB.Item style={{borderBottomWidth:0,}}>
-                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Bold',}}>Password</NB.H3>
+                              <NB.H3 style={{color:'#333333',paddingBottom:8,paddingTop:20,fontSize: width * 0.037,paddingLeft:20,fontFamily:'OpenSans-Semibold',}}>Password</NB.H3>
                          </NB.Item>
                         <NB.View style={{backgroundColor:'#fff',marginLeft:-2,}} >
                             <NB.Item  > 
-                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Bold',}} placeholderTextColor="#696969" placeholder='TYPE PASSWORD'
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light',}} placeholderTextColor="#696969" placeholder='TYPE PASSWORD'
                                         onChangeText={(value) => this.setState({password: value})}
                                         secureTextEntry={true}
                                     /> 
                                     {/* <NB.Icon name='close-circle' /> */}
                                 </NB.Item>
                                 <NB.Item >
-                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Bold',}} placeholderTextColor="#696969" placeholder='CONFIRM PASSWORD'
+                                    <NB.Input style={{paddingLeft:33,height:50,fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light',}} placeholderTextColor="#696969" placeholder='CONFIRM PASSWORD'
                                         onChangeText={(value) => this.setState({re_password: value})}
                                         secureTextEntry={true}
                                     />

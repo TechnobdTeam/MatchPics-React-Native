@@ -1,9 +1,11 @@
 const ConstValues = {
 
     // base_url: 'http://192.168.50.64/bizapp/matchpics/user/',
-    base_url: 'https://dev-matchpics.technobdapis.com/user/',
-    base_url_settings: 'https://dev-matchpics.technobdapis.com/settings/',
+    base_url: 'https://dev-matchpics.technobdapis.com/app_api/user/',
+    base_url_settings: 'https://dev-matchpics.technobdapis.com/app_api/settings/',
     api_key: 'cp/W?^,([{,O_+T',
+
+    google_api_key: 'AIzaSyA_m2u8rSIzzsAkoP7fCjwEV5B7oTIRCAU',
 
     user_logged_in: '@logged_in',
     user_email: '@user_email',

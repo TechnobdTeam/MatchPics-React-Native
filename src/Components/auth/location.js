@@ -118,16 +118,22 @@ export class location  extends React.Component {
         }, 2500)
          
 
-        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + LATITUDE + ',' + LONGITUDE + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + LATITUDE + ',' + LONGITUDE + '&key=' + ConstValues.google_api_key)
         .then((response) => response.json())
             .then((responseJson) => {
 
+              // this.setState({
+              //   location_address: responseJson.results[2].formatted_address
+              // })
+
               this.setState({
-                location_address: responseJson.results[2].formatted_address
+                location_address: responseJson.results[5].formatted_address
               })
 
-              console.log(responseJson.results[5])
-              console.log(responseJson.results[5].formatted_address)
+              console.log("detail: ---")
+              console.log(responseJson.results[2].address_components[1].long_name)
+              console.log(responseJson.results[2].address_components[3].long_name)
+              // console.log(responseJson.results[2].formatted_address)
 
             // alert('error')
             // alert('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
@@ -157,15 +163,21 @@ export class location  extends React.Component {
         }, 500);
     }, 1200)
 
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + CHANGED_LATITUDE + ',' + CHANGED_LONGITUDE + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + CHANGED_LATITUDE + ',' + CHANGED_LONGITUDE + '&key=' + ConstValues.google_api_key)
     .then((response) => response.json())
         .then((responseJson) => {
+
+          // this.setState({
+          //   location_address: responseJson.results[2].formatted_address
+          // })
 
           this.setState({
             location_address: responseJson.results[5].formatted_address
           })
 
-          console.log(responseJson.results[5].formatted_address)
+          console.log(responseJson)
+
+          console.log("detail2 " + this.state.location_address)
 
         // alert('error')
         // alert('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
@@ -246,12 +258,18 @@ export class location  extends React.Component {
     CHANGED_LATITUDE = event.nativeEvent.coordinate.latitude
     CHANGED_LONGITUDE = event.nativeEvent.coordinate.longitude
 
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.nativeEvent.coordinate.latitude + ',' + event.nativeEvent.coordinate.longitude + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.nativeEvent.coordinate.latitude + ',' + event.nativeEvent.coordinate.longitude + '&key=' + ConstValues.google_api_key)
         .then((response) => response.json())
             .then((responseJson) => {
 
+              // this.setState({
+              //   location_address: responseJson.results[0].formatted_address
+              // })
+
               this.setState({
-                location_address: responseJson.results[0].formatted_address
+                location_address: responseJson.results[2].address_components[1].long_name
+                + ", "
+                + responseJson.results[2].address_components[3].long_name
               })
         })
 
@@ -268,12 +286,18 @@ markerDropSelect(lat, lng){
   CHANGED_LATITUDE = lat
   CHANGED_LONGITUDE = lng
 
-  fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + lat + ',' + lng + '&key=' + 'AIzaSyB5gomNIxHL9GyBNY3aNWDkdNGXPdsk0DU')
+  fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + lat + ',' + lng + '&key=' + ConstValues.google_api_key)
       .then((response) => response.json())
           .then((responseJson) => {
 
+            // this.setState({
+            //   location_address: responseJson.results[0].formatted_address
+            // })
+
             this.setState({
-              location_address: responseJson.results[0].formatted_address
+              location_address: responseJson.results[2].address_components[1].long_name
+              + ", "
+              + responseJson.results[2].address_components[3].long_name
             })
       })
 
@@ -457,7 +481,7 @@ updateProfile(){
                       }}
                       query={{
                         // available options: https://developers.google.com/places/web-service/autocomplete
-                        key: 'API_KEY',
+                        key: ConstValues.google_api_key,
                         language: 'en', // language of the results
                         types: '(cities)', // default: 'geocode'
                       }}
@@ -489,7 +513,7 @@ updateProfile(){
                           fields: 'geometry'
                       }}
 
-                      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+                      filterReverseGeocodingByTypes={['city', 'country']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 
                       // predefinedPlaces={[homePlace, workPlace]}
 
@@ -517,12 +541,9 @@ updateProfile(){
 
                                     <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                     onPress = {() => this.updateProfile()}>
-                                        <NB.Text style={{fontSize:12.77,color:'#ffffff',fontFamily:"OpenSans-Bold",fontSize: width * 0.037,}}>save</NB.Text>
-                                        {this.state.location_address == this.state.user_location ? 
-                                          <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}}  /> 
-                                          :
-                                          null
-                                        }
+                                        <NB.Text style={{fontSize:12.77,color:'#ffffff',fontFamily:"OpenSans-Bold",fontSize: width * 0.045,}}>save</NB.Text>
+                                        <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}} /> 
+
                                     </NB.Button>  
                         </View>
                     </View> 

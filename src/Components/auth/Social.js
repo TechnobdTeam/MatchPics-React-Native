@@ -391,12 +391,8 @@ export class Social extends React.Component {
                               <NB.View style={{borderBottomWidth:0,marginTop:"50%",alignItems:"center",justifyContent:"center",flex:4}} >
                                 <NB.Button  iconRight  style={{backgroundColor:'#1cc875',borderRadius:50,width:'60%',justifyContent: 'center',alignItems:'center',height:58,paddingTop:4,paddingRight:18}}
                                 onPress = {() => this.updateProfile()}>
-                                      <NB.Text style={{color:'#ffffff',fontFamily:'OpenSans-Bold',fontSize: width * 0.037,}}>save</NB.Text>
-                                      {this.state.changed ? 
-                                        <Icon name="check"  style={{color:'#fff',fontSize: width * 0.037,}}  /> 
-                                        :
-                                        null
-                                      }
+                                      <NB.Text style={{color:'#ffffff',fontFamily:'OpenSans-Bold',fontSize: width * 0.045,}}>save</NB.Text>
+                                      <Icon name="check"   style={{color:'#fff',fontSize: width * 0.037,}} /> 
                                      
                                 </NB.Button> 
                                 </NB.View> 

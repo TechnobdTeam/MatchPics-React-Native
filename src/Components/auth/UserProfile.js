@@ -601,7 +601,7 @@ export class UserProfile extends React.Component {
 
                 <View style={{flexDirection:'row',marginBottom:23}}>
                     <View style={{width:50}}> 
-                    <Icon  name="exclamation-triangle" solid style={{fontSize:30 }}  /> 
+                    <Icon  name="exclamation-triangle" solid style={{color:'#e57a1c', fontSize:30 }}  /> 
                      </View>
                     <View style={{width:280}} >  
                      
@@ -614,14 +614,19 @@ export class UserProfile extends React.Component {
 
                 {this.state.reportTypeData != '' ? 
                 this.state.reportTypeData.map((item,i) => {
-                    return <NB.View>
+                    return <NB.View style={{backgroundColor:'transparent'}}>
                     {this.reportTextString == item.name ? 
-                        <NB.Text style={HomeStyle.PeporttagSelectedIos}>{item.name}</NB.Text>
+                        <NB.View style={HomeStyle.PeporttagSelectedIos}>
+                         <NB.Text style={{color: 'white'}}>{item.name}</NB.Text>
+                        </NB.View>
                         : 
-                        <NB.Text onPress = {() => {
+                        <NB.View style={HomeStyle.PeporttagIos}>
+                            <NB.Text onPress = {() => {
                             this.reportTextString = item.name
                             this.setState({reportText: item.name})
-                        }} style={HomeStyle.PeporttagIos}>{item.name}</NB.Text>
+                            }}>{item.name}</NB.Text>
+                        </NB.View>
+                        
                     } 
                     </NB.View>
                     

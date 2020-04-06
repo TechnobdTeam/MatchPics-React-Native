@@ -527,7 +527,7 @@ export class Login extends React.Component {
             <NB.View style={HomeStyle.PageView} >
                   <NB.CardItem style={{backgroundColor:'transparent'}} > 
                         
-                      <NB.Left style={{width:'100%',  justifyContent: 'center',}}>
+                      <NB.Left style={{width:'100%',  justifyContent: 'center', marginTop: 25}}>
                           <NB.Text style={HomeStyle.SingIn} > Sign In   </NB.Text> 
                          
                       </NB.Left>
@@ -542,12 +542,12 @@ export class Login extends React.Component {
                        
                          <NB.Form >
                             <NB.Item  style={{marginTop:20}} >
-                              <NB.Input style={{fontSize: width * 0.032,color:"#696969",fontFamily:'OpenSans-Bold'}}   placeholderTextColor="#696969"  placeholder='EMAIL'
+                              <NB.Input style={{fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light'}}   placeholderTextColor="#696969"  placeholder='EMAIL'
                                 onChangeText={(value) => this.setState({email: value})}
                               /> 
                             </NB.Item>
                             <NB.Item style={{marginTop:50}}>
-                              <NB.Input style={{fontSize: width * 0.032,color:"#696969",fontFamily:'OpenSans-Bold'}}  placeholderTextColor="#696969"   placeholder='PASSWORD'
+                              <NB.Input style={{fontSize: width * 0.037,color:"#696969",fontFamily:'OpenSans-Light'}}  placeholderTextColor="#696969"   placeholder='PASSWORD'
                                 onChangeText={(value) => this.setState({password: value})} secureTextEntry={true}
                               />
                               {/* <NB.Icon name='close-circle' /> */}
@@ -574,7 +574,7 @@ export class Login extends React.Component {
                              <NB.Item style={{borderBottomWidth:0,justifyContent: 'center',alignItems:'center',marginTop:10,}} >
                                 <NB.Button iconLeft light  style={{shadowOpacity: 0,elevation:0,backgroundColor:'#3b5998',borderRadius:50,height:59,  justifyContent: 'center',alignItems:"center",paddingTop:2,paddingLeft:11,paddingRight:18}} 
                                 onPress={() => this.handleFacebookLogin()}>
-                                   <NB.Text style={{fontSize: width * 0.032,color:'#ffffff',fontFamily:'OpenSans-Bold' }}>  <Icon name={'facebook-f'}  style={{fontSize:16,color:'#fff',marginTop:4}} light />   Sign in with facebook</NB.Text>
+                                   <NB.Text style={{fontSize: width * 0.032,color:'#ffffff',fontFamily:'OpenSans-Bold'}}>  <Icon name={'facebook-f'}  style={{fontSize:16,color:'#fff',marginTop:4}} light />   Sign in with facebook</NB.Text>
                                 </NB.Button> 
                              </NB.Item>
 
