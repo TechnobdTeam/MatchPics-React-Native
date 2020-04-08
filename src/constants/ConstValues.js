@@ -7,6 +7,13 @@ const ConstValues = {
 
     google_api_key: 'AIzaSyA_m2u8rSIzzsAkoP7fCjwEV5B7oTIRCAU',
 
+    admob_banner_ad_id: 'ca-app-pub-3940256099942544/6300978111',
+    admob_interestitial_ad_id: 'ca-app-pub-3940256099942544/1033173712',
+
+    facebook_interstitial_id: '',
+
+    ad_test_mode: "no",
+
     user_logged_in: '@logged_in',
     user_email: '@user_email',
     user_id: '@user_id',
@@ -20,8 +27,15 @@ const ConstValues = {
     subscription_url: '@subscription_url',
     terms_url: '@terms_url',
 
+    ad_action_type: '@action_type',
+    ad_data: '@ad_data',
+
     message_data_list: [],
     user_info_data: {},
-    profile_all_details: {}
+    profile_all_details: {},
+
+    favorite_view: 1,
+    search_view: 1,
+    my_match_view: 1,
 }
 export default ConstValues;

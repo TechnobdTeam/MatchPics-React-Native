@@ -26,6 +26,7 @@ export * from './auth/justLocation'
 export * from './auth/Appearance'
 export * from './auth/MyMatchesFavorite'
 export * from './auth/Termsconditions'
+export * from './auth/subscriptiontest'
 
 export * from './Menu/Menu'
 export * from './Chatlist/Chatlist'

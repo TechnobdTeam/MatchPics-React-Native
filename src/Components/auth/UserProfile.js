@@ -14,6 +14,18 @@ import ConstValues from '../../constants/ConstValues';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import * as Animatable from 'react-native-animatable';
 import BottomSheet from 'reanimated-bottom-sheet'
+
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+  } from 'react-native-admob'
+
+  import { InterstitialAdManager } from 'react-native-fbads';
+  import { AdSettings } from 'react-native-fbads';
+
+
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 {/*Register */}
 const {width, height} = Dimensions.get('window');
@@ -23,6 +35,9 @@ export class UserProfile extends React.Component {
  performAction = ''
  reportTextString = ''
  fromScreen = ''
+ ad_loaded = false
+ show_ad_profile = true
+ ad_network = ''
 
   constructor(props) {
     super(props);
@@ -34,6 +49,7 @@ export class UserProfile extends React.Component {
       token: '',
       progressVisible: true ,
       confirmVisible: false,
+    //   ad_loaded: false,
       is_fav: false,
       is_blocked: false,
       reportTypeData: '',
@@ -44,6 +60,45 @@ export class UserProfile extends React.Component {
       userinfovisible: true,
 
     };
+
+    AdSettings.addTestDevice(AdSettings.currentDeviceHash);
+
+    AsyncStorage.getItem(ConstValues.ad_data , (error, result) => {
+
+        console.log("leaving profile ad:true>>> " + JSON.parse(result).after_leaving_profile);
+
+        if(result != null){
+
+            if(JSON.parse(result).after_leaving_profile == "yes"){
+
+                console.log('after_leaving_profile: ad will show')
+
+                this.show_ad_profile = true
+
+                if(JSON.parse(result).ad_network == "admob22"){
+
+                    this.ad_network = 'admob'
+                    console.log('after_leaving_profile: ad will show>>>admob')
+
+                    this.loadAd()
+                }
+                else if(JSON.parse(result).ad_network == "admob"){
+
+                    this.ad_network = 'facebook'
+                    console.log('after_leaving_profile: facebook ad will show>>>admob')
+                }
+            }
+            else{
+                console.log('after_leaving_profile: ad will not show')
+                this.show_ad_profile = false
+            }
+
+          
+
+        }
+        else{
+        }
+      })
 
     AsyncStorage.getItem(ConstValues.user_email, (error, result) =>{
 
@@ -72,6 +127,51 @@ export class UserProfile extends React.Component {
             )
         )
     )
+  }
+
+  loadAd(){
+
+    AdMobInterstitial.setAdUnitID(ConstValues.admob_interestitial_ad_id);
+    AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]); 
+    AdMobInterstitial.addEventListener('adLoaded', () =>
+        
+        this.ad_loaded = true,
+
+        console.log('AdMobInterstitial adLoaded ' + this.ad_loaded),
+    );
+    AdMobInterstitial.addEventListener('adClosed', () =>
+        
+        // console.log('AdMobInterstitial adClosed '),
+
+        this.timeoutHandle = setTimeout(()=>{
+            this.props.navigation.navigate(this.fromScreen)
+            }, 500),
+
+       
+    );
+    AdMobInterstitial.addEventListener('adLeftApplication', () =>
+        
+
+        // console.log('AdMobInterstitial adLeftApplication '),
+
+        this.timeoutHandle = setTimeout(()=>{
+            this.props.navigation.navigate(this.fromScreen)
+            }, 500),
+    );
+
+    // AdMobInterstitial.addEventListener('adFailedToOpen', () =>
+        
+
+    //     // console.log('AdMobInterstitial adFailedToOpen '),
+
+    //     this.timeoutHandle = setTimeout(()=>{
+    //         this.props.navigation.navigate(this.fromScreen)
+    //         }, 500),
+    // );
+
+    AdMobInterstitial.requestAd().catch(error => error.code == "E_AD_ALREADY_LOADED" ? 
+    this.ad_loaded = true : 
+    this.ad_loaded = false);
   }
 
   getProfileDetails(){
@@ -319,7 +419,33 @@ export class UserProfile extends React.Component {
    }
 
 
+showAd(){
 
+    if(this.show_ad_profile){
+
+        if(this.ad_network == 'admob'){
+
+            if(this.ad_loaded){
+
+                AdMobInterstitial.showAd();
+            }
+            else{
+                this.props.navigation.navigate(this.fromScreen)
+            }
+        }
+        else{
+            InterstitialAdManager.showAd(ConstValues.facebook_interstitial_id)
+            .then(didClick => {})
+            .catch(error => {console.log('facebood_ad_error: ' + error),
+            this.props.navigation.navigate(this.fromScreen)});
+        }
+
+    }
+    else{
+        this.props.navigation.navigate(this.fromScreen)
+    }
+    
+}
 
 
 
@@ -341,7 +467,7 @@ export class UserProfile extends React.Component {
 
         <Animatable.View  style={{flex: 1, }}>
         <NB.View style={{width:"100%",height:50,backgroundColor:"transparent",marginTop:30,position:"absolute",paddingLeft:15,paddingTop:5,zIndex:999}}>
-           <NB.Button onPress={() => this.props.navigation.navigate(this.fromScreen)} transparent >
+           <NB.Button onPress={() => {this.showAd()}} transparent >
               <Icon name="arrow-left"  style={{fontSize: width * 0.052,color:'#fff', }}  /> 
             </NB.Button>
         </NB.View>

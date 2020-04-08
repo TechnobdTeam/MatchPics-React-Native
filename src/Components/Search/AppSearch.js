@@ -20,9 +20,26 @@ import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import HomeStyle from '../LayoutsStytle/HomeStyle';
 import testData from "../../../data";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+  } from 'react-native-admob'
+
+  import { InterstitialAdManager } from 'react-native-fbads';
+  import { AdSettings } from 'react-native-fbads';
+
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
+
+ad_loaded = false
+show_ad_favorite = 50000
+ad_network = ''
+show_ad_profile = true
+network_type = 'single'
 
 const styles = StyleSheet.create({
    
@@ -70,17 +87,69 @@ export class AppSearch extends React.Component {
     pageNum = 1
     prevText = ''
 
-    state = {
-        search: '',
-        token: '',
-        columns: 2, 
-        matchData: '',
-        searach_vissible : true,
-        progressVisible: false,
-        progressVisibleBottom: false ,
-        onEndReachedCalledDuringMomentum: false,
-        showing_message: 'Type name to search...',
-        statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
+    constructor(props) {
+            super(props);
+            this.state = {
+            search: '',
+            token: '',
+            columns: 2, 
+            matchData: '',
+            searach_vissible : true,
+            progressVisible: false,
+            progressVisibleBottom: false ,
+            onEndReachedCalledDuringMomentum: false,
+            showing_message: 'Type name to search...',
+            statusBarPaddingTop: isIPhoneX() ? 30 : platform === "ios" ? 20 : 0
+        }
+
+        AsyncStorage.getItem(ConstValues.ad_data , (error, result) => {
+
+            console.log("leaving chat_details ad:true>>> " + JSON.parse(result).after_leaving_profile);
+    
+            if(result != null){
+    
+                if(JSON.parse(result).after_viewing_search != ""){
+    
+                    console.log('after_chat_details: ad will show')
+    
+                    this.show_ad_profile = true
+
+                    this.show_ad_favorite = parseInt(JSON.parse(result).after_viewing_search)
+    
+                    if(JSON.parse(result).ad_network == "both"){
+                    
+                        this.network_type = 'both'
+                        this.ad_network = 'admob'
+
+                        this.loadAd()
+                    }
+
+                    else if(JSON.parse(result).ad_network == "admob"){
+    
+                        this.network_type = 'single'
+                        this.ad_network = 'admob'
+                        console.log('after_leaving_chat_details: ad will show>>>admob')
+    
+                        this.loadAd()
+                    }
+                    else if(JSON.parse(result).ad_network == "facebook"){
+    
+                        this.network_type = 'single'
+                        this.ad_network = 'facebook'
+                        console.log('after_leaving_chat_details: facebook ad will show>>>admob')
+                    }
+                }
+                else{
+                    console.log('after_leaving_chat_details: ad will not show')
+                    this.show_ad_profile = false
+                }
+    
+              
+    
+            }
+            else{
+            }
+          })
     }
 
 
@@ -234,6 +303,84 @@ export class AppSearch extends React.Component {
          }
    }
 
+   loadAd(){
+
+        AdMobInterstitial.setAdUnitID(ConstValues.admob_interestitial_ad_id);
+        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]); 
+        AdMobInterstitial.addEventListener('adLoaded', () =>
+            
+            this.ad_loaded = true,
+
+            console.log('AdMobInterstitial adLoaded ' + this.ad_loaded),
+        );
+        AdMobInterstitial.addEventListener('adClosed', () =>
+            
+            // console.log('AdMobInterstitial adClosed '),
+
+            {}
+
+        
+        );
+        AdMobInterstitial.addEventListener('adLeftApplication', () =>
+            
+
+            // console.log('AdMobInterstitial adLeftApplication '),
+
+            // this.timeoutHandle = setTimeout(()=>{
+            //     this.props.navigation.navigate(this.fromScreen)
+            //     }, 500),
+            {}
+        );
+
+        // AdMobInterstitial.addEventListener('adFailedToOpen', () =>
+            
+
+        //     // console.log('AdMobInterstitial adFailedToOpen '),
+
+        //     this.timeoutHandle = setTimeout(()=>{
+        //         this.props.navigation.navigate(this.fromScreen)
+        //         }, 500),
+        // );
+
+        AdMobInterstitial.requestAd().catch(error => error.code == "E_AD_ALREADY_LOADED" ? 
+        this.ad_loaded = true : 
+        this.ad_loaded = false);
+    }
+
+    showAd(userid){
+
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>method called ' + userid )
+
+        if(this.show_ad_profile){
+
+            if(this.ad_network == 'admob'){
+
+                if(this.ad_loaded){
+
+                    AdMobInterstitial.showAd();
+                }
+                else{
+                    // this.props.navigation.navigate(this.fromScreen)
+                }
+            }
+            else{
+                InterstitialAdManager.showAd(ConstValues.facebook_interstitial_id)
+                .then(didClick => {})
+                .catch(error => {console.log('facebood_ad_error: ' + error)
+            });
+            }
+
+        }
+        else{
+        }
+        
+        this.timeoutHandle = setTimeout(()=>{
+            this.props.navigation.navigate('UserProfile',{
+                id: userid, from: "AppSearch"
+                })
+        }, 1500)
+    }
+
     render() {
         const { statusBarPaddingTop } = this.state;
         const {width, height} = Dimensions.get('window');
@@ -343,10 +490,14 @@ export class AppSearch extends React.Component {
                     return (
                         <TouchableWithoutFeedback  
                             
-                            onPress={() => this.props.navigation.navigate('UserProfile',{
+                            // onPress={() => this.props.navigation.navigate('UserProfile',{
+                            //     id: data.id, from: "AppSearch"
+                            // })}
+                            onPressIn={() => {{{ConstValues.search_view % this.show_ad_favorite == 0 ? this.showAd(data.id) : this.props.navigation.navigate('UserProfile',{
                                 id: data.id, from: "AppSearch"
-                            })}
-                            onPressIn={() => console.log("profile_id: " + data.id)}
+                                })}} console.log("profile_id: " + data.id),
+                                ConstValues.search_view = ConstValues.search_view + 1,
+                                console.log('favorite_view_count: ' + ConstValues.search_view)}}
                             // onPress={() => Linking.openURL("#")} 
                             >
                         

@@ -17,6 +17,17 @@ import Slider from "react-native-slider";
 import {request, PERMISSIONS} from 'react-native-permissions';
 // import sliderData from "../Slider/Data.js";
 
+import * as RNIap from 'react-native-iap';
+
+const itemSkus = Platform.select({
+  ios: [
+    'com.matchpics.coins100'
+  ],
+  android: [
+    'com.matchpics.coins100'
+  ]
+});
+
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const options = {
   title: 'Select Avatar',
@@ -70,6 +81,7 @@ export class UploadImage extends React.Component {
       }).then(
         this.timeoutHandle = setTimeout(()=>{
           this.getMatchTypes()
+          // this.getAdSettings()
              }, 1000)
       )
 
@@ -369,6 +381,32 @@ storeData(key,value) {
     this.match_type = this.state.matchTypeData[value | 0].id;
     console.log("id22: " + this.match_type)
     return this.state.matchTypeData[value | 0].name;
+  }
+
+  getAdSettings(){
+
+    var formData = new FormData();
+    formData.append('api_key', ConstValues.api_key);
+    formData.append('test_mode', ConstValues.ad_test_mode)
+
+    fetch(ConstValues.base_url_settings + 'getAdSettings', {
+      method: 'POST',
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + JSON.parse(this.state.user_token), 
+      },
+      body: formData
+    }).then((response) => response.json())
+    .then((responseJson) =>{
+
+        console.log("getAdSettings: ");
+        console.log(responseJson.response)
+
+        this.storeData(ConstValues.ad_action_type, responseJson.response.action_type)
+        this.storeData(ConstValues.ad_data, responseJson.response.data)
+
+    })
   }
 
   render() {

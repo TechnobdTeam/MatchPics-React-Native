@@ -11,10 +11,13 @@
 			</array>
 		</dict>
 	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
+
 	<key>FacebookAppID</key>
 	<string>249456316050246</string>
 	<key>FacebookDisplayName</key>
-	<string>{your-app-name}</string>
+	<string>MatchPics</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

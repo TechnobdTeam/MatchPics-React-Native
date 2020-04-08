@@ -14,12 +14,24 @@ import AsyncStorage from '@react-native-community/async-storage';
 import BackgroundTimer from 'react-native-background-timer';
 import {NavigationEvents, StackActions} from 'react-navigation';
 
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
+
+import { InterstitialAdManager } from 'react-native-fbads';
+
 {/*Login  */}
 
 // var responseMessage = []
 var  screen_on = false
 var pageNum = 1
 var loadEarlier = false
+ad_loaded = false
+show_ad_profile = true
+ad_network = ''
 
 export class Chatwindow extends React.Component {  
    
@@ -36,6 +48,43 @@ export class Chatwindow extends React.Component {
           page_num: 0
          
         }
+
+        AsyncStorage.getItem(ConstValues.ad_data , (error, result) => {
+
+          console.log("leaving chat_details ad:true>>> " + JSON.parse(result).after_leaving_profile);
+  
+          if(result != null){
+  
+              if(JSON.parse(result).after_leaving_detailed_message == "yes"){
+  
+                  console.log('after_chat_details: ad will show')
+  
+                  this.show_ad_profile = true
+  
+                  if(JSON.parse(result).ad_network == "admob"){
+  
+                      this.ad_network = 'admob'
+                      console.log('after_leaving_chat_details: ad will show>>>admob')
+  
+                      this.loadAd()
+                  }
+                  else if(JSON.parse(result).ad_network == "facebook"){
+  
+                      this.ad_network = 'facebook'
+                      console.log('after_leaving_chat_details: facebook ad will show>>>admob')
+                  }
+              }
+              else{
+                  console.log('after_leaving_chat_details: ad will not show')
+                  this.show_ad_profile = false
+              }
+  
+            
+  
+          }
+          else{
+          }
+        })
     }
 
     componentWillMount() {
@@ -462,6 +511,95 @@ export class Chatwindow extends React.Component {
         this.getPreviousConversation();
       }
 
+      loadAd(){
+
+        AdMobInterstitial.setAdUnitID(ConstValues.admob_interestitial_ad_id);
+        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]); 
+        AdMobInterstitial.addEventListener('adLoaded', () =>
+            
+            this.ad_loaded = true,
+    
+            console.log('AdMobInterstitial adLoaded ' + this.ad_loaded),
+        );
+        AdMobInterstitial.addEventListener('adClosed', () =>
+            
+            // console.log('AdMobInterstitial adClosed '),
+    
+            this.timeoutHandle = setTimeout(()=>{
+                  const popAction = StackActions.pop({
+                    n: 1,
+                  });
+                  this.props.navigation.dispatch(popAction)
+                }, 500),
+    
+           
+        );
+        AdMobInterstitial.addEventListener('adLeftApplication', () =>
+            
+    
+            // console.log('AdMobInterstitial adLeftApplication '),
+    
+            this.timeoutHandle = setTimeout(()=>{
+                  const popAction = StackActions.pop({
+                    n: 1,
+                  });
+                  this.props.navigation.dispatch(popAction)
+                }, 500),
+        );
+    
+        // AdMobInterstitial.addEventListener('adFailedToOpen', () =>
+            
+    
+        //     // console.log('AdMobInterstitial adFailedToOpen '),
+    
+        //     this.timeoutHandle = setTimeout(()=>{
+        //         this.props.navigation.navigate(this.fromScreen)
+        //         }, 500),
+        // );
+    
+        AdMobInterstitial.requestAd().catch(error => error.code == "E_AD_ALREADY_LOADED" ? 
+        this.ad_loaded = true : 
+        this.ad_loaded = false);
+      }
+
+      showAd(){
+
+        if(this.show_ad_profile){
+    
+            if(this.ad_network == 'admob'){
+    
+                if(this.ad_loaded){
+    
+                    AdMobInterstitial.showAd();
+                }
+                else{
+                  const popAction = StackActions.pop({
+                    n: 1,
+                  });
+                  this.props.navigation.dispatch(popAction)
+                }
+            }
+            else{
+                InterstitialAdManager.showAd(ConstValues.facebook_interstitial_id)
+                .then(didClick => {})
+                .catch(error => {console.log('facebood_ad_error: ' + error),
+                 popAction = StackActions.pop({
+                  n: 1,
+                });
+                this.props.navigation.dispatch(popAction)
+              });
+            }
+    
+        }
+        else{
+          const popAction = StackActions.pop({
+            n: 1,
+          });
+          this.props.navigation.dispatch(popAction)
+        }
+        
+    }
+
     render() {  
       const {width, height} = Dimensions.get('window'); 
       return ( 
@@ -483,11 +621,9 @@ export class Chatwindow extends React.Component {
                            screen_on = false
                           //  this.setState({screen_on: false})
                             // this.props.navigation.navigate('Chatlist')}
-                            const popAction = StackActions.pop({
-                              n: 1,
-                            });
+                            this.showAd()
                             
-                            this.props.navigation.dispatch(popAction)}
+                            }
                          }> 
                                <Icon name="long-arrow-alt-left"  style={{fontSize: width * 0.05,color:'#fff', }}  /> 
                             </TouchableOpacity>

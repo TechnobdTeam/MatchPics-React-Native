@@ -24,6 +24,10 @@ export class Splash extends React.Component {
         access_token: '',
         dialogVisible: false
       };
+
+      ConstValues.search_view = 1
+      ConstValues.favorite_view = 1
+      ConstValues.my_match_view = 1
     }
 
     updateRaouting(){
