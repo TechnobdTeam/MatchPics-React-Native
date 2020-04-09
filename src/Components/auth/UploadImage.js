@@ -453,148 +453,149 @@ storeData(key,value) {
                 </NB.Button>
               </NB.Right>
             </NB.Header> 
-           
+            
+            <NB.Content>
+               <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20, marginBottom: 20}}> 
 
-              <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,}}> 
+                {this.state.change_photo_url != '' ? 
+                <NB.View style={{width:230,}} >
+                  <NB.Icon name="md-checkmark-circle" style={{color:'#e8e4e7',marginTop:8,position:'absolute',zIndex:999,fontSize:40,}} />
+                </NB.View>
+                :
+                null
+                }
 
-                  {this.state.change_photo_url != '' ? 
-                  <NB.View style={{width:230,}} >
-                    <NB.Icon name="md-checkmark-circle" style={{color:'#e8e4e7',marginTop:8,position:'absolute',zIndex:999,fontSize:40,}} />
+                <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
+
+                  {this.state.change_photo_url == '' ? 
+                  <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
+                  :
+                  <Image style={{width:'100%',height:'100%'}}   source={{uri:this.state.change_photo_url} }/>
+                  }
+                      {/* <Image style={{width:'100%',height:'100%',position:'absolute',zIndex:999,}}   source={require('../Image/user_shap.png')} /> */}
                   </NB.View>
-                  :
-                  null
-                  }
 
-                  <NB.View style={{borderWidth:3,borderColor:'#fff',borderRadius:10,width:250,height:250,overflow:'hidden',}}> 
-
+                  <NB.View>
+                    <NB.Button style={{backgroundColor:'#fff',borderRadius:50,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,paddingLeft:47,paddingRight:47}} >
                     {this.state.change_photo_url == '' ? 
-                    <Image style={{width:'100%',height:'100%'}}   source={require('../Image/image_placeholder.png')} />
-                    :
-                    <Image style={{width:'100%',height:'100%'}}   source={{uri:this.state.change_photo_url} }/>
+                          <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Bold'}} onPress={this.onPress}>upload</NB.Text>
+                          :
+                          <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Bold'}} onPress={this.onPress}>change</NB.Text>
                     }
-                        {/* <Image style={{width:'100%',height:'100%',position:'absolute',zIndex:999,}}   source={require('../Image/user_shap.png')} /> */}
-                    </NB.View>
+                    </NB.Button>
+                  </NB.View>
 
-                    <NB.View>
-                      <NB.Button style={{backgroundColor:'#fff',borderRadius:50,height:50,justifyContent:'center',alignItems:'center',marginTop:-25,paddingLeft:47,paddingRight:47}} >
-                      {this.state.change_photo_url == '' ? 
-                            <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Bold'}} onPress={this.onPress}>upload</NB.Text>
-                            :
-                            <NB.Text style={{color:'#92207e',fontSize: width * 0.037,fontFamily:'OpenSans-Bold'}} onPress={this.onPress}>change</NB.Text>
-                      }
-                      </NB.Button>
-                    </NB.View>
+                </NB.View>
 
-            </NB.View>
+                <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12, marginBottom: 20}}>
 
-            <NB.View style={{backgroundColor:'#fff',marginTop:90,padding:20,borderRadius:5,marginLeft:12,marginRight:12,}}>
-                  
-            {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
-                  <NB.Text style={{ fontSize: width * 0.037,fontFamily:'OpenSans-Bold',color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize: width * 0.037,fontFamily:'OpenSans-Bold' }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
+                {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
+                <NB.Text style={{ fontSize: width * 0.037,fontFamily:'OpenSans-Bold',color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize: width * 0.037,fontFamily:'OpenSans-Bold' }}>{this.getMatchedUserName(this.state.value)} </NB.Text></NB.Text>
 
-              :
-              <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}> </NB.Text></NB.Text>
-            }
-                  <NB.View style={{ }}>
-                  {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
-                    <View style={styles.container}>
-                    <Slider
-                      value={this.state.value}
-                      onValueChange={value => this.setState({ value })}
-                      trackStyle={styles.track}
-                       thumbStyle={styles.thumb}
-                       minimumValue={0}
-                       maximumValue={this.state.matchTypeData.length-1} 
-                      minimumTrackTintColor='#92207e'
-                      maximumTrackTintColor='#92207e'
-                    /> 
-                  </View> 
-                  :
+                :
+                <NB.Text style={{ fontSize:17,color:'#333333',textTransform:'uppercase',paddingLeft:20}}>Match Type : <NB.Text style={{color:'#b23186',fontSize:17,  }}> </NB.Text></NB.Text>
+                }
+                <NB.View style={{ }}>
+                {(this.state.matchTypeData != undefined && this.state.matchTypeData != '') ?
                   <View style={styles.container}>
-                    <Slider
-                      value={this.state.value}
-                      trackStyle={styles.track}
-                       thumbStyle={styles.thumb}
-                       minimumValue={0}
-                       maximumValue={100} 
-                      minimumTrackTintColor='#92207e'
-                      maximumTrackTintColor='#92207e'
-                    /> 
-                  </View> 
-                  }
-                    </NB.View> 
-                     <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
-                           <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,paddingLeft:40,paddingRight:40,}}
-                           onPress = {() => this.gotoMyMatches()}>
-                             <NB.Text style={{fontSize: width * 0.037,fontFamily:'OpenSans-Bold',marginTop:-2}}>continue</NB.Text>
-                           </NB.Button>
+                  <Slider
+                    value={this.state.value}
+                    onValueChange={value => this.setState({ value })}
+                    trackStyle={styles.track}
+                    thumbStyle={styles.thumb}
+                    minimumValue={0}
+                    maximumValue={this.state.matchTypeData.length-1} 
+                    minimumTrackTintColor='#92207e'
+                    maximumTrackTintColor='#92207e'
+                  /> 
+                </View> 
+                :
+                <View style={styles.container}>
+                  <Slider
+                    value={this.state.value}
+                    trackStyle={styles.track}
+                    thumbStyle={styles.thumb}
+                    minimumValue={0}
+                    maximumValue={100} 
+                    minimumTrackTintColor='#92207e'
+                    maximumTrackTintColor='#92207e'
+                  /> 
+                </View> 
+                }
+                  </NB.View> 
+                  <NB.View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginBottom:10,}}>
+                        <NB.Button style={{backgroundColor:'#e74e92',height:50,justifyContent:'center',alignItems:'center',borderRadius:50,paddingLeft:40,paddingRight:40,}}
+                        onPress = {() => this.gotoMyMatches()}>
+                          <NB.Text style={{fontSize: width * 0.037,fontFamily:'OpenSans-Bold',marginTop:-2}}>continue</NB.Text>
+                        </NB.Button>
 
 
-                     </NB.View>
+                  </NB.View>
 
-                     <Dialog
-                      dialogStyle={{
-                        borderRadius:7,
-                        width:300,
-                        marginLeft:"9%"
-                     }}
-                     titleStyle={{
-                      textAlign: 'center',
-  
-                     }}
-                      visible={this.state.imagePickOptionDialog}
-                      title="Choose Photo"
-                      onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
+                  <Dialog
+                    dialogStyle={{
+                      borderRadius:7,
+                      width:300,
+                      marginLeft:"9%"
+                  }}
+                  titleStyle={{
+                    textAlign: 'center',
 
-                        <NB.View style={{height:120,}}>
-                            
-                            <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
+                  }}
+                    visible={this.state.imagePickOptionDialog}
+                    title="Choose Photo"
+                    onTouchOutside={() => this.setState({imagePickOptionDialog: false})} >
 
+                      <NB.View style={{height:120,}}>
                           
+                          <NB.View style={{flex:1,  justifyContent:"center",alignItems:"center"}}> 
 
-                          <NB.Button  onPress={this.onPressOpenCamera} iconLeft style={{width:225,backgroundColor:"#d0d0d0",paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}}>
-                              <NB.Icon name='camera'  style={{fontSize: width * 0.07, color:"#000", }} />
-                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  >Capture Photo</NB.Text>
-                            </NB.Button>
+                        
 
-                            <NB.Button onPress={this.onPressFromGallery} iconLeft style={{width:225,backgroundColor:"#d0d0d0",marginTop:20,paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}} >
-                              <NB.Icon name='image'  style={{fontSize: width * 0.07, color:"#000", }} />
-                              <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  > Browse  Gallery</NB.Text>
+                        <NB.Button  onPress={this.onPressOpenCamera} iconLeft style={{width:225,backgroundColor:"#d0d0d0",paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}}>
+                            <NB.Icon name='camera'  style={{fontSize: width * 0.07, color:"#000", }} />
+                            <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  >Capture Photo</NB.Text>
                           </NB.Button>
 
+                          <NB.Button onPress={this.onPressFromGallery} iconLeft style={{width:225,backgroundColor:"#d0d0d0",marginTop:20,paddingLeft:25,justifyContent:"flex-start",alignItems:"center"}} >
+                            <NB.Icon name='image'  style={{fontSize: width * 0.07, color:"#000", }} />
+                            <NB.Text style={{fontSize: width * 0.035, color:"#000",textTransform:"capitalize" }}  > Browse  Gallery</NB.Text>
+                        </NB.Button>
+
+
+                                
+                            
+                      </NB.View> 
+                </NB.View>
+
+
+                    {/* <NB.View style={{height:50,}}>
                   
-                                  
-                              
-                        </NB.View> 
-                  </NB.View>
+                    <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                          <NB.View style={{width:80, alignItems: 'center',}}>
+                              <TouchableOpacity onPress={this.onPressFromGallery}  > 
+                              <Icon    name={'images'}  style={{fontSize:30, color:"#e1e1e1" }}    />  
+                              </TouchableOpacity> 
+                          </NB.View>
+                          <NB.View style={{width:80, alignItems: 'center',}}>
+                            <TouchableOpacity onPress={this.onPressOpenCamera} > 
+                              <Icon    name={'camera'}  style={{fontSize:30, color:"#e1e1e1" }}   /> 
+                              </TouchableOpacity>  
+                          </NB.View>
+                      </NB.View>
+                    
 
+                    </NB.View> */}
+                </Dialog>
 
-                      {/* <NB.View style={{height:50,}}>
-                     
-                      <NB.View style={{flex:1, flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                            <NB.View style={{width:80, alignItems: 'center',}}>
-                                <TouchableOpacity onPress={this.onPressFromGallery}  > 
-                                <Icon    name={'images'}  style={{fontSize:30, color:"#e1e1e1" }}    />  
-                                </TouchableOpacity> 
-                            </NB.View>
-                            <NB.View style={{width:80, alignItems: 'center',}}>
-                               <TouchableOpacity onPress={this.onPressOpenCamera} > 
-                                <Icon    name={'camera'}  style={{fontSize:30, color:"#e1e1e1" }}   /> 
-                                </TouchableOpacity>  
-                            </NB.View>
-                        </NB.View>
-                       
- 
-                      </NB.View> */}
-                  </Dialog>
-
-                  <ProgressDialog
-                        visible={this.state.progressVisible}
-                        title="Uploading"
-                        message="Please, wait..."
-                    />
-                      
-              </NB.View>  
+                <ProgressDialog
+                      visible={this.state.progressVisible}
+                      title="Uploading"
+                      message="Please, wait..."
+                  />
+                    
+                </NB.View>  
+            </NB.Content>
               </NB.Container>
           </ImageBackground>
           {/* </NB.Container> */}

@@ -18,6 +18,7 @@ import {
     purchaseUpdatedListener,
   } from 'react-native-iap';
   import React, {Component} from 'react';
+  import * as NB from 'native-base';
   
   import NativeButton from 'apsl-react-native-button';
   
@@ -89,9 +90,12 @@ import {
       fontWeight: 'bold',
     },
     btn: {
+        flexDirection: 'column',
       height: 48,
       width: 240,
       alignSelf: 'center',
+      textAlign: 'center',
+      justifyContent: 'center',
       backgroundColor: '#00c40f',
       borderRadius: 0,
       borderWidth: 0,
@@ -99,10 +103,11 @@ import {
     txt: {
       fontSize: 16,
       color: 'white',
+      textAlignVertical: 'center'
     },
   });
   
-  export default class Subscriptiontest extends React.Component {
+  export class DigitalSubscription extends React.Component {
     constructor(props) {
       super(props);
   
@@ -232,18 +237,21 @@ import {
       return (
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerTxt}>react-native-iap V3</Text>
+            <Text style={styles.headerTxt}>MatchPics Subscription</Text>
           </View>
           <View style={styles.content}>
             <ScrollView style={{alignSelf: 'stretch'}}>
               <View style={{height: 50}} />
-              <NativeButton
-                onPress={this.getAvailablePurchases}
+              <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,justifyContent: 'center',alignItems:'center',height:59,paddingLeft:62,paddingRight:62, marginLeft: 20, marginRight: 20}} onPress={this.getAvailablePurchases}>
+                    <NB.Text style={{fontSize: 16,color:'#ffffff',fontFamily:'OpenSans-Bold'}}>Get available purchases</NB.Text>
+            </NB.Button> 
+              {/* <NB.Text
+                
                 activeOpacity={0.5}
                 style={styles.btn}
                 textStyle={styles.txt}>
                 Get available purchases
-              </NativeButton>
+              </NB.Text> */}
   
               <Text style={{margin: 5, fontSize: 15, alignSelf: 'center'}}>
                 {availableItemsMessage}
@@ -252,14 +260,19 @@ import {
               <Text style={{margin: 5, fontSize: 9, alignSelf: 'center'}}>
                 {receipt100}
               </Text>
+
+              <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,justifyContent: 'center',alignItems:'center',height:59,paddingLeft:62,paddingRight:62, marginLeft: 20, marginRight: 20}} 
+              onPress={() => this.getItems()}>
+                    <NB.Text style={{fontSize: 16,color:'#ffffff',fontFamily:'OpenSans-Bold'}}> Get Products ({productList.length})</NB.Text>
+            </NB.Button> 
   
-              <NativeButton
+              {/* <NB.Text
                 onPress={() => this.getItems()}
                 activeOpacity={0.5}
                 style={styles.btn}
                 textStyle={styles.txt}>
                 Get Products ({productList.length})
-              </NativeButton>
+              </NB.Text> */}
               {productList.map((product, i) => {
                 return (
                   <View
@@ -278,7 +291,13 @@ import {
                       }}>
                       {JSON.stringify(product)}
                     </Text>
-                    <NativeButton
+
+                    <NB.Button style={{shadowOpacity: 0,elevation:0,backgroundColor:'#ff1a00',borderRadius:50,justifyContent: 'center',alignItems:'center',height:59,paddingLeft:62,paddingRight:62, marginLeft: 20, marginRight: 20}} 
+                        onPress={() => this.requestSubscription(product.productId)}>
+                        <NB.Text style={{fontSize: 16,color:'#ffffff',fontFamily:'OpenSans-Bold'}}> Request purchase for above product ({productList.length})</NB.Text>
+                    </NB.Button> 
+
+                    {/* <NB.Text
                       // onPress={(): void => this.requestPurchase(product.productId)}
                       onPress={() =>
                         this.requestSubscription(product.productId)
@@ -287,7 +306,7 @@ import {
                       style={styles.btn}
                       textStyle={styles.txt}>
                       Request purchase for above product
-                    </NativeButton>
+                    </NB.Text> */}
                   </View>
                 );
               })}
@@ -297,4 +316,3 @@ import {
       );
     }
   }
-  

@@ -328,6 +328,20 @@ popScreen(){
 
                             <NB.Content>
                                     <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:65}}>
+                                    <TouchableOpacity  onPress={() => { this.props.navigation.navigate('DigitalSubscription')}}  style={{width:"100%",flex:1,flexDirection:"row"}}>
+                                    <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
+                                    <Icon name="balance-scale" style={{fontSize: width * 0.05,color:'#e41b5b', }}  /> 
+                                    </NB.View>
+                                        <NB.Body>
+                                        <NB.Text   style={{textTransform:'uppercase',fontSize: width * 0.04,color:"#464646",fontFamily:'OpenSans-Bold'}} >Digital Subrscription</NB.Text>
+                                        </NB.Body>
+
+                                        </TouchableOpacity>
+                                    </NB.ListItem>
+                            </NB.Content>
+
+                            <NB.Content>
+                                    <NB.ListItem style={{marginLeft:0,paddingLeft:25,height:65}}>
                                     <TouchableOpacity  onPress={() => {this.popScreen(), this.props.navigation.navigate('Termsconditions')}}  style={{width:"100%",flex:1,flexDirection:"row"}}>
                                     <NB.View style={{width:50,justifyContent:"center",alignItems:"center"}}>
                                     <Icon name="balance-scale" style={{fontSize: width * 0.05,color:'#e41b5b', }}  /> 

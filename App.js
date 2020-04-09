@@ -7,7 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import {IMAGE} from './src/constants/Images'
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
-import {Termsconditions,MyMatchesFavorite,Appearance,location,justLocation, ForgotPassword,Social,AppSearch,Notification,Chatwindow,MyFavorite,Chatlist, SideMenu, Feed, FeedDetils, Search, SearchDetils, Profile, Setting, Login, Register, Splash,UploadImage, Menu,UserProfile, MyProfile,ProfileEdit,MyMatches, subscriptiontest} from './src/Components/Index';
+import {Termsconditions,DigitalSubscription, MyMatchesFavorite,Appearance,location,justLocation, ForgotPassword,Social,AppSearch,Notification,Chatwindow,MyFavorite,Chatlist, SideMenu, Feed, FeedDetils, Search, SearchDetils, Profile, Setting, Login, Register, Splash,UploadImage, Menu,UserProfile, MyProfile,ProfileEdit,MyMatches} from './src/Components/Index';
 
 import ConstValues from './src/constants/ConstValues';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -249,6 +249,16 @@ const appDrawer = createDrawerNavigator(
     screen: Termsconditions,
     navigationOptions:navOptionHandler 
    },
+
+   DigitalSubscription: {
+    screen: DigitalSubscription,
+    navigationOptions:navOptionHandler 
+   },
+
+  //  Subscriptiontest: {
+  //   screen: Subscriptiontest,
+  //   navigationOptions:navOptionHandler 
+  //  },
 
  })
 
